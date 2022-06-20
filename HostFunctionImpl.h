@@ -1,0 +1,66 @@
+#pragma once
+
+#include "FunctionImpl.h"
+#include "Closure.h"
+#include "UpValue.h"
+#include "Pointer.h"
+
+namespace Lua {
+
+	// implementation for a host function
+	class HostFunctionImpl : public FunctionImpl {
+	public:
+
+		// prototype of the host function
+		typedef std::function<int(State&)> FunctionPrototype;
+
+		HostFunctionImpl(const FunctionPrototype& func) :
+			_funcPtr(std::make_shared<FunctionPrototype>(func))
+		{}
+
+		// inserts the host function to the stack
+		void insertTo(State& state)
+		{
+			state << Lua::Closure()
+				<< _funcPtr
+			<< Lua::Closure::End(callFunc);
+		}
+
+	private:
+
+		// shared pointer to the host function
+		typedef Lua::Pointer<
+			std::shared_ptr<FunctionPrototype>
+		> FunctionPointer;
+
+		// calls the host function
+		static int callFunc(lua_State* L)
+		{
+			State state(L);
+			int numOfOutputArgs = 0;
+			
+			try {
+
+				FunctionPointer funcPtr;
+
+				state >> UpValue(1) >> funcPtr;
+
+				numOfOutputArgs = (*funcPtr.get())(state);
+
+			}
+			catch (std::exception& e) {
+				state.raiseError(e.what());
+			}
+			catch (...) {
+				state.raiseError("unknown exception");
+			}
+
+			return numOfOutputArgs;
+		}
+
+		// holds a pointer to the host function
+		FunctionPointer _funcPtr;
+
+	};
+
+}
