@@ -31,7 +31,7 @@ static Lua::ReadableParams& operator, (
 
 static Lua::WritableParams& operator<< (
 	Lua::WritableParams& args,
-	Lua::Function& func
+	Lua::AbstractFunction& func
 )
 {
 	args.prepareWriting();
@@ -43,7 +43,7 @@ static Lua::WritableParams& operator<< (
 
 static Lua::WritableParams& operator, (
 	Lua::WritableParams& args,
-	Lua::Function& func
+	Lua::AbstractFunction& func
 )
 {
 	args << func;

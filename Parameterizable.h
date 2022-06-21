@@ -130,11 +130,11 @@ namespace Lua {
 			AuxiliaryContext(
 				State& state,
 				Callback prepareInputFunc,
-				Callback callFunc
+				Callback prepareCallingFunc
 			) :
 				_state(state),
 				_prepareInputFunc(prepareInputFunc),
-				_callFunc(callFunc)
+				_prepareCallingFunc(prepareCallingFunc)
 			{}
 
 		protected:
@@ -150,17 +150,17 @@ namespace Lua {
 				Context::_prepareInput();
 			}
 
-			virtual void _call()
+			virtual void _prepareCalling()
 			{
-				_callFunc(*this);
-				Context::_call();
+				_prepareCallingFunc(*this);
+				Context::_prepareCalling();
 			}
 
 		private:
 
 			State& _state;
 			Callback _prepareInputFunc;
-			Callback _callFunc;
+			Callback _prepareCallingFunc;
 
 		};
 

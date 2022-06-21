@@ -6,6 +6,7 @@
 #include "Arguments.h"
 #include "StreamReader.h"
 #include "GlobalVars.h"
+#include "AbstractFunction.h"
 
 namespace Lua {
 
@@ -22,9 +23,12 @@ namespace Lua {
 
 		virtual State& state() = 0;
 		
-		Lua::GlobalVars global(
-			const std::string& nameList
-		)
+		void openStdLibs()
+		{
+			state().openStdLibs();
+		}
+
+		Lua::GlobalVars global(const std::string& nameList)
 		{
 			return GlobalVars(state(), nameList);
 		}
@@ -73,7 +77,7 @@ namespace Lua {
 					// finishes reading of the output argument
 					[this] (State& state)
 					{
-						_nextOutput();
+						_finishOutput();
 						_numOfOutputArgs--;
 					}
 				}
@@ -82,33 +86,23 @@ namespace Lua {
 		
 		ReadableParams pcall(const std::string& funcName)
 		{
-			_call();
-
-			// adjust the top of the stack to the number of input arguments
-			// it removes unread function input arguments or unread
-			// output arguments from the previous function call
-			state().setStackTop(_numOfInputArgs);
-
-			_numOfOutputArgs = 0;
-
-			// get the global function and push it at the top of the stack
+			prepareCalling();
+			// get a global function with the given name
+			// and insert it at the top of the stack
 			state().pushGlobal(funcName);
-
-			// move the function to the beginning of the stack
-			state().moveTopElementTo(1);
-
-			// call the function
-			state().pcall(_numOfInputArgs);
-
-			_numOfInputArgs = 0;
-			_numOfOutputArgs = state().getStackTop();
+			// call that function
+			finishCalling();
 
 			return args().out();
 		}
 
-		void openStdLibs()
+		ReadableParams pcall(AbstractFunction& func)
 		{
-			state().openStdLibs();
+			prepareCalling();
+			state() << func;
+			finishCalling();
+
+			return args().out();
 		}
 
 		template<typename InputStream>
@@ -150,13 +144,13 @@ namespace Lua {
 			state().pushElementFrom(args().in().count() + 1);
 		}
 
-		virtual void _nextOutput()
+		virtual void _finishOutput()
 		{
 			// remove the current output argument from the stack
 			state().removeElementAt(args().in().count() + 1);
 		}
 
-		virtual void _call()
+		virtual void _prepareCalling()
 		{
 			// nothing to do here by dafult
 		}
@@ -165,6 +159,30 @@ namespace Lua {
 
 		int _numOfInputArgs;
 		int _numOfOutputArgs;
+
+		void prepareCalling()
+		{
+			_prepareCalling();
+
+			// adjust the top of the stack to the number of input arguments
+			// it removes unread function input arguments or unread
+			// output arguments from the previous function call
+			state().setStackTop(_numOfInputArgs);
+
+			_numOfOutputArgs = 0;
+		}
+
+		void finishCalling()
+		{
+			// move a function at the top of the stack to the beginning
+			state().moveTopElementTo(1);
+
+			// call that function
+			state().pcall(_numOfInputArgs);
+
+			_numOfInputArgs = 0;
+			_numOfOutputArgs = state().getStackTop();
+		}
 
 	};
 

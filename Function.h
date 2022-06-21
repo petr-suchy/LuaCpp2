@@ -1,7 +1,6 @@
 #pragma once
 
-#include "ReadableValue.h"
-#include "WritableValue.h"
+#include "AbstractFunction.h"
 #include "NullFunctionImpl.h"
 #include "HostFunctionImpl.h"
 #include "EngineFunctionImpl.h"
@@ -12,7 +11,7 @@ namespace Lua {
 	// the function at the top of the stack. It delegates that
 	// responsiblity to an internal implementation.
 
-	class Function : public ReadableValue, public WritableValue {
+	class Function : public AbstractFunction {
 	public:
 
 		typedef HostFunctionImpl::FunctionPrototype Prototype;
