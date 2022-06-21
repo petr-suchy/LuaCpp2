@@ -7,6 +7,7 @@
 #include <functional>
 #include <memory>
 #include <deque>
+#include <sstream>
 
 extern "C" {
 #include "lualib.h"
@@ -272,16 +273,16 @@ namespace Lua {
 		void loadChunk(
 			lua_Reader readerCb,
 			void *reader,
-			const char* chunkName,
-			const char* mode = nullptr
+			const std::string& chunkName = "",
+			const std::string& mode = "bt"
 		)
 		{
 			int status = lua_load(
 				getL(),
 				readerCb,
 				reader,
-				chunkName,
-				mode
+				chunkName.c_str(),
+				mode.c_str()
 			);
 
 			reportStatus(status);
@@ -395,6 +396,7 @@ namespace Lua {
 
 		void reportStatus(int status)
 		{
+			// TODO: syntax error
 			switch (status) {
 				case LUA_OK:
 					// success

@@ -106,20 +106,32 @@ namespace Lua {
 		}
 
 		template<typename InputStream>
-		void doStream(
+		ReadableParams doStream(
 			InputStream& is,
-			const std::string& chunkName
+			const std::string& chunkName = ""
 		)
 		{
 			StreamReader<InputStream> reader(is);
 
+			prepareCalling();
+
 			state().loadChunk(
 				&StreamReader<InputStream>::cb,
 				&reader,
-				chunkName.c_str()
+				chunkName
 			);
 
-			state().pcall();
+			finishCalling();
+
+			return args().out();
+		}
+
+		ReadableParams doString(
+			const std::string& script = "",
+			const std::string& chunkName = ""
+		)
+		{
+			return doStream(std::stringstream(script), chunkName);
 		}
 
 	protected:
