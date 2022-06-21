@@ -128,23 +128,6 @@ namespace Lua {
 			state().pcall();
 		}
 
-		template<typename T>
-		void setGlobal(const std::string& name, T val)
-		{
-			int numOfArgs = 0;
-
-			WritableParams args(
-				state(),
-				[&numOfArgs] (State&) { return numOfArgs; },
-				[] (State&) {},
-				[&numOfArgs] (State&) { numOfArgs++; }
-			);
-
-			args << val;
-
-			state().setGlobal(name.c_str());
-		}
-
 	protected:
 
 		virtual void _prepareInput()
