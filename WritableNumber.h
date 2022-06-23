@@ -4,23 +4,26 @@
 
 namespace Lua {
 
+	template<typename T>
 	class WritableNumber : public WritableValue {
 	public:
 
-		WritableNumber(const int& num) :
+		typedef std::numeric_limits<lua_Number> EngineLimits;
+
+		WritableNumber(T num) :
 			_num(num)
 		{}
 
 		virtual void insertTo(State& state)
 		{
 			state.prepareWriting();
-			lua_pushnumber(state.getL(), _num);
+			lua_pushnumber(state.getL(), (lua_Number) _num);
 			state.finishWriting();
 		}
 
 	private:
 
-		const int& _num;
+		T _num;
 
 	};
 

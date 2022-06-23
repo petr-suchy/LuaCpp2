@@ -8,6 +8,7 @@
 #include <memory>
 #include <deque>
 #include <sstream>
+#include <limits>
 
 extern "C" {
 #include "lualib.h"

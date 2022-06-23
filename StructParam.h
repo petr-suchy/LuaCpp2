@@ -10,7 +10,7 @@
 // overloaded stream operators for reading and writing
 // structured arguments
 
-#define declhost_struct(TYPE, ...) \
+#define defhost_struct(TYPE, ...) \
 static Lua::ReadableParams& operator>> ( \
 	Lua::ReadableParams& args, \
 	TYPE& m \
