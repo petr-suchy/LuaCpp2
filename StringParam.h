@@ -100,11 +100,3 @@ static Lua::WritableParams& operator, ( \
 	return args; \
 }
 
-defhost_wstring(
-	std::wstring,
-	std::wstring_convert<
-		std::codecvt_utf8<wchar_t>
-	>
-)
-
-defhost_string(std::string)

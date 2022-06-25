@@ -139,18 +139,3 @@ static Lua::WritableParams& operator, ( \
 	args << num; \
 	return args; \
 }
-
-defhost_number(float)
-defhost_number(double)
-
-defhost_signed(char)
-defhost_signed(short)
-defhost_signed(int)
-defhost_signed(long)
-defhost_signed(long long)
-
-defhost_unsigned(char)
-defhost_unsigned(short)
-defhost_unsigned(int)
-defhost_unsigned(long)
-defhost_unsigned(long long)

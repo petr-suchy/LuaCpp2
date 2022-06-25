@@ -1,12 +1,8 @@
 #pragma once
 
 #include "Engine.h"
+#include "BasicHostDefs.h"
 #include "Parameterizable.h"
-#include "NumericParam.h"
-#include "StringParam.h"
-#include "PointerParam.h"
-#include "FuncParam.h"
-#include "StructParam.h"
 
 namespace Lua {
 
