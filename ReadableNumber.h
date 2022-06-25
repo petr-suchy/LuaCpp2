@@ -23,14 +23,14 @@ namespace Lua {
 				state.getStackTop()
 			);
 
-			if (num < HostLimits::min()) {
+			if (num < (HostLimits::min)()) {
 				state.pop();
 				throw std::overflow_error(
 					"value exceeds host minimum"
 				);
 			}
 
-			if (num > HostLimits::max()) {
+			if (num > (HostLimits::max)()) {
 				state.pop();
 				throw std::overflow_error(
 					"value exceeds host maximum"

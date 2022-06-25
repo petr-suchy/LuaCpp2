@@ -39,7 +39,7 @@ namespace Lua {
 
 		virtual void insertTo(State& state)
 		{
-			if (_num > (unsigned long long) EngineLimits::max()) {
+			if (_num > (unsigned long long) (EngineLimits::max)()) {
 				throw std::overflow_error(
 					"value exceeds engine maximum"
 				);
