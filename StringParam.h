@@ -9,8 +9,6 @@
 #include "WritableWString.h"
 #include "ReadableWString.h"
 
-#include <codecvt>
-
 // overloaded stream operators for reading and writing
 // string arguments
 

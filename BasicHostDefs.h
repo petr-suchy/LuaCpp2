@@ -6,6 +6,8 @@
 #include "FuncParam.h"
 #include "StructParam.h"
 
+#include <codecvt>
+
 defhost_number(float)
 defhost_number(double)
 
