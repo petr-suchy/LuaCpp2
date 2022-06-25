@@ -55,6 +55,9 @@ namespace Lua {
 				state.raiseError("unknown exception");
 			}
 
+			// adjust the top of the stack to the number of output arguments
+			state.setStackTop(numOfOutputArgs);
+
 			return numOfOutputArgs;
 		}
 
