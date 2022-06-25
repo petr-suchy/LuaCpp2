@@ -4,10 +4,11 @@
 
 namespace Lua {
 
+	template<typename String>
 	class WritableString : public WritableValue {
 	public:
 
-		WritableString(const std::string& str) :
+		WritableString(const String& str) :
 			_str(str)
 		{}
 
@@ -20,7 +21,7 @@ namespace Lua {
 
 	private:
 
-		const std::string& _str;
+		const String& _str;
 
 	};
 

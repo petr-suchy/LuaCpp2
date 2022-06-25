@@ -4,11 +4,11 @@
 
 namespace Lua {
 
-	template<typename String>
-	class ReadableString : public ReadableValue {
+	template<typename WString, typename Convert>
+	class ReadableWString : public ReadableValue {
 	public:
 
-		ReadableString(String& str) :
+		ReadableWString(WString& str) :
 			_str(str)
 		{}
 
@@ -24,14 +24,16 @@ namespace Lua {
 				&len
 			);
 
-			_str = String(cstr, len);
+			std::string utf8Str(cstr, len);
+
+			_str = Convert().from_bytes(utf8Str);
 
 			state.finishReading();
 		}
 
 	private:
 
-		String& _str;
+		WString& _str;
 
 	};
 
