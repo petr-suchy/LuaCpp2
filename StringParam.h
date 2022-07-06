@@ -12,6 +12,27 @@
 // overloaded stream operators for reading and writing
 // string arguments
 
+static Lua::WritableParams& operator<< (
+	Lua::WritableParams& args,
+	const char* cstr
+)
+{
+	args.prepareWriting();
+	args.state() << Lua::WritableString<std::string>(cstr);
+	args.finishWriting();
+
+	return args;
+}
+
+static Lua::WritableParams& operator, (
+	Lua::WritableParams& args,
+	const char* cstr
+)
+{
+	args << cstr;
+	return args;
+}
+
 #define defhost_string(STRING) \
 static Lua::ReadableParams& operator>> ( \
 	Lua::ReadableParams& args, \
