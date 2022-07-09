@@ -146,7 +146,12 @@ namespace Lua {
 			}
 
 			int type = lua_type(getL(), top);
-			
+
+			if (expectedType == LUA_TSTRING && type == LUA_TNUMBER) {
+				// a numeric value will be converted to a string
+				type = LUA_TSTRING;
+			}
+
 			if (type != expectedType) {
 				pop();
 				throw std::logic_error(
