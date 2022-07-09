@@ -204,21 +204,47 @@ namespace Lua {
 				);
 			}
 
-			// get the table field name from the key list 
+			// get a table field name from the key list 
 
 			if (keys().empty()) {
 				throw std::logic_error("a key expected for the table field");
 			}
 
 			std::string currKey = keys().front();
+			bool isMetamethod = currKey.substr(0, 2) == "__";
 
-			// get a value from the field with the given key name
+			if (isMetamethod) {
 
-			lua_getfield(
-				getL(),
-				top,
-				currKey.c_str()
-			);
+				// insert a metatable at top of the stack
+				bool hasMetatable = lua_getmetatable(getL(), StackTop) != 0;
+
+				if (!hasMetatable) {
+					throw std::logic_error("metatable is not set");
+				}
+
+				// get a value from the metatable field with the given key name
+
+				lua_getfield(
+					getL(),
+					StackTop,
+					currKey.c_str()
+				);
+
+				// remove the metatable
+				removeElementAt(StackTop - 1);
+
+			}
+			else {
+
+				// get a value from the field with the given key name
+
+				lua_getfield(
+					getL(),
+					StackTop,
+					currKey.c_str()
+				);
+
+			}
 
 			// remove the used key name from the list
 			keys().pop_front();
@@ -227,16 +253,17 @@ namespace Lua {
 		// sets the value at the of the stack as a table field
 		void setValueAsField()
 		{
+
+			if (getStackTop() < 2) {
+				throw std::logic_error("too few arguments on the stack");
+			}
+
 			// the table for the value is at the top of the stack
 			// just before the value
 
-			int top = getStackTop();
-
-			if (top < 2 || !lua_istable(getL(), top - 1)) {
+			if (!lua_istable(getL(), StackTop - 1)) {
 				throw std::logic_error("a table expected for the table field");
 			}
-
-			int tableIndex = top - 1;
 
 			// get the table field name from the key list 
 
@@ -245,14 +272,48 @@ namespace Lua {
 			}
 
 			std::string currKey = keys().front();
+			bool isMetamethod = currKey.substr(0, 2) == "__";
 
-			// set the values as a table field with the given key name
+			if (isMetamethod) {
 
-			lua_setfield(
-				getL(),
-				tableIndex,
-				currKey.c_str()
-			);
+				// insert a value metatable at top of the stack
+				bool hasMetatable = lua_getmetatable(getL(), StackTop - 1) != 0;
+
+				if (!hasMetatable) {
+					// insert a new table at top of the stack
+					lua_createtable(getL(), 0, 0);
+				}
+
+				// place the table before the value
+				moveTopElementTo(StackTop - 1);
+
+				// set the value as a metatable field with the given key name
+				lua_setfield(
+					getL(),
+					StackTop - 1,
+					currKey.c_str()
+				);
+
+				if (!hasMetatable) {
+					// set the new table as a value metatable
+					lua_setmetatable(getL(), State::StackTop - 1);
+				}
+				else {
+					// pop the value metatable from the stack
+					pop();
+				}
+
+			}
+			else {
+
+				// set the value as a table field with the given key name
+				lua_setfield(
+					getL(),
+					StackTop - 1,
+					currKey.c_str()
+				);
+
+			}
 
 			// remove the used key name from the list
 			keys().pop_front();
