@@ -11,19 +11,19 @@ namespace Lua {
 		typedef int Reference;
 
 		EngineFunctionImpl(State& state, Reference ref) :
-			_state(state),
+			_L(state.getL()),
 			_ref(ref)
 		{}
 
 		~EngineFunctionImpl()
 		{
 			// release both the function and the reference
-			luaL_unref(_state.getL(), LUA_REGISTRYINDEX, _ref);
+			luaL_unref(_L, LUA_REGISTRYINDEX, _ref);
 		}
 
 		virtual void insertTo(State& state)
 		{
-			if (state.getL() != _state.getL()) {
+			if (state.getL() != _L) {
 				throw std::logic_error("invalid function reference");
 			}
 			// pushes the function associated with the reference
@@ -33,7 +33,7 @@ namespace Lua {
 
 	private:
 
-		State& _state;
+		lua_State* _L;
 		Reference _ref;
 
 	};
