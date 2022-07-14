@@ -231,7 +231,7 @@ namespace Lua {
 			}
 
 			std::string currKey = keys().front();
-			bool isMetamethod = currKey.substr(0, 2) == "__";
+			bool isMetamethod = currKey[0] == '_';
 
 			if (isMetamethod) {
 
@@ -292,7 +292,7 @@ namespace Lua {
 			}
 
 			std::string currKey = keys().front();
-			bool isMetamethod = currKey.substr(0, 2) == "__";
+			bool isMetamethod = currKey[0] == '_';
 
 			if (isMetamethod) {
 
