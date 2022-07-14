@@ -131,6 +131,21 @@ namespace Lua {
 			return getTableLevel() == 0 && getClosureLevel() == 0;
 		}
 
+		void prepareReading()
+		{
+			if (getTableLevel() > 0) {
+				getValueFromField();
+			}
+
+			int top = getStackTop();
+
+			if (top == 0) {
+				throw std::logic_error(
+					"stack is empty"
+				);
+			}
+		}
+
 		void prepareReading(int expectedType)
 		{
 			if (getTableLevel() > 0) {

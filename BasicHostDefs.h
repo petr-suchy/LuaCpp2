@@ -1,6 +1,7 @@
 #pragma once
 
 #include "ForwardParam.h"
+#include "ReferenceParam.h"
 #include "BooleanParam.h"
 #include "NumericParam.h"
 #include "StringParam.h"
