@@ -162,11 +162,6 @@ namespace Lua {
 
 			int type = lua_type(getL(), top);
 
-			if (expectedType == LUA_TSTRING && type == LUA_TNUMBER) {
-				// a numeric value will be converted to a string
-				type = LUA_TSTRING;
-			}
-
 			if (type != expectedType) {
 				pop();
 				throw std::logic_error(
@@ -483,9 +478,13 @@ namespace Lua {
 				case LUA_OK:
 					// success
 				break;
-				case LUA_ERRRUN:
+				case LUA_ERRRUN: {
 					// the error message is at the stack top
-					throw std::runtime_error(lua_tostring(getL(), -1));
+					std::string err(lua_tostring(getL(), StackTop));
+					// pop the error message
+					pop();
+					throw std::runtime_error(err);
+				}
 				break;
 				case LUA_ERRMEM:
 					throw std::runtime_error("memory allocation error");

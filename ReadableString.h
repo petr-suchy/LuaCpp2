@@ -1,6 +1,7 @@
 #pragma once
 
 #include "ReadableValue.h"
+#include "ToString.h"
 
 namespace Lua {
 
@@ -14,8 +15,8 @@ namespace Lua {
 
 		virtual void getFrom(State& state)
 		{
-			state.prepareReading(LUA_TSTRING);
-
+			state.prepareReading();
+			/*
 			size_t len = 0;
 
 			const char* cstr = lua_tolstring(
@@ -25,6 +26,9 @@ namespace Lua {
 			);
 
 			_str = String(cstr, len);
+			*/
+
+			_str = ToString<String>(state, state.getStackTop());
 
 			state.finishReading();
 		}
