@@ -187,7 +187,7 @@ namespace Lua {
 			bool isTableAtTop = lua_istable(getL(), StackTop);
 
 			// if a value at the top of the stack is a table field
-			// and it int't a nested table, set this value as a table field
+			// and it is not a nested table, set this value as a table field
 
 			if (getTableLevel() > 0 && !isTableAtTop) {
 				setValueAsField();
