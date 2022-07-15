@@ -9,7 +9,7 @@
 #include <deque>
 #include <sstream>
 #include <limits>
-#include <iostream>
+
 extern "C" {
 #include "lualib.h"
 #include "lauxlib.h"
