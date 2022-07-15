@@ -476,12 +476,12 @@ namespace Lua {
 
 		void reportStatus(int status)
 		{
-			// TODO: syntax error
 			switch (status) {
 				case LUA_OK:
 					// success
 				break;
-				case LUA_ERRRUN: {
+				case LUA_ERRRUN:
+				case LUA_ERRSYNTAX: {
 					// the error message is at the stack top
 					std::string err(lua_tostring(getL(), StackTop));
 					// pop the error message
