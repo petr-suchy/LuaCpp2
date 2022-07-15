@@ -8,7 +8,7 @@ static Lua::ReadableParams& operator>> (
 	Lua::WritableParams& oargs
 )
 {
-	// insert an input argument to the top of the stack
+	// insert an input argument to the stack
 	iargs.prepareReading();
 
 	// set the input argument at the top of the stack as an output argument
@@ -19,4 +19,13 @@ static Lua::ReadableParams& operator>> (
 	iargs.finishReading();
 
 	return iargs;
+}
+
+static Lua::WritableParams& operator<< (
+	Lua::WritableParams& oargs,
+	Lua::ReadableParams& iargs
+)
+{
+	iargs >> oargs;
+	return oargs;
 }
