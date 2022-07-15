@@ -16,20 +16,7 @@ namespace Lua {
 		virtual void getFrom(State& state)
 		{
 			state.prepareReading();
-			/*
-			size_t len = 0;
-
-			const char* cstr = lua_tolstring(
-				state.getL(),
-				state.getStackTop(),
-				&len
-			);
-
-			_str = String(cstr, len);
-			*/
-
 			_str = ToString<String>(state, state.getStackTop());
-
 			state.finishReading();
 		}
 

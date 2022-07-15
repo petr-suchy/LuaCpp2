@@ -1,6 +1,7 @@
 #pragma once
 
 #include "ReadableValue.h"
+#include "ToString.h"
 
 namespace Lua {
 
@@ -14,17 +15,12 @@ namespace Lua {
 
 		virtual void getFrom(State& state)
 		{
-			state.prepareReading(LUA_TSTRING);
+			state.prepareReading();
 
-			size_t len = 0;
-
-			const char* cstr = lua_tolstring(
-				state.getL(),
-				state.getStackTop(),
-				&len
+			auto utf8Str = ToString<std::string>(
+				state,
+				state.getStackTop()
 			);
-
-			std::string utf8Str(cstr, len);
 
 			_str = Convert().from_bytes(utf8Str);
 
