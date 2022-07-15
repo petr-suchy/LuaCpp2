@@ -9,7 +9,7 @@
 #include <deque>
 #include <sstream>
 #include <limits>
-
+#include <iostream>
 extern "C" {
 #include "lualib.h"
 #include "lauxlib.h"
@@ -188,7 +188,10 @@ namespace Lua {
 
 		void prepareWriting()
 		{
-			// TODO: checkstack
+			// ensures that there are at least LUA_MINSTACK free stack slots in the stack.
+			if (!lua_checkstack(getL(), LUA_MINSTACK)) {
+				throw std::runtime_error("not enought memory");
+			}
 		}
 
 		// this function must always be called after inserting a value into the stack
