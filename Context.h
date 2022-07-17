@@ -96,6 +96,13 @@ namespace Lua {
 			return args().out();
 		}
 
+		template<typename T, typename... Args>
+		ReadableParams pcall(const std::string& funcName, T arg, Args... args)
+		{
+			args().in() << arg;
+			return pcall(funcName, args...);
+		}
+
 		ReadableParams pcall(AbstractFunction& func)
 		{
 			prepareCalling();
@@ -103,6 +110,13 @@ namespace Lua {
 			finishCalling();
 
 			return args().out();
+		}
+
+		template<typename T, typename... Args>
+		ReadableParams pcall(AbstractFunction& func, T arg, Args... args)
+		{
+			args().in() << arg;
+			return pcall(func, args...);
 		}
 
 		template<typename InputStream>
