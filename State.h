@@ -9,6 +9,7 @@
 #include <deque>
 #include <sstream>
 #include <limits>
+#include <type_traits>
 
 extern "C" {
 #include "lualib.h"

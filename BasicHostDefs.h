@@ -8,6 +8,7 @@
 #include "PointerParam.h"
 #include "FuncParam.h"
 #include "StructParam.h"
+#include "EnumParam.h"
 
 #include <codecvt>
 
