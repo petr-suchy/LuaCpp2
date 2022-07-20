@@ -7,7 +7,7 @@
 // enum arguments
 
 #define defhost_enum(TYPE) \
-Lua::ReadableParams& operator>> ( \
+static Lua::ReadableParams& operator>> ( \
 	Lua::ReadableParams& args, \
 	TYPE& e \
 ) \
