@@ -369,6 +369,22 @@ namespace Lua {
 			reportStatus(status);
 		}
 
+		void dumpChunk(
+			lua_Writer writerCb,
+			void* writer,
+			bool strip = false
+		)
+		{
+			int status = lua_dump(
+				getL(),
+				writerCb,
+				writer,
+				strip
+			);
+
+			reportStatus(status);
+		}
+
 		void pcall(
 			int nargs = 0,
 			int nresults = LUA_MULTRET,
