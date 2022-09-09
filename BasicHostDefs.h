@@ -1,5 +1,8 @@
 #pragma once
 
+#include "ReadableChunk.h"
+#include "WritableChunk.h"
+
 #include "Param.h"
 #include "ForwardParam.h"
 #include "ReferenceParam.h"
