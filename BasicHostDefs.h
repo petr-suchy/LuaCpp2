@@ -2,6 +2,7 @@
 
 #include "ReadableChunk.h"
 #include "WritableChunk.h"
+#include "ValueCopy.h"
 
 #include "Param.h"
 #include "ForwardParam.h"
