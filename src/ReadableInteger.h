@@ -1,6 +1,7 @@
 #pragma once
 
 #include "ReadableValue.h"
+#include "ReadableStackSlot.h"
 
 namespace Lua {
 
@@ -16,30 +17,28 @@ namespace Lua {
 
 		virtual void getFrom(State& state)
 		{
-			state.prepareReading(LUA_TNUMBER);
+			ReadableStackSlot slot(state);
 
-			lua_Integer num = lua_tointeger(
-				state.getL(),
-				state.getStackTop()
-			);
+			slot.prepare(LUA_TNUMBER);
+
+			auto num = slot.getInteger();
 
 			if (num < (HostLimits::min)()) {
 				state.pop();
 				throw std::overflow_error(
-					"value exceeds host minimum"
+					"integer value exceeds host minimum"
 				);
 			}
 
 			if (num > (HostLimits::max)()) {
 				state.pop();
 				throw std::overflow_error(
-					"value exceeds host maximum"
+					"integer value exceeds host maximum"
 				);
 			}
 
 			_num = (T) num;
-
-			state.finishReading();
+			slot.finish();
 		}
 
 	private:

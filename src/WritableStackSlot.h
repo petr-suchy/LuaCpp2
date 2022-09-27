@@ -77,13 +77,19 @@ namespace Lua {
 			_finished = true;
 		}
 
-		// insert a number to the stack
+		// inserts a numeric value to the stack
 		void insertNumber(lua_Number num)
 		{
 			lua_pushnumber(state().getL(), num);
 		}
 
-		// insert a new table to the stack
+		// inserts a integer value to the stack
+		void insertInteger(lua_Integer num)
+		{
+			lua_pushinteger(state().getL(), num);
+		}
+
+		// inserts a new table to the stack
 		StackSlot& insertTable()
 		{
 			lua_createtable(state().getL(), 0, 0);

@@ -87,6 +87,15 @@ namespace Lua {
 			);
 		}
 
+		// gets a integer value from the stack
+		lua_Integer getInteger()
+		{
+			return lua_tointeger(
+				state().getL(),
+				state().getStackTop()
+			);
+		}
+
 		// gets a table from the stack
 		StackSlot& getTable()
 		{
