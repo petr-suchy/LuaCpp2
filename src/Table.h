@@ -49,3 +49,5 @@ namespace Lua {
 	};
 
 }
+
+#include "X_Table.h"
