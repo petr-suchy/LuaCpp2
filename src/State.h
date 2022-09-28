@@ -32,8 +32,8 @@ namespace Lua {
 			_autoClose(false),
 			_keysPtr(nullptr),
 			_tableLevel(0),
-			_noRemoval(false),
-			_numOfUpValues(0)
+			_closureLevel(0),
+			_noRemoval(false)
 		{}
 
 		~State()
@@ -65,9 +65,7 @@ namespace Lua {
 
 		void swapKeys(Keys** keysPtr)
 		{
-			Keys* temp = _keysPtr;
-			_keysPtr = *keysPtr;
-			*keysPtr = temp;
+			std::swap(_keysPtr, *keysPtr);
 		}
 
 		int getTableLevel()
@@ -87,33 +85,19 @@ namespace Lua {
 
 		int getClosureLevel()
 		{
-			return (int) _closureLevels.size();
+			return _closureLevel;
 		}
 
-		int getNumOfUpValues()
+		void enterClosure(int& tableLevel)
 		{
-			return _numOfUpValues;
+			_closureLevel++;
+			std::swap(_tableLevel, tableLevel);
 		}
 
-		void enterClosure()
+		void leaveClosure(int& tableLevel)
 		{
-			_closureLevels.push_back(
-				ClosureLevel{
-					getStackTop(),
-					_tableLevel
-				}
-			);
-
-			_tableLevel = 0;
-		}
-
-		void leaveClosure()
-		{
-			ClosureLevel currLevel = _closureLevels.back();
-			_closureLevels.pop_back();
-
-			_numOfUpValues = getStackTop() - currLevel.stackTop;
-			_tableLevel = currLevel.tableLevel;
+			std::swap(_tableLevel, tableLevel);
+			_closureLevel--;
 		}
 
 		void noRemoval()
@@ -470,18 +454,12 @@ namespace Lua {
 
 	private:
 
-		struct ClosureLevel {
-			int stackTop;
-			int tableLevel;
-		};
-
 		lua_State* _L;
 		bool _autoClose;
 		Keys* _keysPtr;
 		int _tableLevel;
+		int _closureLevel;
 		bool _noRemoval;
-		std::deque<ClosureLevel> _closureLevels;
-		int _numOfUpValues;
 
 		void reportStatus(int status)
 		{

@@ -47,9 +47,7 @@ namespace Lua {
 		// inserts the function to the stack
 		virtual void insertTo(State& state)
 		{
-			state.prepareWriting();
 			_impl->insertTo(state);
-			state.finishWriting();
 		}
 
 	private:

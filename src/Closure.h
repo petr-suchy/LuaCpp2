@@ -1,46 +1,50 @@
 #pragma once
 
-#include "WritableValue.h"
+#include "WritableStackSlot.h"
 
 namespace Lua {
 
-	class Closure : public WritableValue {
+	class Closure {
 	public:
 
-		Closure()
-		{}
-
-		class End : public WritableValue {
-		public:
-
-			End(lua_CFunction func) :
-				_func(func)
-			{}
-
-			virtual void insertTo(State& state)
-			{
-				state.leaveClosure();
-
-				lua_pushcclosure(
-					state.getL(),
-					_func,
-					state.getNumOfUpValues()
-				);
-
-				state.finishWriting();
-			}
-
-		private:
-
-			lua_CFunction _func;
-
-		};
-
-		virtual void insertTo(State& state)
+		Closure(WritableStackSlot& slot, lua_CFunction func) :
+			_slot(slot),
+			_func(func),
+			_top(slot.state().getStackTop()),
+			_tableLevel(0),
+			_inserted(false)
 		{
-			state.prepareWriting();
-			state.enterClosure();
+			_slot.state().enterClosure(_tableLevel);
 		}
+
+		~Closure()
+		{
+			_slot.state().setStackTop(_top);
+			_slot.state().leaveClosure(_tableLevel);
+		}
+
+		State& upValues()
+		{
+			return _slot.state();
+		}
+
+		void insert()
+		{
+			if (!_inserted) {
+				int numOfUpValues = _slot.state().getStackTop() - _top;
+				_slot.insertClosure(_func, numOfUpValues);
+				_top = _slot.state().getStackTop();
+				_inserted = true;
+			}
+		}
+
+	private:
+
+		WritableStackSlot& _slot;
+		lua_CFunction _func;
+		int _top;
+		int _tableLevel;
+		bool _inserted;
 
 	};
 

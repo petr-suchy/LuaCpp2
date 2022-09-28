@@ -89,6 +89,16 @@ namespace Lua {
 			lua_pushinteger(state().getL(), num);
 		}
 
+		// inserts a closure to the stack
+		void insertClosure(lua_CFunction func, int numOfUpValues)
+		{
+			lua_pushcclosure(
+				state().getL(),
+				func,
+				numOfUpValues
+			);
+		}
+
 		// inserts a new table to the stack
 		StackSlot& insertTable()
 		{

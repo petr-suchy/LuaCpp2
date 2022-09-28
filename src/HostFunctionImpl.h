@@ -21,9 +21,16 @@ namespace Lua {
 		// inserts the host function to the stack
 		void insertTo(State& state)
 		{
-			state << Lua::Closure()
-				<< _funcPtr
-			<< Lua::Closure::End(callFunc);
+			Lua::WritableStackSlot slot(state);
+
+			slot.prepare();
+			{
+				Lua::Closure closure(slot, callFunc);
+
+				closure.upValues() << _funcPtr;
+				closure.insert();
+			}
+			slot.finish();
 		}
 
 	private:
