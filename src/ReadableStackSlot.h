@@ -78,6 +78,15 @@ namespace Lua {
 			_keep = true;
 		}
 
+		// gets a boolean value from the stack
+		int getBoolean()
+		{
+			return lua_toboolean(
+				state().getL(),
+				state().getStackTop()
+			);
+		}
+
 		// gets a numeric value from the stack
 		lua_Number getNumber()
 		{

@@ -77,6 +77,12 @@ namespace Lua {
 			_finished = true;
 		}
 
+		// inserts a boolean value to the stack
+		void insertBoolean(int boolVal)
+		{
+			lua_pushboolean(state().getL(), boolVal);
+		}
+
 		// inserts a numeric value to the stack
 		void insertNumber(lua_Number num)
 		{

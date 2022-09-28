@@ -1,6 +1,7 @@
 #pragma once
 
 #include "WritableValue.h"
+#include "WritableStackSlot.h"
 
 namespace Lua {
 
@@ -13,9 +14,11 @@ namespace Lua {
 
 		virtual void insertTo(State& state)
 		{
-			state.prepareWriting();
-			lua_pushboolean(state.getL(), _val);
-			state.finishWriting();
+			WritableStackSlot slot(state);
+			
+			slot.prepare();
+			slot.insertBoolean(_val ? 1 : 0);
+			slot.finish();
 		}
 
 	private:

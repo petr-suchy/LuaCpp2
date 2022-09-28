@@ -1,6 +1,7 @@
 #pragma once
 
 #include "ReadableValue.h"
+#include "ReadableStackSlot.h"
 
 namespace Lua {
 
@@ -13,9 +14,11 @@ namespace Lua {
 
 		virtual void getFrom(State& state)
 		{
-			state.prepareReading(LUA_TBOOLEAN);
-			_val = lua_toboolean(state.getL(), state.getStackTop()) != 0;
-			state.finishReading();
+			ReadableStackSlot slot(state);
+
+			slot.prepare(LUA_TBOOLEAN);
+			_val = (slot.getBoolean() != 0);
+			slot.finish();
 		}
 
 	private:
