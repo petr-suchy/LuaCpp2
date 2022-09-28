@@ -17,10 +17,15 @@ static Lua::ReadableParams& operator>> ( \
 ) \
 { \
 	args.prepareReading(); \
+	{ \
+		Lua::ReadableStackSlot slot(args.state()); \
 \
-	args.state() >> Lua::Table() \
-		>> Lua::Table::End(); \
-\
+		slot.prepare(LUA_TTABLE); \
+		{ \
+			Lua::Table tbl(slot.getTable()); \
+		} \
+		slot.finish(); \
+	} \
 	args.finishReading(); \
 \
 	return args; \
@@ -40,23 +45,37 @@ static Lua::WritableParams& operator<< ( \
 ) \
 { \
 	args.prepareWriting(); \
-	args.state() << Lua::Table() \
+	{ \
+		Lua::WritableStackSlot slot(args.state()); \
 \
-		<< Lua::Field("__index") << Lua::Table() \
-			<< Lua::Members(#__VA_ARGS__); \
-			args << __VA_ARGS__; \
-		args.state() << Lua::Table::End(); \
+		slot.prepare(); \
+		{ \
+			Lua::Table tbl(slot.insertTable()); \
 \
-		args.state() << Lua::Field("__newindex") \
-		<< Lua::Function( \
-			[] (Lua::State&) \
+			tbl.state() << Lua::Field("__index"); \
 			{ \
-				throw std::logic_error("attempt to change a read-only object"); \
-				return 0; \
-			} \
-		); \
+				Lua::WritableStackSlot slot2(tbl.state()); \
 \
-	args.state() << Lua::Table::End(); \
+				slot2.prepare(); \
+				{ \
+					Lua::Table tbl2(slot2.insertTable()); \
+					tbl2.state() << Lua::Members(#__VA_ARGS__); \
+					args << __VA_ARGS__; \
+				} \
+				slot2.finish(); \
+			} \
+			\
+			tbl.state() << Lua::Field("__newindex") \
+			<< Lua::Function( \
+				[] (Lua::State&) \
+				{ \
+					throw std::logic_error("attempt to change a read-only object"); \
+					return 0; \
+				} \
+			); \
+		} \
+		slot.finish(); \
+	} \
 	args.finishWriting(); \
 \
 	return args; \

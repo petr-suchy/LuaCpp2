@@ -17,14 +17,17 @@ static Lua::ReadableParams& operator>> ( \
 ) \
 { \
 	args.prepareReading(); \
+	{ \
+		Lua::ReadableStackSlot slot(args.state()); \
 \
-	args.state() >> Lua::Table() \
-		>> Lua::Members(#__VA_ARGS__); \
-\
-		args >> __VA_ARGS__; \
-\
-	args.state() >> Lua::Table::End(); \
-\
+		slot.prepare(LUA_TTABLE); \
+		{ \
+			Lua::Table tbl(slot.getTable()); \
+			tbl.state() >> Lua::Members(#__VA_ARGS__); \
+			args >> __VA_ARGS__; \
+		} \
+		slot.finish(); \
+	} \
 	args.finishReading(); \
 \
 	return args; \
@@ -45,14 +48,17 @@ static Lua::WritableParams& operator<< ( \
 ) \
 { \
 	args.prepareWriting(); \
+	{ \
+		Lua::WritableStackSlot slot(args.state()); \
 \
-	args.state() << Lua::Table() \
-		<< Lua::Members(#__VA_ARGS__); \
-\
-		args << __VA_ARGS__; \
-\
-	args.state() << Lua::Table::End(); \
-\
+		slot.prepare(); \
+		{ \
+			Lua::Table tbl(slot.insertTable()); \
+			tbl.state() << Lua::Members(#__VA_ARGS__); \
+			args << __VA_ARGS__; \
+		} \
+		slot.finish(); \
+	} \
 	args.finishWriting(); \
 \
 	return args; \

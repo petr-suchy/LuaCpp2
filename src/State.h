@@ -16,27 +16,9 @@ extern "C" {
 #include "lauxlib.h"
 }
 
+#include "TypeToName.h"
+
 namespace Lua {
-
-	static std::string TypeToName(int type)
-	{
-		std::string name;
-
-		switch (type) {
-			case LUA_TNIL: name = "nil"; break;
-			case LUA_TBOOLEAN: name = "boolean"; break;
-			case LUA_TLIGHTUSERDATA: name = "lightuserdata"; break;
-			case LUA_TNUMBER: name = "number"; break;
-			case LUA_TSTRING: name = "string"; break;
-			case LUA_TTABLE: name = "table"; break;
-			case LUA_TFUNCTION: name = "function"; break;
-			case LUA_TUSERDATA: name = "userdata"; break;
-			case LUA_TTHREAD: name = "thread"; break;
-			default: name = "unknown"; break;
-		}
-
-		return name;
-	}
 
 	class State {
 	public:
@@ -48,6 +30,7 @@ namespace Lua {
 		State(lua_State* L = nullptr) :
 			_L(L),
 			_autoClose(false),
+			_keysPtr(nullptr),
 			_tableLevel(0),
 			_noRemoval(false),
 			_numOfUpValues(0)
@@ -73,7 +56,18 @@ namespace Lua {
 
 		Keys& keys()
 		{
-			return _keys;
+			if (!_keysPtr) {
+				throw std::logic_error("table keys are not set");
+			}
+
+			return *_keysPtr;
+		}
+
+		void swapKeys(Keys** keysPtr)
+		{
+			Keys* temp = _keysPtr;
+			_keysPtr = *keysPtr;
+			*keysPtr = temp;
 		}
 
 		int getTableLevel()
@@ -198,12 +192,10 @@ namespace Lua {
 		// this function must always be called after inserting a value into the stack
 		void finishWriting()
 		{
-			bool isTableAtTop = lua_istable(getL(), StackTop);
+			// if a value at the top of the stack is a table field,
+			// set this value as a table field
 
-			// if a value at the top of the stack is a table field
-			// and it is not a nested table, set this value as a table field
-
-			if (getTableLevel() > 0 && !isTableAtTop) {
+			if (getTableLevel() > 0) {
 				setValueAsField();
 			}
 
@@ -292,7 +284,7 @@ namespace Lua {
 
 			std::string currKey = keys().front();
 			bool isMetamethod = currKey[0] == '_';
-
+			
 			if (isMetamethod) {
 
 				// insert a value metatable at top of the stack
@@ -485,7 +477,7 @@ namespace Lua {
 
 		lua_State* _L;
 		bool _autoClose;
-		Keys _keys;
+		Keys* _keysPtr;
 		int _tableLevel;
 		bool _noRemoval;
 		std::deque<ClosureLevel> _closureLevels;

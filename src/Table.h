@@ -1,53 +1,37 @@
 #pragma once
 
-#include "ReadableValue.h"
-#include "WritableValue.h"
+#include "StackSlot.h"
 
 namespace Lua {
 
-	class Table : public ReadableValue, public WritableValue {
+	class Table {
 	public:
 
-		class End : public ReadableValue, public WritableValue {
-		public:
-
-			virtual void getFrom(State& state)
-			{
-				state.leaveTable();
-				state.finishReading();
-			}
-
-			virtual void insertTo(State& state)
-			{
-				state.leaveTable();
-
-				// nested table is set as a field of its parent table
-
-				if (state.getTableLevel() > 0) {
-					state.setValueAsField();
-				}
-
-				// the top table is leaved in the stack
-			}
-
-		};
-
-		virtual void getFrom(State& state)
+		Table(StackSlot& slot) :
+			_state(slot.state()),
+			_keysPtr(&_keys)
 		{
-			state.prepareReading(LUA_TTABLE);
-			state.enterTable();
+			_state.enterTable();
+			_state.swapKeys(&_keysPtr);
 		}
 
-		virtual void insertTo(State& state)
+		~Table()
 		{
-			state.prepareWriting();
-			state.enterTable();
-
-			lua_createtable(state.getL(), 0, 0);
+			_state.swapKeys(&_keysPtr);
+			_state.leaveTable();
 		}
+
+		State& state()
+		{
+			return _state;
+		}
+
+	private:
+
+		State& _state;
+		State::Keys _keys;
+		State::Keys* _keysPtr;
 
 	};
 
 }
-
-#include "X_Table.h"
