@@ -48,9 +48,11 @@ namespace Lua {
 				);
 			}
 
-			state.prepareWriting();
-			lua_pushinteger(state.getL(), (lua_Integer) _num);
-			state.finishWriting();
+			WritableStackSlot slot(state);
+
+			slot.prepare();
+			slot.insertInteger((lua_Integer) _num);
+			slot.finish();
 		}
 
 	private:

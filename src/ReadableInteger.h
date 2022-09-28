@@ -20,7 +20,6 @@ namespace Lua {
 			ReadableStackSlot slot(state);
 
 			slot.prepare(LUA_TNUMBER);
-
 			auto num = slot.getInteger();
 
 			if (num < (HostLimits::min)()) {
@@ -59,12 +58,10 @@ namespace Lua {
 
 		virtual void getFrom(State& state)
 		{
-			state.prepareReading(LUA_TNUMBER);
+			ReadableStackSlot slot(state);
 
-			lua_Integer num = lua_tointeger(
-				state.getL(),
-				state.getStackTop()
-			);
+			slot.prepare(LUA_TNUMBER);
+			auto num = slot.getInteger();
 
 			if (num < 0) {
 				state.pop();
@@ -81,8 +78,7 @@ namespace Lua {
 			}
 
 			_num = (T) num;
-
-			state.finishReading();
+			slot.finish();
 		}
 
 	private:
