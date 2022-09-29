@@ -4,6 +4,7 @@
 #include "NullFunctionImpl.h"
 #include "HostFunctionImpl.h"
 #include "EngineFunctionImpl.h"
+#include "ReadableStackSlot.h"
 
 namespace Lua {
 
@@ -27,7 +28,10 @@ namespace Lua {
 		// gets the function from the stack
 		virtual void getFrom(State& state)
 		{
-			state.prepareReading(LUA_TFUNCTION);
+			ReadableStackSlot slot(state);
+
+			slot.prepare(LUA_TFUNCTION);
+			slot.state().noRemoval();
 
 			// pops the function from the stack, stores it into
 			// the registry with a fresh integer key, and returns
@@ -40,8 +44,7 @@ namespace Lua {
 
 			_impl = std::make_shared<EngineFunctionImpl>(state, ref);
 
-			state.noRemoval();
-			state.finishReading();
+			slot.finish();
 		}
 
 		// inserts the function to the stack

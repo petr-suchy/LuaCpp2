@@ -2,6 +2,7 @@
 
 #include "ReadableValue.h"
 #include "WritableValue.h"
+#include "ReadableStackSlot.h"
 
 namespace Lua {
 
@@ -19,7 +20,10 @@ namespace Lua {
 
 		virtual void getFrom(State& state)
 		{
-			state.prepareReading();
+			ReadableStackSlot slot(state);
+
+			slot.prepare();
+			slot.state().noRemoval();
 
 			// pops a value from the stack, stores it into
 			// the registry with a fresh integer key, and returns
@@ -28,8 +32,11 @@ namespace Lua {
 
 			_ref = std::make_shared<Ref>(state.getL(), ref);
 
-			state.noRemoval();
-			state.finishReading();
+			if (ref == LUA_REFNIL) {
+				throw std::runtime_error("nil reference returned");
+			}
+
+			slot.finish();
 		}
 
 		virtual void insertTo(State& state)
