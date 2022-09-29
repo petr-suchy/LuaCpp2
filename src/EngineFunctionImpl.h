@@ -1,6 +1,7 @@
 #pragma once
 
 #include "FunctionImpl.h"
+#include "WritableStackSlot.h"
 
 namespace Lua {
 
@@ -26,9 +27,14 @@ namespace Lua {
 			if (state.getL() != _L) {
 				throw std::logic_error("invalid function reference");
 			}
+
+			WritableStackSlot slot(state);
+
+			slot.prepare();
 			// pushes the function associated with the reference
 			// onto the stack
 			lua_rawgeti(state.getL(), LUA_REGISTRYINDEX, _ref);
+			slot.finish();
 		}
 
 	private:

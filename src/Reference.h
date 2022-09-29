@@ -3,6 +3,7 @@
 #include "ReadableValue.h"
 #include "WritableValue.h"
 #include "ReadableStackSlot.h"
+#include "WritableStackSlot.h"
 
 namespace Lua {
 
@@ -45,9 +46,13 @@ namespace Lua {
 				throw std::logic_error("invalid reference");
 			}
 
+			WritableStackSlot slot(state);
+
+			slot.prepare();
 			// pushes a value associated with the reference
 			// onto the stack
 			lua_rawgeti(state.getL(), LUA_REGISTRYINDEX, _ref->get());
+			slot.finish();
 		}
 
 	private:
