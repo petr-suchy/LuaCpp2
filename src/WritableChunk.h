@@ -24,8 +24,9 @@ namespace Lua {
 		virtual void insertTo(State& state)
 		{
 			StreamReader<InputStream> reader(_is);
-
-			state.prepareWriting();
+			WritableStackSlot slot(state);
+			
+			slot.prepare();
 
 			state.loadChunk(
 				&StreamReader<InputStream>::cb,
@@ -34,7 +35,7 @@ namespace Lua {
 				_mode
 			);
 
-			state.finishWriting();
+			slot.finish();
 		}
 
 	private:

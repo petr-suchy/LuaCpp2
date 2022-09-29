@@ -17,8 +17,9 @@ namespace Lua {
 		virtual void getFrom(State& state)
 		{
 			StreamWriter<OutputStream> writer(_os);
+			ReadableStackSlot slot(state);
 
-			state.prepareReading(LUA_TFUNCTION);
+			slot.prepare(LUA_TFUNCTION);
 
 			state.dumpChunk(
 				&StreamWriter<OutputStream>::cb,
@@ -26,9 +27,8 @@ namespace Lua {
 				_strip
 			);
 
+			slot.finish();
 			_os.flush();
-
-			state.finishReading();
 		}
 
 	private:
