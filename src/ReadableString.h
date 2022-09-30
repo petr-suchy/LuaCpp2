@@ -1,6 +1,7 @@
 #pragma once
 
 #include "ReadableValue.h"
+#include "ReadableStackSlot.h"
 #include "ToString.h"
 
 namespace Lua {
@@ -15,9 +16,11 @@ namespace Lua {
 
 		virtual void getFrom(State& state)
 		{
-			state.prepareReading();
-			_str = ToString<String>(state, state.getStackTop());
-			state.finishReading();
+			ReadableStackSlot slot(state);
+
+			slot.prepare();
+			_str = slot.getString<String>();
+			slot.finish();
 		}
 
 	private:

@@ -112,6 +112,13 @@ namespace Lua {
 			return *this;
 		}
 
+		template<typename String>
+		const String& insertString(const String& str)
+		{
+			lua_pushlstring(state().getL(), str.c_str(), str.length());
+			return str;
+		}
+
 	private:
 
 		// flag to keep item on the stack after being written

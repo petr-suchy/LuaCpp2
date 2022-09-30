@@ -111,6 +111,12 @@ namespace Lua {
 			return *this;
 		}
 
+		template<typename String>
+		String getString()
+		{
+			return ToString<String>(state(), state().getStackTop());
+		}
+
 	private:
 
 		// flag to keep item on the stack after being read
