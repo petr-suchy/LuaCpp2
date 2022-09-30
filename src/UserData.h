@@ -2,6 +2,8 @@
 
 #include "ReadableValue.h"
 #include "WritableValue.h"
+#include "ReadableStackSlot.h"
+#include "WritableStackSlot.h"
 
 namespace Lua {
 
@@ -30,64 +32,44 @@ namespace Lua {
 		// gets the userdata from the top of the stack
 		virtual void getFrom(State& state)
 		{
-			state.prepareReading(LUA_TUSERDATA);
+			ReadableStackSlot slot(state);
 
-			void* rawUserDataPtr2Ptr = lua_touserdata(
-				state.getL(),
-				state.getStackTop()
-			);
+			slot.prepare(LUA_TUSERDATA);
 
-			Type** userDataPtr2Ptr = reinterpret_cast<Type**>(rawUserDataPtr2Ptr);
+			auto dataPtr = slot.getUserData<Type>();
 
 			if (_release) {
 				delete _dataPtr;
 				_release = false;
 			}
 
-			_dataPtr = *userDataPtr2Ptr;
-
-			state.finishReading();
+			_dataPtr = dataPtr;
+			slot.finish();
 		}
 
 		// inserts the userdata at the top of the stack
 		virtual void insertTo(State& state)
 		{
-			state.prepareWriting();
+			if (!_dataPtr) {
+				throw std::logic_error("wrapped type pointer is null");
+			}
 
-			insertToStack(state);
-			setReleaseFunc(state, UserData<Type>::gc);
+			WritableStackSlot slot(state);
+			
+			slot.prepare();
 
-			state.finishWriting();
+			slot.insertUserData(_dataPtr);
+			_release = false;
+
+			setReleaseFunc(slot.state(), UserData<Type>::gc);
+
+			slot.finish();
 		}
 
 	private:
 
 		Type* _dataPtr; // holds a pointer to the wrapped type
 		bool _release;
-
-		// create a userdata for the wrapped type pointer
-		// and insert it at the top of the stack
-		void insertToStack(State& state)
-		{
-			if (!_dataPtr) {
-				throw std::logic_error("wrapped type pointer is null");
-			}
-
-			// allocate a userdata pointer to the wrapped type pointer
-			// and insert it at the top of the stack as userdata
-			Type** userDataPtr2Ptr =  reinterpret_cast<Type**>(
-				lua_newuserdata(state.getL(), sizeof(Type*))
-			);
-
-			if (!userDataPtr2Ptr) {
-				throw std::runtime_error("not enough memory");
-			}
-
-			// set the userdata pointer to the wrapped type pointer
-			*userDataPtr2Ptr = _dataPtr;
-			_release = false;
-
-		}
 
 		// sets the garbage collector method for the userdata
 		// at the top of the stack

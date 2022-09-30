@@ -111,10 +111,23 @@ namespace Lua {
 			return *this;
 		}
 
+		// gets a string from the stack
 		template<typename String>
 		String getString()
 		{
 			return ToString<String>(state(), state().getStackTop());
+		}
+
+		// gets a userdata type from the stack
+		template<typename Type>
+		Type* getUserData()
+		{
+			void* rawUserDataPtr2Ptr = lua_touserdata(
+				state().getL(),
+				state().getStackTop()
+			);
+
+			return *reinterpret_cast<Type**>(rawUserDataPtr2Ptr);
 		}
 
 	private:

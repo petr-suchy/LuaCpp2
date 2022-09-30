@@ -112,11 +112,29 @@ namespace Lua {
 			return *this;
 		}
 
+		// inserts a string to the stack
 		template<typename String>
-		const String& insertString(const String& str)
+		void insertString(const String& str)
 		{
 			lua_pushlstring(state().getL(), str.c_str(), str.length());
-			return str;
+		}
+
+		// inserts a userdata type to the stack
+		template<typename Type>
+		void insertUserData(Type* ptr)
+		{
+			// allocate a userdata pointer to the wrapped type pointer
+			// and insert it at the top of the stack as userdata
+			Type** userDataPtr2Ptr =  reinterpret_cast<Type**>(
+				lua_newuserdata(state().getL(), sizeof(Type*))
+			);
+
+			if (!userDataPtr2Ptr) {
+				throw std::runtime_error("not enough memory");
+			}
+
+			// set the userdata pointer to the wrapped type pointer
+			*userDataPtr2Ptr = ptr;
 		}
 
 	private:
