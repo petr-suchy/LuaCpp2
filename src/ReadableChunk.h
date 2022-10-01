@@ -1,6 +1,7 @@
 #pragma once
 
 #include "ReadableValue.h"
+#include "ReadableStackSlot.h"
 #include "StreamWriter.h"
 
 namespace Lua {

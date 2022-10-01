@@ -3,6 +3,7 @@
 #include <string>
 
 #include "WritableValue.h"
+#include "WritableStackSlot.h"
 #include "StreamReader.h"
 
 namespace Lua {
