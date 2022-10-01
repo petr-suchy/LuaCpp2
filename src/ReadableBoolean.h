@@ -17,7 +17,7 @@ namespace Lua {
 			ReadableStackSlot slot(state);
 
 			slot.prepare(LUA_TBOOLEAN);
-			_val = (slot.getBoolean() != 0);
+			_val = slot.getBoolean();
 			slot.finish();
 		}
 

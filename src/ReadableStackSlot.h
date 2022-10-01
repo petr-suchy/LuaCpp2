@@ -1,6 +1,7 @@
 #pragma once
 
 #include "StackSlot.h"
+#include "ToString.h"
 
 namespace Lua {
 
@@ -78,12 +79,14 @@ namespace Lua {
 		}
 
 		// gets a boolean value from the stack
-		int getBoolean()
+		bool getBoolean()
 		{
-			return lua_toboolean(
+			int val = lua_toboolean(
 				state().getL(),
 				state().getStackTop()
 			);
+
+			return val != 0;
 		}
 
 		// gets a numeric value from the stack

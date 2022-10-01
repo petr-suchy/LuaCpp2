@@ -78,7 +78,7 @@ namespace Lua {
 		}
 
 		// inserts a boolean value to the stack
-		void insertBoolean(int boolVal)
+		void insertBoolean(bool boolVal)
 		{
 			lua_pushboolean(state().getL(), boolVal);
 		}

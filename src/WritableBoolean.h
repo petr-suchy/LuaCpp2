@@ -17,7 +17,7 @@ namespace Lua {
 			WritableStackSlot slot(state);
 			
 			slot.prepare();
-			slot.insertBoolean(_val ? 1 : 0);
+			slot.insertBoolean(_val);
 			slot.finish();
 		}
 
