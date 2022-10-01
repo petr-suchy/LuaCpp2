@@ -24,18 +24,14 @@ namespace Lua {
 			ReadableStackSlot slot(state);
 
 			slot.prepare();
-			slot.state().noRemoval();
 
-			// pops a value from the stack, stores it into
-			// the registry with a fresh integer key, and returns
-			// that key as "reference"
-			int ref = luaL_ref(state.getL(), LUA_REGISTRYINDEX);
-
-			_ref = std::make_shared<Ref>(state.getL(), ref);
+			int ref = slot.getReference();
 
 			if (ref == LUA_REFNIL) {
 				throw std::runtime_error("nil reference returned");
 			}
+
+			_ref = std::make_shared<Ref>(state.getL(), ref);
 
 			slot.finish();
 		}
@@ -49,9 +45,7 @@ namespace Lua {
 			WritableStackSlot slot(state);
 
 			slot.prepare();
-			// pushes a value associated with the reference
-			// onto the stack
-			lua_rawgeti(state.getL(), LUA_REGISTRYINDEX, _ref->get());
+			slot.insertReference(_ref->get());
 			slot.finish();
 		}
 

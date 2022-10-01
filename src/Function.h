@@ -31,12 +31,8 @@ namespace Lua {
 			ReadableStackSlot slot(state);
 
 			slot.prepare(LUA_TFUNCTION);
-			slot.state().noRemoval();
 
-			// pops the function from the stack, stores it into
-			// the registry with a fresh integer key, and returns
-			// that key as "reference"
-			int ref = luaL_ref(state.getL(), LUA_REGISTRYINDEX);
+			int ref = slot.getReference();
 
 			if (ref == LUA_REFNIL) {
 				throw std::runtime_error("nil reference returned");

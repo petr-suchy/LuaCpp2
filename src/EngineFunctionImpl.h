@@ -31,9 +31,7 @@ namespace Lua {
 			WritableStackSlot slot(state);
 
 			slot.prepare();
-			// pushes the function associated with the reference
-			// onto the stack
-			lua_rawgeti(state.getL(), LUA_REGISTRYINDEX, _ref);
+			slot.insertReference(_ref);
 			slot.finish();
 		}
 

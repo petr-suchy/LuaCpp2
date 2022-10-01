@@ -74,7 +74,6 @@ namespace Lua {
 		// causes item to remain on the stack after being read
 		void keep()
 		{
-			state().noRemoval();
 			_keep = true;
 		}
 
@@ -105,12 +104,6 @@ namespace Lua {
 			);
 		}
 
-		// gets a table from the stack
-		StackSlot& getTable()
-		{
-			return *this;
-		}
-
 		// gets a string from the stack
 		template<typename String>
 		String getString()
@@ -128,6 +121,21 @@ namespace Lua {
 			);
 
 			return *reinterpret_cast<Type**>(rawUserDataPtr2Ptr);
+		}
+
+		// gets a reference to the item on the stack
+		int getReference()
+		{
+			// pops a value from the stack, stores it into
+			// the registry with a fresh integer key, and returns
+			// that key as "reference"
+			return luaL_ref(state().getL(), LUA_REGISTRYINDEX);
+		}
+
+		// gets a table from the stack
+		StackSlot& getTable()
+		{
+			return *this;
 		}
 
 	private:

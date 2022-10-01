@@ -100,11 +100,6 @@ namespace Lua {
 			_closureLevel--;
 		}
 
-		void noRemoval()
-		{
-			_noRemoval = true;
-		}
-
 		bool isReadyForReadingParam()
 		{
 			return getTableLevel() == 0 && getClosureLevel() == 0;
@@ -152,12 +147,7 @@ namespace Lua {
 
 		void finishReading()
 		{
-			if (_noRemoval) {
-				_noRemoval = false;
-			}
-			else {
-				pop();
-			}
+			// there is nothing to do here
 		}
 
 		bool isReadyForWritingParam()

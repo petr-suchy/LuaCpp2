@@ -105,13 +105,6 @@ namespace Lua {
 			);
 		}
 
-		// inserts a new table to the stack
-		StackSlot& insertTable()
-		{
-			lua_createtable(state().getL(), 0, 0);
-			return *this;
-		}
-
 		// inserts a string to the stack
 		template<typename String>
 		void insertString(const String& str)
@@ -135,6 +128,19 @@ namespace Lua {
 
 			// set the userdata pointer to the wrapped type pointer
 			*userDataPtr2Ptr = ptr;
+		}
+
+		// inserts an item associated with the reference to the stack
+		void insertReference(int ref)
+		{
+			lua_rawgeti(state().getL(), LUA_REGISTRYINDEX, ref);
+		}
+
+		// inserts a new table to the stack
+		StackSlot& insertTable()
+		{
+			lua_createtable(state().getL(), 0, 0);
+			return *this;
 		}
 
 	private:
