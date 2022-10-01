@@ -2,6 +2,8 @@
 
 #include "ReadableValue.h"
 #include "WritableValue.h"
+#include "ReadableStackSlot.h"
+#include "WritableStackSlot.h"
 
 #include "TransferStack.h"
 #include "OutputCopy.h"
@@ -13,17 +15,23 @@ namespace Lua {
 
 		virtual void getFrom(State& state)
 		{
-			state.prepareReading();
+			ReadableStackSlot slot(state);
+
+			slot.prepare();
+
 			_copy.clear();
 			Transfer(state, _copy);
-			state.finishReading();
+
+			slot.finish();
 		}
 
 		virtual void insertTo(State& state)
 		{
-			state.prepareWriting();
+			WritableStackSlot slot(state);
+
+			slot.prepare();
 			_copy.transfer(Lua::OutputStack{state});
-			state.finishWriting();
+			slot.finish();
 		}
 
 	private:
