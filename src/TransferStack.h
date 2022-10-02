@@ -6,6 +6,7 @@
 
 namespace Lua {
 
+	// Copies the given number of items from the source stack to the destination
 	template<typename Destination>
 	static int Transfer(
 		State& src,
@@ -35,7 +36,7 @@ namespace Lua {
 			int padding = count - destCount;
 
 			for (int i = 0; i < padding; i++) {
-				dest.pushNil();
+				dest.insertNil();
 			}
 
 		}
@@ -43,6 +44,7 @@ namespace Lua {
 		return count;
 	}
 
+	// Copies the given number of items from the source stack to the destination stack
 	static int Transfer(
 		State& src,
 		State& dest,

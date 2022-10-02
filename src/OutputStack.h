@@ -1,6 +1,7 @@
 #pragma once
 
 #include "State.h"
+#include "WritableStackSlot.h"
 
 namespace Lua {
 
@@ -11,29 +12,58 @@ namespace Lua {
 			_state(state)
 		{}
 
-		void createTable()
+		void insertNil()
 		{
-			lua_createtable(_state.getL(), 0, 0);
+			WritableStackSlot slot(_state);
+
+			slot.prepare();
+			slot.insertNil();
+			slot.finish();
 		}
 
-		void pushNil()
+		void insertBoolean(bool boolVal)
 		{
-			lua_pushnil(_state.getL());
+			WritableStackSlot slot(_state);
+
+			slot.prepare();
+			slot.insertBoolean(boolVal);
+			slot.finish();
 		}
 
-		void pushBoolean(int boolVal)
+		void insertInteger(lua_Integer num)
 		{
-			lua_pushboolean(_state.getL(), boolVal);
+			WritableStackSlot slot(_state);
+
+			slot.prepare();
+			slot.insertInteger(num);
+			slot.finish();
 		}
 
-		void pushNumber(lua_Number num)
+		void insertNumber(lua_Number num)
 		{
-			lua_pushnumber(_state.getL(), num);
+			WritableStackSlot slot(_state);
+
+			slot.prepare();
+			slot.insertNumber(num);
+			slot.finish();
 		}
 
-		void pushString(const char* str, size_t len)
+		void insertString(const std::string& str)
 		{
-			lua_pushlstring(_state.getL(), str, len);
+			WritableStackSlot slot(_state);
+
+			slot.prepare();
+			slot.insertString(str);
+			slot.finish();
+		}
+
+		void insertTable()
+		{
+			WritableStackSlot slot(_state);
+
+			slot.prepare();
+			slot.insertTable();
+			slot.finish();
 		}
 
 		void setTable()

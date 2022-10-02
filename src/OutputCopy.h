@@ -18,32 +18,62 @@ namespace Lua {
 		OutputCopy()
 		{}
 
-		void createTable()
+		void insertNil()
 		{
 			_build.push_back(
 				[] (Destination& dest)
 				{
-					dest.createTable();
+					dest.insertNil();
 				}
 			);
 		}
 
-		void pushNil()
+		void insertBoolean(bool boolVal)
 		{
 			_build.push_back(
-				[] (Destination& dest)
+				[boolVal] (Destination& dest)
 				{
-					dest.pushNil();
+					dest.insertBoolean(boolVal);
 				}
 			);
 		}
 
-		void pushNumber(lua_Number num)
+		void insertInteger(lua_Integer num)
 		{
 			_build.push_back(
 				[num] (Destination& dest)
 				{
-					dest.pushNumber(num);
+					dest.insertInteger(num);
+				}
+			);
+		}
+
+		void insertNumber(lua_Number num)
+		{
+			_build.push_back(
+				[num] (Destination& dest)
+				{
+					dest.insertNumber(num);
+				}
+			);
+		}
+
+		void insertString(const std::string& str)
+		{
+			_build.push_back(
+				[str] (Destination& dest)
+				{
+					dest.insertString(str);
+				}
+			);
+		}
+
+		void insertTable()
+		{
+			_build.push_back(
+				[] (Destination& dest)
+				{
+					dest.insertTable();
 				}
 			);
 		}

@@ -77,6 +77,12 @@ namespace Lua {
 			_finished = true;
 		}
 
+		// insert the nil vlaue to the stack
+		void insertNil()
+		{
+			lua_pushnil(state().getL());
+		}
+
 		// inserts a boolean value to the stack
 		void insertBoolean(bool boolVal)
 		{

@@ -1,6 +1,9 @@
 #pragma once
 
+#include "TransferBoolean.h"
+#include "TransferInteger.h"
 #include "TransferNumber.h"
+#include "TransferString.h"
 #include "TransferTable.h"
 
 namespace Lua {
@@ -15,8 +18,17 @@ namespace Lua {
 
 		while (!src.atEnd()) {
 			
-			if (src.curr().isNumber()) {
+			if (src.curr().isBoolean()) {
+				TransferBoolean(src.curr(), dest);
+			}
+			else if (src.curr().isInteger()) {
+				TransferInteger(src.curr(), dest);
+			}
+			else if (src.curr().isNumber()) {
 				TransferNumber(src.curr(), dest);
+			}
+			else if (src.curr().isString()) {
+				TransferString(src.curr(), dest);
 			}
 			else if (src.curr().isTable()) {
 				TransferTable(src.curr().getTable(), dest);

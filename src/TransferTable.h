@@ -13,14 +13,23 @@ namespace Lua {
 	)
 	{
 		tbl.first();
-		dest.createTable();
+		dest.insertTable();
 
 		while (!tbl.atEnd()) {
 
 			// set a table field key
 
-			if (tbl.key().isNumber()) {
+			if (tbl.key().isBoolean()) {
+				TransferBoolean(tbl.key(), dest);
+			}
+			else if (tbl.key().isInteger()) {
+				TransferInteger(tbl.key(), dest);
+			}
+			else if (tbl.key().isNumber()) {
 				TransferNumber(tbl.key(), dest);
+			}
+			else if (tbl.key().isString()) {
+				TransferString(tbl.key(), dest);
 			}
 			else {
 				throw std::logic_error("invalid key type");
@@ -28,8 +37,17 @@ namespace Lua {
 
 			// set a table field value
 
-			if (tbl.val().isNumber()) {
+			if (tbl.val().isBoolean()) {
+				TransferBoolean(tbl.val(), dest);
+			}
+			else if (tbl.val().isInteger()) {
+				TransferInteger(tbl.val(), dest);
+			}
+			else if (tbl.val().isNumber()) {
 				TransferNumber(tbl.val(), dest);
+			}
+			else if (tbl.val().isString()) {
+				TransferString(tbl.val(), dest);
 			}
 			else if (tbl.val().isTable()) {
 				TransferTable(tbl.val().getTable(), dest);
