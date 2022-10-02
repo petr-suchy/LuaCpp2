@@ -157,10 +157,7 @@ namespace Lua {
 
 		void prepareWriting()
 		{
-			// ensures that there are at least LUA_MINSTACK free stack slots in the stack.
-			if (!lua_checkstack(getL(), LUA_MINSTACK)) {
-				throw std::runtime_error("not enought memory");
-			}
+			growStack();
 		}
 
 		// this function must always be called after inserting a value into the stack
@@ -424,6 +421,7 @@ namespace Lua {
 
 		void pushElementFrom(int index)
 		{
+			growStack();
 			lua_pushvalue(getL(), index);
 		}
 
@@ -474,6 +472,14 @@ namespace Lua {
 				break;
 				default:
 					throw std::runtime_error("unknown error");
+			}
+		}
+
+		// ensures that there are at least LUA_MINSTACK free stack slots in the stack.
+		void growStack()
+		{
+			if (!lua_checkstack(getL(), LUA_MINSTACK)) {
+				throw std::runtime_error("not enought memory");
 			}
 		}
 
