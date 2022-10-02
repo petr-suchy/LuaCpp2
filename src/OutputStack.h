@@ -9,8 +9,22 @@ namespace Lua {
 	public:
 
 		OutputStack(State& state) :
-			_state(state)
+			_state(state),
+			_top(state.getStackTop()),
+			_finished(false)
 		{}
+
+		~OutputStack()
+		{
+			if (!_finished) {
+				_state.setStackTop(_top);
+			}
+		}
+
+		void finish()
+		{
+			_finished = true;
+		}
 
 		void insertNil()
 		{
@@ -74,6 +88,8 @@ namespace Lua {
 	private:
 
 		State& _state;
+		int _top;
+		bool _finished;
 
 	};
 

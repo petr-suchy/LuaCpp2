@@ -30,7 +30,14 @@ namespace Lua {
 			WritableStackSlot slot(state);
 
 			slot.prepare();
-			_copy.transfer(Lua::OutputStack{state});
+
+			{
+				OutputStack ostack(state);
+
+				_copy.transfer(ostack);
+				ostack.finish();
+			}
+
 			slot.finish();
 		}
 

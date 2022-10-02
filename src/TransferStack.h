@@ -52,12 +52,18 @@ namespace Lua {
 		int count = 1
 	)
 	{
-		return Transfer(
+		OutputStack ostack(dest);
+
+		int transfered = Transfer(
 			src,
-			OutputStack{dest},
+			ostack,
 			startIndex,
 			count
 		);
+
+		ostack.finish();
+
+		return transfered;
 	}
 
 }
