@@ -212,4 +212,42 @@ namespace Lua {
 
 	};
 
+	class AuxContextFromL : public Lua::Context {
+	public:
+
+		AuxContextFromL(lua_State* L) :
+			_state(L)
+		{}
+
+		virtual Lua::State& state()
+		{
+			return _state;
+		}
+
+	private:
+
+		Lua::State _state;
+		int _top;
+
+	};
+
+	class AuxContextFromState : public Context {
+	public:
+
+		AuxContextFromState(State& state) :
+			_state(state)
+		{}
+
+		virtual State& state()
+		{
+			return _state;
+		}
+
+	private:
+
+		State& _state;
+		int _top;
+
+	};
+
 }

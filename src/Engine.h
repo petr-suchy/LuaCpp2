@@ -32,7 +32,7 @@ namespace Lua {
 					throw std::runtime_error("not enough memory");
 				}
 
-				AuxiliaryContext temp(newState);
+				AuxContextFromState temp(newState);
 				_initFunc(temp);
 
 				newState.setStackTop(0);
@@ -44,19 +44,6 @@ namespace Lua {
 		}
 
 	private:
-
-		class AuxiliaryContext : public Context {
-		public:
-
-			AuxiliaryContext(State& state) :
-				_state(state)
-			{}
-
-			virtual State& state() { return _state; }
-
-		private:
-			State& _state;
-		};
 
 		State _state;
 		InitFunc _initFunc;
