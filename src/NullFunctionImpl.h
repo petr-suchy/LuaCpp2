@@ -7,6 +7,15 @@ namespace Lua {
 	class NullFunctionImpl : public FunctionImpl {
 	public:
 
+		virtual lua_State* getL()
+		{
+			throw std::logic_error(
+				"null function has no raw pointer to engine state"
+			);
+
+			return NULL;
+		}
+
 		virtual void insertTo(State&)
 		{
 			throw std::logic_error("null function");

@@ -25,6 +25,12 @@ namespace Lua {
 			_impl(std::make_shared<HostFunctionImpl>(func))
 		{}
 
+		// gets a raw pointer to the engine state
+		virtual lua_State* getL()
+		{
+			return _impl->getL();
+		}
+
 		// gets the function from the stack
 		virtual void getFrom(State& state)
 		{

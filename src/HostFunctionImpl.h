@@ -18,6 +18,15 @@ namespace Lua {
 			_funcPtr(std::make_shared<FunctionPrototype>(func))
 		{}
 
+		virtual lua_State* getL()
+		{
+			throw std::logic_error(
+				"host function has no raw pointer to engine state"
+			);
+
+			return NULL;
+		}
+
 		// inserts the host function to the stack
 		void insertTo(State& state)
 		{

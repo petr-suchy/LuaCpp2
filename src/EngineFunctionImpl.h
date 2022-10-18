@@ -22,6 +22,11 @@ namespace Lua {
 			luaL_unref(_L, LUA_REGISTRYINDEX, _ref);
 		}
 
+		virtual lua_State* getL()
+		{
+			return _L;
+		}
+
 		virtual void insertTo(State& state)
 		{
 			if (state.getL() != _L) {
