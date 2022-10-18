@@ -32,10 +32,11 @@ namespace Lua {
 					throw std::runtime_error("not enough memory");
 				}
 
-				AuxContextFromState temp(newState);
-				_initFunc(temp);
+				{
+					AuxContextFromState temp(newState);
+					_initFunc(temp);
+				}
 
-				newState.setStackTop(0);
 				_state.swap(newState);
 
 			}

@@ -216,8 +216,14 @@ namespace Lua {
 	public:
 
 		AuxContextFromL(lua_State* L) :
-			_state(L)
+			_state(L),
+			_top(_state.getStackTop())
 		{}
+
+		~AuxContextFromL()
+		{
+			_state.setStackTop(_top);
+		}
 
 		virtual Lua::State& state()
 		{
@@ -235,8 +241,14 @@ namespace Lua {
 	public:
 
 		AuxContextFromState(State& state) :
-			_state(state)
+			_state(state),
+			_top(_state.getStackTop())
 		{}
+
+		~AuxContextFromState()
+		{
+			_state.setStackTop(_top);
+		}
 
 		virtual State& state()
 		{
