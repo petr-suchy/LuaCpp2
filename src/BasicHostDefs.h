@@ -15,6 +15,7 @@
 #include "StructParam.h"
 #include "ConstStructParam.h"
 #include "EnumParam.h"
+#include "IgnoreParam.h"
 
 #include <codecvt>
 
