@@ -17,7 +17,7 @@ namespace Lua {
 					// gets count
 					[this] (Lua::State&)
 					{
-						return _nameList.size();
+						return (int) _nameList.size();
 					},
 					// prepares writing
 					[] (Lua::State&)
@@ -35,7 +35,7 @@ namespace Lua {
 					// gets count
 					[this] (Lua::State&)
 					{
-						return _nameList.size();
+						return (int) _nameList.size();
 					},
 					// prepares reading
 					[this] (Lua::State& state)
