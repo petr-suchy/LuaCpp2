@@ -203,11 +203,17 @@ namespace Lua {
 			// move a function at the top of the stack to the beginning
 			state().moveTopElementTo(1);
 
-			// call that function
-			state().pcall(_numOfInputArgs);
-
-			_numOfInputArgs = 0;
-			_numOfOutputArgs = state().getStackTop();
+			try {
+				// call that function
+				state().pcall(_numOfInputArgs);
+				_numOfInputArgs = 0;
+				_numOfOutputArgs = state().getStackTop();
+			}
+			catch (...) {
+				_numOfInputArgs = 0;
+				_numOfOutputArgs = 0;
+				throw;
+			}
 		}
 
 	};
