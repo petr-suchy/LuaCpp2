@@ -1,11 +1,11 @@
 #include <boost/test/unit_test.hpp>
 #include "../VsTestExplorer.h"
 
-#include "../../../include/ReadableString.h"
-#include "../../../include/WritableString.h"
+#include "../../../include/luacpp/ReadableString.h"
+#include "../../../include/luacpp/WritableString.h"
 
-#include "../../../include/WritableWString.h"
-#include "../../../include/ReadableWString.h"
+#include "../../../include/luacpp/WritableWString.h"
+#include "../../../include/luacpp/ReadableWString.h"
 
 #include <codecvt>
 

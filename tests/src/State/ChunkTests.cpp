@@ -1,10 +1,10 @@
 #include <boost/test/unit_test.hpp>
 #include "../VsTestExplorer.h"
 
-#include "../../../include/ReadableChunk.h"
-#include "../../../include/WritableChunk.h"
-#include "../../../include/ReadableInteger.h"
-#include "../../../include/WritableInteger.h"
+#include "../../../include/luacpp/ReadableChunk.h"
+#include "../../../include/luacpp/WritableChunk.h"
+#include "../../../include/luacpp/ReadableInteger.h"
+#include "../../../include/luacpp/WritableInteger.h"
 
 #include <sstream>
 

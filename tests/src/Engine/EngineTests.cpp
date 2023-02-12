@@ -1,7 +1,7 @@
 #include <boost/test/unit_test.hpp>
 #include "../VsTestExplorer.h"
 
-#include "../../../include/luacpp.h"
+#include "../../../include/luacpp/luacpp.h"
 
 struct ShortPoint {
 	char x;

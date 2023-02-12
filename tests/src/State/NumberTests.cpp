@@ -1,11 +1,11 @@
 #include <boost/test/unit_test.hpp>
 #include "../VsTestExplorer.h"
 
-#include "../../../include/ReadableNumber.h"
-#include "../../../include/WritableNumber.h"
+#include "../../../include/luacpp/ReadableNumber.h"
+#include "../../../include/luacpp/WritableNumber.h"
 
-#include "../../../include/ReadableInteger.h"
-#include "../../../include/WritableInteger.h"
+#include "../../../include/luacpp/ReadableInteger.h"
+#include "../../../include/luacpp/WritableInteger.h"
 
 BOOST_AUTO_TEST_SUITE(State__Numbers)
 

@@ -1,13 +1,13 @@
 #include <boost/test/unit_test.hpp>
 #include "../VsTestExplorer.h"
 
-#include "../../../include/Table.h"
-#include "../../../include/Fields.h"
+#include "../../../include/luacpp/Table.h"
+#include "../../../include/luacpp/Fields.h"
 
-#include "../../../include/ReadableInteger.h"
-#include "../../../include/WritableInteger.h"
-#include "../../../include/ReadableString.h"
-#include "../../../include/WritableString.h"
+#include "../../../include/luacpp/ReadableInteger.h"
+#include "../../../include/luacpp/WritableInteger.h"
+#include "../../../include/luacpp/ReadableString.h"
+#include "../../../include/luacpp/WritableString.h"
 
 BOOST_AUTO_TEST_SUITE(State__Tables)
 

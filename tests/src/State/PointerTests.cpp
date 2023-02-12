@@ -1,7 +1,7 @@
 #include <boost/test/unit_test.hpp>
 #include "../VsTestExplorer.h"
 
-#include "../../../include/Pointer.h"
+#include "../../../include/luacpp/Pointer.h"
 
 BOOST_AUTO_TEST_SUITE(State__Pointer)
 
