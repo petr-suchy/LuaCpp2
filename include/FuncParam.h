@@ -8,8 +8,8 @@
 // overloaded stream operators for reading and writing
 // functional arguments
 
-static Lua::ReadableParams& operator>> (
-	Lua::ReadableParams& args,
+static Lua::ReadableParams operator>> (
+	Lua::ReadableParams args,
 	Lua::Function& func
 )
 {
@@ -20,8 +20,8 @@ static Lua::ReadableParams& operator>> (
 	return args;
 }
 
-static Lua::ReadableParams& operator, (
-	Lua::ReadableParams& args,
+static Lua::ReadableParams operator, (
+	Lua::ReadableParams args,
 	Lua::Function& func
 )
 {
@@ -29,9 +29,9 @@ static Lua::ReadableParams& operator, (
 	return args;
 }
 
-static Lua::WritableParams& operator<< (
-	Lua::WritableParams& args,
-	Lua::AbstractFunction& func
+static const Lua::WritableParams operator<< (
+	Lua::WritableParams args,
+	const Lua::AbstractFunction& func
 )
 {
 	args.prepareWriting();
@@ -41,9 +41,9 @@ static Lua::WritableParams& operator<< (
 	return args;
 }
 
-static Lua::WritableParams& operator, (
-	Lua::WritableParams& args,
-	Lua::AbstractFunction& func
+static const Lua::WritableParams operator, (
+	Lua::WritableParams args,
+	const Lua::AbstractFunction& func
 )
 {
 	args << func;

@@ -9,20 +9,21 @@
 // overloaded stream operators for reading and writing
 // boolean arguments
 
-static Lua::ReadableParams& operator>> (
-	Lua::ReadableParams& args,
+static Lua::ReadableParams operator>> (
+	Lua::ReadableParams args,
 	bool& val
 )
 {
 	args.prepareReading();
-	args.state() >> Lua::ReadableBoolean(val);
+	Lua::ReadableBoolean rb(val);
+	args.state() >> rb;
 	args.finishReading();
 
 	return args;
 }
 
-static Lua::ReadableParams& operator, (
-	Lua::ReadableParams& args,
+static Lua::ReadableParams operator, (
+	Lua::ReadableParams args,
 	bool& val
 )
 {
@@ -30,8 +31,8 @@ static Lua::ReadableParams& operator, (
 	return args;
 }
 
-static Lua::WritableParams& operator<< (
-	Lua::WritableParams& args,
+static Lua::WritableParams operator<< (
+	Lua::WritableParams args,
 	bool val
 )
 {
@@ -42,8 +43,8 @@ static Lua::WritableParams& operator<< (
 	return args;
 }
 
-static Lua::WritableParams& operator, (
-	Lua::WritableParams& args,
+static Lua::WritableParams operator, (
+	Lua::WritableParams args,
 	bool val
 )
 {

@@ -7,8 +7,8 @@
 // enum arguments
 
 #define defhost_enum(TYPE) \
-static Lua::ReadableParams& operator>> ( \
-	Lua::ReadableParams& args, \
+static Lua::ReadableParams operator>> ( \
+	Lua::ReadableParams args, \
 	TYPE& e \
 ) \
 { \
@@ -17,8 +17,8 @@ static Lua::ReadableParams& operator>> ( \
 	e = static_cast<TYPE>(tmp); \
 	return args; \
 } \
-static Lua::ReadableParams& operator, ( \
-	Lua::ReadableParams& args, \
+static Lua::ReadableParams operator, ( \
+	Lua::ReadableParams args, \
 	TYPE& e \
 ) \
 { \
@@ -26,17 +26,17 @@ static Lua::ReadableParams& operator, ( \
 	return args; \
 } \
 \
-static Lua::WritableParams& operator<< ( \
-	Lua::WritableParams& args, \
-	TYPE e \
+static Lua::WritableParams operator<< ( \
+	Lua::WritableParams args, \
+	const TYPE e \
 ) \
 { \
 	args << static_cast<std::underlying_type<TYPE>::type>(e); \
 	return args; \
 } \
-static Lua::WritableParams& operator, ( \
-	Lua::WritableParams& args, \
-	TYPE e \
+static Lua::WritableParams operator, ( \
+	Lua::WritableParams args, \
+	const TYPE e \
 ) \
 { \
 	args << e; \

@@ -13,7 +13,7 @@ namespace Lua {
 			_str(str)
 		{}
 
-		virtual void insertTo(State& state)
+		virtual void insertTo(State& state) const
 		{
 			WritableStackSlot slot(state);
 			

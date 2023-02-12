@@ -15,7 +15,7 @@ namespace Lua {
 			_num(num)
 		{}
 
-		virtual void insertTo(State& state)
+		virtual void insertTo(State& state) const
 		{
 			WritableStackSlot slot(state);
 			
@@ -40,7 +40,7 @@ namespace Lua {
 			_num(num)
 		{}
 
-		virtual void insertTo(State& state)
+		virtual void insertTo(State& state) const
 		{
 			if (_num > (unsigned long long) (EngineLimits::max)()) {
 				throw std::overflow_error(

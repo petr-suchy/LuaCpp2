@@ -28,7 +28,7 @@ namespace Lua {
 		}
 
 		// inserts the host function to the stack
-		void insertTo(State& state)
+		void insertTo(State& state) const
 		{
 			Lua::WritableStackSlot slot(state);
 

@@ -22,7 +22,7 @@ namespace Lua {
 			_mode(mode)
 		{}
 
-		virtual void insertTo(State& state)
+		virtual void insertTo(State& state) const
 		{
 			StreamReader<InputStream> reader(_is);
 			WritableStackSlot slot(state);

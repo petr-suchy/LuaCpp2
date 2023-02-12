@@ -13,7 +13,7 @@ namespace Lua {
 
 	protected:
 
-		virtual std::string _filterKey(const std::string& key)
+		virtual std::string _filterKey(const std::string& key) const
 		{
 			std::string memberName;
 

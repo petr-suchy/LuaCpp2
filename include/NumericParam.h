@@ -12,20 +12,21 @@
 // numeric arguments
 
 #define defhost_number(TYPE) \
-static Lua::ReadableParams& operator>> ( \
-	Lua::ReadableParams& args, \
+static Lua::ReadableParams operator>> ( \
+	Lua::ReadableParams args, \
 	TYPE& num \
 ) \
 { \
 	args.prepareReading(); \
-	args.state() >> Lua::ReadableNumber<TYPE>(num); \
+	Lua::ReadableNumber<TYPE> rn(num); \
+	args.state() >> rn; \
 	args.finishReading(); \
 \
 	return args; \
 } \
 \
-static Lua::ReadableParams& operator, ( \
-	Lua::ReadableParams& args, \
+static Lua::ReadableParams operator, ( \
+	Lua::ReadableParams args, \
 	TYPE& num \
 ) \
 { \
@@ -33,8 +34,8 @@ static Lua::ReadableParams& operator, ( \
 	return args; \
 } \
 \
-static Lua::WritableParams& operator<< ( \
-	Lua::WritableParams& args, \
+static Lua::WritableParams operator<< ( \
+	Lua::WritableParams args, \
 	TYPE num \
 ) \
 { \
@@ -45,8 +46,8 @@ static Lua::WritableParams& operator<< ( \
 	return args; \
 } \
 \
-static Lua::WritableParams& operator, ( \
-	Lua::WritableParams& args, \
+static Lua::WritableParams operator, ( \
+	Lua::WritableParams args, \
 	TYPE num \
 ) \
 { \
@@ -55,20 +56,21 @@ static Lua::WritableParams& operator, ( \
 }
 
 #define defhost_signed(TYPE) \
-static Lua::ReadableParams& operator>> ( \
-	Lua::ReadableParams& args, \
+static Lua::ReadableParams operator>> ( \
+	Lua::ReadableParams args, \
 	TYPE& num \
 ) \
 { \
 	args.prepareReading(); \
-	args.state() >> Lua::ReadableInteger<TYPE>(num); \
+	Lua::ReadableInteger<TYPE> ri(num); \
+	args.state() >> ri; \
 	args.finishReading(); \
 \
 	return args; \
 } \
 \
-static Lua::ReadableParams& operator, ( \
-	Lua::ReadableParams& args, \
+static Lua::ReadableParams operator, ( \
+	Lua::ReadableParams args, \
 	TYPE& num \
 ) \
 { \
@@ -76,8 +78,8 @@ static Lua::ReadableParams& operator, ( \
 	return args; \
 } \
 \
-static Lua::WritableParams& operator<< ( \
-	Lua::WritableParams& args, \
+static Lua::WritableParams operator<< ( \
+	Lua::WritableParams args, \
 	TYPE num \
 ) \
 { \
@@ -88,8 +90,8 @@ static Lua::WritableParams& operator<< ( \
 	return args; \
 } \
 \
-static Lua::WritableParams& operator, ( \
-	Lua::WritableParams& args, \
+static Lua::WritableParams operator, ( \
+	Lua::WritableParams args, \
 	TYPE num \
 ) \
 { \
@@ -98,20 +100,21 @@ static Lua::WritableParams& operator, ( \
 }
 
 #define defhost_unsigned(TYPE) \
-static Lua::ReadableParams& operator>> ( \
-	Lua::ReadableParams& args, \
+static Lua::ReadableParams operator>> ( \
+	Lua::ReadableParams args, \
 	unsigned TYPE& num \
 ) \
 { \
 	args.prepareReading(); \
-	args.state() >> Lua::UnsignedReadableInteger<unsigned TYPE>(num); \
+	Lua::UnsignedReadableInteger<unsigned TYPE> uri(num); \
+	args.state() >> uri; \
 	args.finishReading(); \
 \
 	return args; \
 } \
 \
-static Lua::ReadableParams& operator, ( \
-	Lua::ReadableParams& args, \
+static Lua::ReadableParams operator, ( \
+	Lua::ReadableParams args, \
 	unsigned TYPE& num \
 ) \
 { \
@@ -119,8 +122,8 @@ static Lua::ReadableParams& operator, ( \
 	return args; \
 } \
 \
-static Lua::WritableParams& operator<< ( \
-	Lua::WritableParams& args, \
+static Lua::WritableParams operator<< ( \
+	Lua::WritableParams args, \
 	unsigned TYPE num \
 ) \
 { \
@@ -131,8 +134,8 @@ static Lua::WritableParams& operator<< ( \
 	return args; \
 } \
 \
-static Lua::WritableParams& operator, ( \
-	Lua::WritableParams& args, \
+static Lua::WritableParams operator, ( \
+	Lua::WritableParams args, \
 	unsigned TYPE num \
 ) \
 { \

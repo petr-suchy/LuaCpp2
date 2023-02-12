@@ -3,27 +3,22 @@
 #include "Field.h"
 
 namespace Lua {
-
-	class Fields : public ReadableValue, public WritableValue {
+	
+	class Fields : public StackModifier {
 	public:
 
 		Fields(const std::string& keyList) :
 			_keyList(keyList)
 		{}
 
-		virtual void getFrom(State& state)
-		{
-			explodeList(state, _keyList);
-		}
-
-		virtual void insertTo(State& state)
+		virtual void modify(State& state) const
 		{
 			explodeList(state, _keyList);
 		}
 
 	protected:
 
-		virtual std::string _filterKey(const std::string& key)
+		virtual std::string _filterKey(const std::string& key) const
 		{
 			return key;
 		}
@@ -33,7 +28,7 @@ namespace Lua {
 		void explodeList(
 			State& state,
 			const std::string& keyList
-		)
+		) const
 		{
 			size_t start = keyList.length();
 			size_t end = start;
@@ -68,5 +63,5 @@ namespace Lua {
 		std::string _keyList;
 
 	};
-
+	
 }

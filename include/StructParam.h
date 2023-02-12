@@ -11,8 +11,8 @@
 // structured arguments
 
 #define defhost_struct(TYPE, ...) \
-static Lua::ReadableParams& operator>> ( \
-	Lua::ReadableParams& args, \
+static Lua::ReadableParams operator>> ( \
+	Lua::ReadableParams args, \
 	TYPE& m \
 ) \
 { \
@@ -33,8 +33,8 @@ static Lua::ReadableParams& operator>> ( \
 	return args; \
 } \
 \
-static Lua::ReadableParams& operator, ( \
-	Lua::ReadableParams& args, \
+static Lua::ReadableParams operator, ( \
+	Lua::ReadableParams args, \
 	TYPE& m \
 ) \
 { \
@@ -42,8 +42,8 @@ static Lua::ReadableParams& operator, ( \
 	return args; \
 } \
 \
-static Lua::WritableParams& operator<< ( \
-	Lua::WritableParams& args, \
+static Lua::WritableParams operator<< ( \
+	Lua::WritableParams args, \
 	TYPE& m \
 ) \
 { \
@@ -64,8 +64,8 @@ static Lua::WritableParams& operator<< ( \
 	return args; \
 } \
 \
-static Lua::WritableParams& operator, ( \
-	Lua::WritableParams& args, \
+static Lua::WritableParams operator, ( \
+	Lua::WritableParams args, \
 	TYPE& m \
 ) \
 { \

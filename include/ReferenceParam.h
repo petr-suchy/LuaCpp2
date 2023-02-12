@@ -8,8 +8,8 @@
 // overloaded stream operators for reading and writing
 // reference arguments
 
-static Lua::ReadableParams& operator>> (
-	Lua::ReadableParams& args,
+static Lua::ReadableParams operator>> (
+	Lua::ReadableParams args,
 	Lua::Reference& ref
 )
 {
@@ -20,8 +20,8 @@ static Lua::ReadableParams& operator>> (
 	return args;
 }
 
-static Lua::ReadableParams& operator, (
-	Lua::ReadableParams& args,
+static Lua::ReadableParams operator, (
+	Lua::ReadableParams args,
 	Lua::Reference& ref
 )
 {
@@ -29,8 +29,8 @@ static Lua::ReadableParams& operator, (
 	return args;
 }
 
-static Lua::WritableParams& operator<< (
-	Lua::WritableParams& args,
+static Lua::WritableParams operator<< (
+	Lua::WritableParams args,
 	Lua::Reference& ref
 )
 {
@@ -41,8 +41,8 @@ static Lua::WritableParams& operator<< (
 	return args;
 }
 
-static Lua::WritableParams& operator, (
-	Lua::WritableParams& args,
+static Lua::WritableParams operator, (
+	Lua::WritableParams args,
 	Lua::Reference& ref
 )
 {

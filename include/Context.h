@@ -96,13 +96,17 @@ namespace Lua {
 			return args().out();
 		}
 
-		template<typename T, typename... Args>
-		ReadableParams pcall(const std::string& funcName, T arg, Args... args)
+		template<typename First, typename... Rest>
+		ReadableParams pcall(
+			const std::string& funcName,
+			const First& first,
+			const Rest&... rest
+		)
 		{
-			args().in() << arg;
-			return pcall(funcName, args...);
+			args().in() << first;
+			return pcall(funcName, rest...);
 		}
-
+		
 		ReadableParams pcall(AbstractFunction& func)
 		{
 			prepareCalling();
@@ -112,13 +116,17 @@ namespace Lua {
 			return args().out();
 		}
 
-		template<typename T, typename... Args>
-		ReadableParams pcall(AbstractFunction& func, T arg, Args... args)
+		template<typename First, typename... Rest>
+		ReadableParams pcall(
+			AbstractFunction& func,
+			const First& first,
+			const Rest&... rest
+		)
 		{
-			args().in() << arg;
-			return pcall(func, args...);
+			args().in() << first;
+			return pcall(func, rest...);
 		}
-
+		
 		template<typename InputStream>
 		ReadableParams doStream(
 			InputStream& is,
@@ -145,9 +153,10 @@ namespace Lua {
 			const std::string& chunkName = ""
 		)
 		{
-			return doStream(std::stringstream(script), chunkName);
+			std::stringstream ss(script);
+			return doStream(ss, chunkName);
 		}
-
+		
 	protected:
 
 		virtual void _prepareInput()

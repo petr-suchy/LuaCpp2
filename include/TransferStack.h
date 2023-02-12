@@ -26,8 +26,10 @@ namespace Lua {
 
 		}
 
+		InputStack istack(src, startIndex, count);
+
 		int destCount = Transfer(
-			InputStack{src, startIndex, count},
+			istack,
 			dest
 		);
 

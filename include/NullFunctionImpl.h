@@ -16,7 +16,7 @@ namespace Lua {
 			return NULL;
 		}
 
-		virtual void insertTo(State&)
+		virtual void insertTo(State&) const
 		{
 			throw std::logic_error("null function");
 		}

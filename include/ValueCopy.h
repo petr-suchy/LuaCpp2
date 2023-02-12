@@ -25,7 +25,7 @@ namespace Lua {
 			slot.finish();
 		}
 
-		virtual void insertTo(State& state)
+		virtual void insertTo(State& state) const
 		{
 			WritableStackSlot slot(state);
 

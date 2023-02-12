@@ -50,7 +50,8 @@ namespace Lua {
 				TransferString(tbl.val(), dest);
 			}
 			else if (tbl.val().isTable()) {
-				TransferTable(tbl.val().getTable(), dest);
+				auto tableIt = tbl.val().getTableIterator();
+				TransferTable(tableIt, dest);
 			}
 			else {
 

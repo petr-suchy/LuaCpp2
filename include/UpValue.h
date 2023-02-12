@@ -1,17 +1,17 @@
 #pragma once
 
-#include "ReadableValue.h"
+#include "StackModifier.h"
 
 namespace Lua {
 
-	class UpValue : public ReadableValue {
+	class UpValue : public StackModifier {
 	public:
 
 		UpValue(int index) :
 			_index(index)
 		{}
 
-		virtual void getFrom(State& state)
+		virtual void modify(State& state) const
 		{
 			lua_pushvalue(
 				state.getL(),

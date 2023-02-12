@@ -88,7 +88,7 @@ namespace Lua {
 			);
 		}
 
-		void transfer(Destination& dest)
+		void transfer(Destination& dest) const
 		{
 			for (auto& inst : _build) {
 				inst(dest);

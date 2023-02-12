@@ -23,9 +23,9 @@ namespace Lua {
 			_finishReadingFunc(finishReadingFunc)
 		{}
 
-		State& state() { return _state; }
-		bool atEnd() { return count() == 0; }
-		int count() { return _countFunc(_state); }
+		State& state() const { return _state; }
+		bool atEnd() const { return count() == 0; }
+		int count() const { return _countFunc(_state); }
 
 		void prepareReading()
 		{

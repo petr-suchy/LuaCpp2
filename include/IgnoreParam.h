@@ -9,8 +9,8 @@ namespace Lua {
 	class IgnoreParam {};
 }
 
-static Lua::ReadableParams& operator>> (
-	Lua::ReadableParams& args,
+static Lua::ReadableParams operator>> (
+	Lua::ReadableParams args,
 	Lua::IgnoreParam
 )
 {

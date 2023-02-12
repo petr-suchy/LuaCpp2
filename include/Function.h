@@ -50,7 +50,7 @@ namespace Lua {
 		}
 
 		// inserts the function to the stack
-		virtual void insertTo(State& state)
+		virtual void insertTo(State& state) const
 		{
 			_impl->insertTo(state);
 		}

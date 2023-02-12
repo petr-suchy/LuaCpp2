@@ -4,9 +4,9 @@
 
 // overloaded stream operator for forwarding an argument
 
-static Lua::ReadableParams& operator>> (
-	Lua::ReadableParams& iargs,
-	Lua::WritableParams& oargs
+static Lua::ReadableParams operator>> (
+	Lua::ReadableParams iargs,
+	Lua::WritableParams oargs
 )
 {
 	if (iargs.state().getL() != oargs.state().getL()) {
@@ -41,9 +41,9 @@ static Lua::ReadableParams& operator>> (
 	return iargs;
 }
 
-static Lua::WritableParams& operator<< (
-	Lua::WritableParams& oargs,
-	Lua::ReadableParams& iargs
+static Lua::WritableParams operator<< (
+	Lua::WritableParams oargs,
+	Lua::ReadableParams iargs
 )
 {
 	iargs >> oargs;

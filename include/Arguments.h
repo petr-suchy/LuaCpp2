@@ -7,8 +7,8 @@ namespace Lua {
 	public:
 
 		Arguments(
-			InputType& in,
-			OutputType& out
+			const InputType& in,
+			const OutputType& out
 		) :
 			_in(in),
 			_out(out)

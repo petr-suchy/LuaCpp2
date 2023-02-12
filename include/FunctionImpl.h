@@ -15,7 +15,7 @@ namespace Lua {
 		virtual lua_State* getL() = 0;
 
 		// inserts the function to the stack
-		virtual void insertTo(State&) = 0;
+		virtual void insertTo(State&) const = 0;
 
 	};
 

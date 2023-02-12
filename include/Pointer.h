@@ -25,7 +25,7 @@ namespace Lua {
 			_ptr = userData.ptr()->ptr();
 		}
 
-		virtual void insertTo(State& state)
+		virtual void insertTo(State& state) const
 		{
 			state << UserData<EngineScope>(
 				new EngineScope(_ptr)

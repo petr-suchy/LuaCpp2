@@ -27,7 +27,7 @@ namespace Lua {
 			return _L;
 		}
 
-		virtual void insertTo(State& state)
+		virtual void insertTo(State& state) const
 		{
 			if (state.getL() != _L) {
 				throw std::logic_error("invalid function reference");

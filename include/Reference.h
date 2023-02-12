@@ -36,7 +36,7 @@ namespace Lua {
 			slot.finish();
 		}
 
-		virtual void insertTo(State& state)
+		virtual void insertTo(State& state) const
 		{
 			if (state.getL() != _ref->getL()) {
 				throw std::logic_error("invalid reference");

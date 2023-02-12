@@ -31,7 +31,8 @@ namespace Lua {
 				TransferString(src.curr(), dest);
 			}
 			else if (src.curr().isTable()) {
-				TransferTable(src.curr().getTable(), dest);
+				auto tableIt = src.curr().getTableIterator();
+				TransferTable(tableIt, dest);
 			}
 			else {
 				throw std::logic_error("invalid type for transfering");

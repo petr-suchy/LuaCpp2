@@ -105,7 +105,7 @@ namespace Lua {
 			return str;
 		}
 
-		TableIterator<StackItem> getTable() const
+		TableIterator<StackItem> getTableIterator() const
 		{
 			return TableIterator<StackItem>(_state, _index);
 		}

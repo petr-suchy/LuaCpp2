@@ -1,23 +1,17 @@
 #pragma once
 
-#include "ReadableValue.h"
-#include "WritableValue.h"
+#include "StackModifier.h"
 
 namespace Lua {
 
-	class Field : public ReadableValue, public WritableValue {
+	class Field : public StackModifier {
 	public:
 
 		Field(const std::string& key) :
 			_key(key)
 		{}
 
-		virtual void insertTo(State& state)
-		{
-			state.keys().push_front(_key);
-		}
-
-		virtual void getFrom(State& state)
+		virtual void modify(State& state) const
 		{
 			state.keys().push_front(_key);
 		}
