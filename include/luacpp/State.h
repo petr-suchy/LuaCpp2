@@ -32,8 +32,7 @@ namespace Lua {
 			_autoClose(false),
 			_keysPtr(nullptr),
 			_tableLevel(0),
-			_closureLevel(0),
-			_noRemoval(false)
+			_closureLevel(0)
 		{}
 
 		~State()
@@ -447,7 +446,6 @@ namespace Lua {
 		Keys* _keysPtr;
 		int _tableLevel;
 		int _closureLevel;
-		bool _noRemoval;
 
 		void reportStatus(int status)
 		{
