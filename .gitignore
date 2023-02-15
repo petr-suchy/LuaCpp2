@@ -1,0 +1,6 @@
+# CMake
+/.cmake
+build/
+build-luacpp/
+CMakeCache.txt
+CMakeFiles/
