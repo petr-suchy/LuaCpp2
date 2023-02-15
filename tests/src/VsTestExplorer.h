@@ -2,7 +2,7 @@
 
 #include <string>
 
-#ifdef _MSC_VER
+#ifdef VS_TEST_EXPLORER
 
 // replaces a suite name with Test Explorer format 'namespace.class.'
 static std::string replace_boost_suite_name(
