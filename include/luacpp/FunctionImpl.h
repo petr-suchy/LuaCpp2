@@ -11,8 +11,8 @@ namespace Lua {
 		// shared pointer to the implementation
 		typedef std::shared_ptr<FunctionImpl> SharedPtr;
 
-		// gets a raw pointer to the engine state
-		virtual lua_State* getL() = 0;
+		// gets a weak pointer to the engine state
+		virtual State::WeakPtr getWeakStatePtr() = 0;
 
 		// inserts the function to the stack
 		virtual void insertTo(State&) const = 0;

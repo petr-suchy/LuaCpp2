@@ -12,28 +12,42 @@ namespace Lua {
 		typedef int Reference;
 
 		EngineFunctionImpl(State& state, Reference ref) :
-			_L(state.getL()),
+			_weakStatePtr(state.getSharedPtr()),
 			_ref(ref)
 		{}
 
 		~EngineFunctionImpl()
 		{
-			// release both the function and the reference
-			luaL_unref(_L, LUA_REGISTRYINDEX, _ref);
+			if (auto statePtr = _weakStatePtr.lock()) {
+				// release both the function and the reference
+				luaL_unref(statePtr->getL(), LUA_REGISTRYINDEX, _ref);
+			}
 		}
 
-		virtual lua_State* getL()
+		virtual State::WeakPtr getWeakStatePtr()
 		{
-			return _L;
+			return _weakStatePtr;
 		}
-
+		
 		virtual void insertTo(State& state) const
 		{
-			if (state.getL() != _L) {
-				throw std::logic_error("invalid function reference");
+			auto funcStatePtr = _weakStatePtr.lock();
+
+			if (!funcStatePtr) {
+				throw std::logic_error(
+					"function state is destroyed"
+				);
 			}
 
-			WritableStackSlot slot(state);
+			State funcState(funcStatePtr);
+
+			if (funcState.getL() != state.getL()) {
+				throw std::logic_error(
+					"function does not belong to this state"
+				);
+			}
+
+			WritableStackSlot slot(funcState);
 
 			slot.prepare();
 			slot.insertReference(_ref);
@@ -42,7 +56,7 @@ namespace Lua {
 
 	private:
 
-		lua_State* _L;
+		State::WeakPtr _weakStatePtr;
 		Reference _ref;
 
 	};
