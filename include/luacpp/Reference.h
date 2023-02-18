@@ -13,7 +13,7 @@ namespace Lua {
 		Reference() :
 			_ref(
 				std::make_shared<Ref>(
-					nullptr,
+					State::SharedPtr{},
 					LUA_REFNIL
 				)
 			)
@@ -31,18 +31,33 @@ namespace Lua {
 				throw std::runtime_error("nil reference returned");
 			}
 
-			_ref = std::make_shared<Ref>(state.getL(), ref);
+			_ref = std::make_shared<Ref>(
+				state.getSharedPtr(),
+				ref
+			);
 
 			slot.finish();
 		}
 
 		virtual void insertTo(State& state) const
 		{
-			if (state.getL() != _ref->getL()) {
-				throw std::logic_error("invalid reference");
+			auto refStatePtr = _ref->getWeakStatePtr().lock();
+
+			if (!refStatePtr) {
+				throw std::logic_error(
+					"reference state is destroyed"
+				);
 			}
 
-			WritableStackSlot slot(state);
+			State refState(refStatePtr);
+
+			if (refState.getL() != state.getL()) {
+				throw std::logic_error(
+					"reference does not belong to this state"
+				);
+			}
+
+			WritableStackSlot slot(refState);
 
 			slot.prepare();
 			slot.insertReference(_ref->get());
@@ -54,22 +69,35 @@ namespace Lua {
 		class Ref {
 		public:
 
-			Ref(lua_State* L, int ref) :
-				_L(L),
+			Ref(State::WeakPtr weakStatePtr, int ref) :
+				_weakStatePtr(weakStatePtr),
 				_ref(ref)
 			{}
 
 			~Ref()
 			{
-				luaL_unref(_L, LUA_REGISTRYINDEX, _ref);
+				if (auto statePtr = _weakStatePtr.lock()) {
+					luaL_unref(
+						statePtr->getL(),
+						LUA_REGISTRYINDEX,
+						_ref
+					);
+				}
 			}
 
-			lua_State* getL() { return _L; }
-			int get() { return _ref; }
+			State::WeakPtr getWeakStatePtr()
+			{
+				return _weakStatePtr;
+			}
+
+			int get()
+			{
+				return _ref;
+			}
 
 		private:
 
-			lua_State* _L;
+			State::WeakPtr _weakStatePtr;
 			int _ref;
 
 		};
