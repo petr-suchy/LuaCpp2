@@ -251,4 +251,19 @@ BOOST_AUTO_TEST_CASE(testForwardArguments)
 	BOOST_TEST(result == "10, 20, 30, 40");
 }
 
+BOOST_AUTO_TEST_CASE(testInitFunc)
+{
+	Lua::Engine lua(
+		[](Lua::Lua lua)
+		{
+			lua.global("foo").in() << 123;
+		}
+	);
+
+	int foo;
+	lua.global("foo").out() >> foo;
+
+	BOOST_TEST(foo == 123);
+}
+
 BOOST_AUTO_TEST_SUITE_END()

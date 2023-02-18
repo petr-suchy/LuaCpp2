@@ -32,4 +32,20 @@ BOOST_AUTO_TEST_CASE(testInsertionAndRetrieval)
 	BOOST_TEST(num == 123);
 }
 
+BOOST_AUTO_TEST_CASE(testDestroyStateBeforeReference)
+{
+	Lua::Reference ref;
+
+	{
+		Lua::State state;
+
+		state.open();
+		BOOST_TEST(state.isOpen());
+
+		state << Lua::WritableInteger<int>(123);
+		state >> ref;
+	}
+
+}
+
 BOOST_AUTO_TEST_SUITE_END()

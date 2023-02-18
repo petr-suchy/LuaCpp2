@@ -45,7 +45,7 @@ BOOST_AUTO_TEST_CASE(shouldShareMutableValue)
 	
 }
 
-BOOST_AUTO_TEST_CASE(shouldHaveRawPointer)
+BOOST_AUTO_TEST_CASE(shouldHaveSameState)
 {
 	Lua::State state;
 
@@ -53,7 +53,7 @@ BOOST_AUTO_TEST_CASE(shouldHaveRawPointer)
 	BOOST_TEST(state.isOpen());
 
 	Lua::Function f(
-		[] (Lua::State&) mutable
+		[] (Lua::State&)
 		{
 			return 0;
 		}
@@ -63,7 +63,33 @@ BOOST_AUTO_TEST_CASE(shouldHaveRawPointer)
 	state << f;
 	state >> f2;
 
-	BOOST_TEST(state.getL() == f2.getL());
+	Lua::State::SharedPtr f2StatePtr = f2.getWeakStatePtr().lock();
+
+	BOOST_TEST(f2StatePtr);
+	BOOST_TEST(state.getL() == f2StatePtr->getL());
+}
+
+BOOST_AUTO_TEST_CASE(testDestroyStateBeforeFunction)
+{
+	Lua::Function f;
+
+	{
+		Lua::State state;
+
+		state.open();
+		BOOST_TEST(state.isOpen());
+
+		Lua::Function f2(
+			[](Lua::State&)
+			{
+				return 0;
+			}
+		);
+
+		state << f2;
+		state >> f;
+	}
+
 }
 
 BOOST_AUTO_TEST_SUITE_END()
