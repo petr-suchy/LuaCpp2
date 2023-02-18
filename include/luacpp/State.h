@@ -1,21 +1,15 @@
 #pragma once
 
-#include <stdexcept>
 #include <algorithm>
 #include <utility>
 #include <string>
 #include <functional>
-#include <memory>
 #include <deque>
 #include <sstream>
 #include <limits>
 #include <type_traits>
 
-extern "C" {
-#include "lualib.h"
-#include "lauxlib.h"
-}
-
+#include "StatePointer.h"
 #include "TypeToName.h"
 
 namespace Lua {
@@ -23,34 +17,48 @@ namespace Lua {
 	class State {
 	public:
 
+		typedef std::shared_ptr<AbstractStatePointer> SharedPtr;
+		typedef std::weak_ptr<AbstractStatePointer> WeakPtr;
+
 		typedef std::deque<std::string> Keys;
 
 		static const int StackTop = -1;
 
-		State(lua_State* L = nullptr) :
-			_L(L),
-			_autoClose(false),
+		State(SharedPtr ptr) :
+			_ptr(ptr),
 			_keysPtr(nullptr),
 			_tableLevel(0),
 			_closureLevel(0)
 		{}
 
-		~State()
+		State() :
+			State(std::make_shared<NullStatePointer>())
+		{}
+
+		State(lua_State* L) :
+			State(std::make_shared<AuxStatePointer>(L))
+		{}
+
+		bool isOpen()
 		{
-			if (_autoClose) {
-				lua_close(_L);
-			}
+			return _ptr->isOpen();
 		}
 
-		void swap(State& state)
+		SharedPtr getSharedPtr()
 		{
-			std::swap(_L, state._L);
-			std::swap(_autoClose, state._autoClose);
+			return _ptr;
 		}
 
 		lua_State* getL()
 		{
-			return _L;
+			return _ptr->getL();
+		}
+
+		void open()
+		{
+			if (!isOpen()) {
+				_ptr = std::make_shared<StatePointer>();
+			}
 		}
 
 		Keys& keys()
@@ -300,19 +308,6 @@ namespace Lua {
 			keys().pop_front();
 		}
 
-		bool isOpen()
-		{
-			return _L != nullptr;
-		}
-
-		void open()
-		{
-			if (!isOpen()) {
-				_L = luaL_newstate();
-				_autoClose = (_L != nullptr);
-			}
-		}
-
 		void loadChunk(
 			lua_Reader readerCb,
 			void *reader,
@@ -441,8 +436,7 @@ namespace Lua {
 
 	private:
 
-		lua_State* _L;
-		bool _autoClose;
+		SharedPtr _ptr;
 		Keys* _keysPtr;
 		int _tableLevel;
 		int _closureLevel;

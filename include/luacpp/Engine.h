@@ -24,20 +24,12 @@ namespace Lua {
 		{
 			if (!_state.isOpen()) {
 
-				State newState;
-
-				newState.open();
-
-				if (!newState.isOpen()) {
-					throw std::runtime_error("not enough memory");
-				}
+				_state.open();
 
 				{
-					AuxContextFromState temp(newState);
+					AuxContextFromState temp(_state);
 					_initFunc(temp);
 				}
-
-				_state.swap(newState);
 
 			}
 
