@@ -46,6 +46,10 @@ struct NestedTableWithError {
 	TableWithError tbl;
 };
 
+struct TableWithFunction {
+	Lua::Function func;
+};
+
 defhost_struct(ShortPoint, m.x, m.y)
 defhost_struct(LongPoint, m.x, m.y)
 defhost_struct(SmallRectangle, m.leftTop, m.rightBottom)
@@ -53,6 +57,7 @@ defhost_struct(BigRectangle, m.leftTop, m.rightBottom)
 
 defhost_struct(TableWithError, m.val)
 defhost_struct(NestedTableWithError, m.tbl)
+defhost_struct(TableWithFunction, m.func)
 
 BOOST_AUTO_TEST_SUITE(Engine__Engine)
 
@@ -264,6 +269,39 @@ BOOST_AUTO_TEST_CASE(testInitFunc)
 	lua.global("foo").out() >> foo;
 
 	BOOST_TEST(foo == 123);
+}
+
+BOOST_AUTO_TEST_CASE(testFunctionInsideTable)
+{
+	Lua::Engine lua(
+		[](Lua::Lua lua)
+		{
+			lua.openStdLibs();
+
+			lua.global("test").in() << Lua::MakeFunc(
+				[](Lua::Args args, Lua::Lua lua)
+				{
+					TableWithFunction tbl;
+					args.in() >> tbl;
+					args.out() << tbl;
+				}
+			);
+
+		}
+	);
+
+	lua.doString(
+		"tbl = {func = function(a, b) return a + b end}\n"
+		"tbl2 = test(tbl)"
+	);
+
+	TableWithFunction tbl2;
+	lua.global("tbl2").out() >> tbl2;
+
+	int result;
+	lua.pcall(tbl2.func, 10, 20) >> result;
+
+	BOOST_TEST(result == 30);
 }
 
 BOOST_AUTO_TEST_SUITE_END()
