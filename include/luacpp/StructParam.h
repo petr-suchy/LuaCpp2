@@ -44,7 +44,7 @@ static Lua::ReadableParams operator, ( \
 \
 static Lua::WritableParams operator<< ( \
 	Lua::WritableParams args, \
-	TYPE& m \
+	const TYPE& m \
 ) \
 { \
 	args.prepareWriting(); \
@@ -66,7 +66,7 @@ static Lua::WritableParams operator<< ( \
 \
 static Lua::WritableParams operator, ( \
 	Lua::WritableParams args, \
-	TYPE& m \
+	const TYPE& m \
 ) \
 { \
 	args << m; \
