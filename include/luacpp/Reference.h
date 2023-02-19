@@ -57,7 +57,7 @@ namespace Lua {
 				);
 			}
 
-			WritableStackSlot slot(refState);
+			WritableStackSlot slot(state);
 
 			slot.prepare();
 			slot.insertReference(_ref->get());
