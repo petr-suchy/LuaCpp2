@@ -38,6 +38,18 @@ public:
 
 };
 
+static Lua::WritableParams operator<< (
+	Lua::WritableParams args,
+	const ErrorValue& val
+)
+{
+	args.prepareWriting();
+	args.state() << ErrorValue();
+	args.finishWriting();
+
+	return args;
+}
+
 struct TableWithError {
 	ErrorValue val;
 };
