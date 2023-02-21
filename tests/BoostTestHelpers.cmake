@@ -1,8 +1,5 @@
 
-function(boost_discover_tests test_command)
-
-    set(test_sources ${ARGV})
-    list(POP_FRONT test_sources)
+function(boost_discover_tests target)
 
     set(test_suite_regex "BOOST_AUTO_TEST_SUITE\\( *([A-Za-z_0-9]+) *\\)")
     set(test_case_regex "BOOST_AUTO_TEST_CASE\\( *([A-Za-z_0-9]+) *\\)")
@@ -11,6 +8,13 @@ function(boost_discover_tests test_command)
     set(
         tests_regex
         "(${test_suite_regex})|(${test_case_regex})|(${test_suite_end_regex})"
+    )
+
+    # get target sources
+    get_property(
+        test_sources
+        TARGET ${target}
+        PROPERTY SOURCES
     )
 
     foreach (source_file_name ${test_sources})
@@ -37,8 +41,8 @@ function(boost_discover_tests test_command)
                 list(POP_BACK test_path)
 
                 add_test(
-                    NAME "${test_command}:${test_path_str}" 
-                    COMMAND ${test_command}
+                    NAME "${target}:${test_path_str}" 
+                    COMMAND ${target}
                     --run_test=${test_path_str} --catch_system_error=yes
                 )
 
