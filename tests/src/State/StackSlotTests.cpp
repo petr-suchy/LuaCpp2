@@ -1,8 +1,8 @@
 #include <boost/test/unit_test.hpp>
 #include "../VsTestExplorer.h"
 
-#include "../../../include/luacpp/ReadableStackSlot.h"
-#include "../../..//include/luacpp/WritableStackSlot.h"
+#include <LuaCpp2/ReadableStackSlot.h>
+#include <LuaCpp2/WritableStackSlot.h>
 
 BOOST_AUTO_TEST_SUITE(State__StackSlot)
 

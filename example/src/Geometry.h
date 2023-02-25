@@ -1,6 +1,6 @@
 #pragma once
 
-#include <luacpp/luacpp.h>
+#include <LuaCpp2/LuaCpp2.h>
 
 namespace Geometry {
 

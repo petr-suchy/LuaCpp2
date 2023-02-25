@@ -1,7 +1,7 @@
 #pragma once
 
-#include "../../../include/luacpp/ReadableParams.h"
-#include "../../../include/luacpp/WritableParams.h"
+#include <LuaCpp2/ReadableParams.h>
+#include <LuaCpp2/WritableParams.h>
 
 class ReadableArgumentCounter : public Lua::ReadableParams {
 public:

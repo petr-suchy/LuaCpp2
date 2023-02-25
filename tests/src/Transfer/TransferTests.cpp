@@ -2,26 +2,26 @@
 #include "../VsTestExplorer.h"
 
 // for transferring booleans
-#include "../../../include/luacpp/ReadableBoolean.h"
-#include "../../../include/luacpp/WritableBoolean.h"
+#include <LuaCpp2/ReadableBoolean.h>
+#include <LuaCpp2/WritableBoolean.h>
 
 // for transferring integers
-#include "../../../include/luacpp/ReadableInteger.h"
-#include "../../../include/luacpp/WritableInteger.h"
+#include <LuaCpp2/ReadableInteger.h>
+#include <LuaCpp2/WritableInteger.h>
 
 // for transferring numbers
-#include "../../../include/luacpp/ReadableNumber.h"
-#include "../../../include/luacpp/WritableNumber.h"
+#include <LuaCpp2/ReadableNumber.h>
+#include <LuaCpp2/WritableNumber.h>
 
 // for transferring strings
-#include "../../../include/luacpp/ReadableString.h"
-#include "../../../include/luacpp/WritableString.h"
+#include <LuaCpp2/ReadableString.h>
+#include <LuaCpp2/WritableString.h>
 
 // for transferring tables
-#include "../../../include/luacpp/Table.h"
-#include "../../../include/luacpp/Field.h"
+#include <LuaCpp2/Table.h>
+#include <LuaCpp2/Field.h>
 
-#include "../../../include/luacpp/TransferStack.h"
+#include <LuaCpp2/TransferStack.h>
 
 BOOST_AUTO_TEST_SUITE(Transfer__Transfer)
 

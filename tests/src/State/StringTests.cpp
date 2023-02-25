@@ -1,11 +1,11 @@
 #include <boost/test/unit_test.hpp>
 #include "../VsTestExplorer.h"
 
-#include "../../../include/luacpp/ReadableString.h"
-#include "../../../include/luacpp/WritableString.h"
+#include <LuaCpp2/ReadableString.h>
+#include <LuaCpp2/WritableString.h>
 
-#include "../../../include/luacpp/WritableWString.h"
-#include "../../../include/luacpp/ReadableWString.h"
+#include <LuaCpp2/WritableWString.h>
+#include <LuaCpp2/ReadableWString.h>
 
 #include <codecvt>
 
@@ -36,7 +36,7 @@ BOOST_AUTO_TEST_CASE(testWideString)
 	state.open();
 	BOOST_TEST(state.isOpen());
 
-	std::wstring str = L"nìjaký èlovìk šlápl na øepu u kùlu";
+	std::wstring str = L"nï¿½jakï¿½ ï¿½lovï¿½k ï¿½lï¿½pl na ï¿½epu u kï¿½lu";
 
 	state << Lua::WritableWString<
 		std::wstring,

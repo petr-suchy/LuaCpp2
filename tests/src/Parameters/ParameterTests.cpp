@@ -1,7 +1,7 @@
 #include <boost/test/unit_test.hpp>
 #include "../VsTestExplorer.h"
 
-#include "../../../include/luacpp/BasicHostDefs.h"
+#include <LuaCpp2/BasicHostDefs.h>
 
 #include "ArgumentCounter.h"
 #include "WrappedPointerTo.h"

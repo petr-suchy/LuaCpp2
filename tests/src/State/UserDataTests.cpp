@@ -1,7 +1,7 @@
 #include <boost/test/unit_test.hpp>
 #include "../VsTestExplorer.h"
 
-#include "../../../include/luacpp/UserData.h"
+#include <LuaCpp2/UserData.h>
 
 BOOST_AUTO_TEST_SUITE(State__UserData)
 

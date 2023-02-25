@@ -1,9 +1,9 @@
 #include <boost/test/unit_test.hpp>
 #include "../VsTestExplorer.h"
 
-#include "../../../include/luacpp/Reference.h"
-#include "../../../include/luacpp/ReadableInteger.h"
-#include "../../../include/luacpp/WritableInteger.h"
+#include <LuaCpp2/Reference.h>
+#include <LuaCpp2/ReadableInteger.h>
+#include <LuaCpp2/WritableInteger.h>
 
 BOOST_AUTO_TEST_SUITE(State__Reference)
 

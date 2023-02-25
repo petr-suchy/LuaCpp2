@@ -9,8 +9,8 @@ if(NOT TARGET Boost::unit_test_framework)
     return()
 endif()
 
-add_executable(luacpp_tests)
-target_sources(luacpp_tests
+add_executable(LuaCpp2Tests)
+target_sources(LuaCpp2Tests
     PRIVATE
         src/Main.cpp
         src/State/ClosureTests.cpp
@@ -29,10 +29,10 @@ target_sources(luacpp_tests
         src/Engine/EngineTests.cpp    
 )
 
-target_link_libraries(luacpp_tests
+target_link_libraries(LuaCpp2Tests
     PRIVATE
-        LuaCpp::LuaCpp
+        LuaCpp2::LuaCpp2
         Boost::unit_test_framework
 )
 
-boost_discover_tests(luacpp_tests)
+boost_discover_tests(LuaCpp2Tests)

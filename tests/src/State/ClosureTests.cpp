@@ -1,13 +1,13 @@
 #include <boost/test/unit_test.hpp>
 #include "../VsTestExplorer.h"
 
-#include "../../../include/luacpp/Closure.h"
-#include "../../../include/luacpp/UpValue.h"
+#include <LuaCpp2/Closure.h>
+#include <LuaCpp2/UpValue.h>
 
-#include "../../../include/luacpp/ReadableInteger.h"
-#include "../../../include/luacpp/WritableInteger.h"
-#include "../../../include/luacpp/ReadableString.h"
-#include "../../../include/luacpp/WritableString.h"
+#include <LuaCpp2/ReadableInteger.h>
+#include <LuaCpp2/WritableInteger.h>
+#include <LuaCpp2/ReadableString.h>
+#include <LuaCpp2/WritableString.h>
 
 BOOST_AUTO_TEST_SUITE(State__Closure)
 
