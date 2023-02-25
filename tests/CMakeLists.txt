@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.10)
 
 include(BoostTestHelpers.cmake)
 
-find_package(Boost COMPONENTS unit_test_framework REQUIRED)
+find_package(Boost COMPONENTS unit_test_framework)
 
 if(NOT TARGET Boost::unit_test_framework)
     message(WARNING "Boost::unit_test_framework not found, not building tests")
