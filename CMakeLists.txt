@@ -41,10 +41,6 @@ target_include_directories(LuaCpp2
 
 target_compile_features(LuaCpp2 INTERFACE cxx_std_14)
 
-# add a dependency on the lua library
-find_package(lua REQUIRED)
-target_link_libraries(LuaCpp2 INTERFACE lua)
-
 if(BUILD_TESTING AND LUACPP2_BUILD_TESTING)
     add_subdirectory(tests)
 endif()

@@ -5,7 +5,14 @@ include(BoostTestHelpers.cmake)
 find_package(Boost COMPONENTS unit_test_framework)
 
 if(NOT TARGET Boost::unit_test_framework)
-    message(WARNING "Boost::unit_test_framework not found, not building tests")
+    message(WARNING "Boost::unit_test_framework not found, tests won't be build")
+    return()
+endif()
+
+find_package(Lua)
+
+if(NOT LUA_FOUND)
+    message(WARNING "Lua not found, tests won't be build")
     return()
 endif()
 
@@ -29,8 +36,14 @@ target_sources(LuaCpp2Tests
         src/Engine/EngineTests.cpp    
 )
 
+target_include_directories(LuaCpp2Tests
+    PRIVATE
+        ${LUA_INCLUDE_DIR}
+)
+
 target_link_libraries(LuaCpp2Tests
     PRIVATE
+        ${LUA_LIBRARIES}
         LuaCpp2::LuaCpp2
         Boost::unit_test_framework
 )
