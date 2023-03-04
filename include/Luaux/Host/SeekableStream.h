@@ -1,11 +1,11 @@
 #pragma once
 
-#include "Host/StreamBase.h"
-#include "Host/Input.h"
-#include "Host/Output.h"
-#include "Host/SeekableInput.h"
-#include "Host/SeekableOutput.h"
-#include "Engine/IOStreamIfce.h"
+#include "StreamBase.h"
+#include "Input.h"
+#include "Output.h"
+#include "SeekableInput.h"
+#include "SeekableOutput.h"
+#include "../Engine/IOStreamIfce.h"
 
 namespace Luaux {
 	namespace Host {

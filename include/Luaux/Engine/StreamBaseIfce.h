@@ -1,6 +1,6 @@
 #pragma once
 
-#include <luacpp.h>
+#include "../../LuaCpp2/LuaCpp2.h"
 
 namespace Luaux {
 	namespace Engine {
