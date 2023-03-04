@@ -227,40 +227,25 @@ namespace Lua {
 
 	};
 
-	class AuxContextFromL : public Lua::Context {
+	class AuxiliaryContext : public Context {
 	public:
 
-		AuxContextFromL(lua_State* L) :
+		AuxiliaryContext(lua_State* L) :
 			_state(L),
 			_top(_state.getStackTop())
 		{}
 
-		~AuxContextFromL()
-		{
-			_state.setStackTop(_top);
-		}
+		AuxiliaryContext(State::SharedPtr statePtr) :
+			_state(statePtr),
+			_top(_state.getStackTop())
+		{}
 
-		virtual Lua::State& state()
-		{
-			return _state;
-		}
-
-	private:
-
-		Lua::State _state;
-		int _top;
-
-	};
-
-	class AuxContextFromState : public Context {
-	public:
-
-		AuxContextFromState(State& state) :
+		AuxiliaryContext(State& state) :
 			_state(state),
 			_top(_state.getStackTop())
 		{}
 
-		~AuxContextFromState()
+		~AuxiliaryContext()
 		{
 			_state.setStackTop(_top);
 		}
@@ -272,7 +257,7 @@ namespace Lua {
 
 	private:
 
-		State& _state;
+		State _state;
 		int _top;
 
 	};

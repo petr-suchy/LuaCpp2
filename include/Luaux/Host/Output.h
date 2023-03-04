@@ -21,10 +21,10 @@ namespace Luaux {
 
 					try {
 
-						Lua::AuxContextFromL lua(_output.write.getL());
-						std::string data(buff, (size_t) count);
+						auto statePtr = _output.write.getWeakStatePtr().lock();
+						Lua::AuxiliaryContext lua(statePtr);
 
-						lua.args().in() << data;
+						lua.args().in() << buff;
 						lua.pcall(_output.write);
 
 					}
@@ -39,8 +39,8 @@ namespace Luaux {
 				Output& flush()
 				{
 					try {
-						Lua::AuxContextFromL lua(_output.flush.getL());
-						lua.pcall(_output.flush);
+						auto statePtr = _output.flush.getWeakStatePtr().lock();
+						Lua::AuxiliaryContext lua(statePtr);
 					}
 					catch (...) {
 						// nothing to do here

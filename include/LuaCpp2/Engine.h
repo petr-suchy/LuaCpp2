@@ -27,7 +27,7 @@ namespace Lua {
 				_state.open();
 
 				{
-					AuxContextFromState temp(_state);
+					AuxiliaryContext temp(_state);
 					_initFunc(temp);
 				}
 
