@@ -98,4 +98,10 @@ if(LUACPP2_INSTALL_LIBRARY)
         DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
     )
 
+    # install Luaux headers
+    install(
+        DIRECTORY ${PROJECT_SOURCE_DIR}/include/Luaux
+        DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
+    )
+
 endif()
