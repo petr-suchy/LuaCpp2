@@ -33,7 +33,9 @@ target_sources(LuaCpp2Tests
         src/Transfer/TransferTests.cpp
         src/ValueCopy/ValueCopyTests.cpp
         src/Parameters/ParameterTests.cpp
-        src/Engine/EngineTests.cpp    
+        src/Engine/EngineTests.cpp
+        src/Luaux/EngineStreamTests.cpp
+        src/Luaux/HostStreamTests.cpp
 )
 
 target_include_directories(LuaCpp2Tests
