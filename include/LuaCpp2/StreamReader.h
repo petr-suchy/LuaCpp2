@@ -7,7 +7,8 @@ namespace Lua {
 	public:
 
 		StreamReader(InputStream& is) :
-			_is(is)
+			_is(is),
+			_buff("")
 		{}
 
 		static const char* cb(lua_State *L, void* data, size_t* size)
