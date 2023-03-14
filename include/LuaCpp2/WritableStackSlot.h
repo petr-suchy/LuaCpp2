@@ -145,7 +145,7 @@ namespace Lua {
 		// inserts a new table to the stack
 		StackSlot& insertTable()
 		{
-			lua_createtable(state().getL(), 0, 0);
+			Library::inst().createtable(state().getL(), 0, 0);
 			return *this;
 		}
 

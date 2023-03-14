@@ -270,7 +270,7 @@ namespace Lua {
 
 				if (!hasMetatable) {
 					// insert a new table at top of the stack
-					lua_createtable(getL(), 0, 0);
+					Library::inst().createtable(getL(), 0, 0);
 				}
 
 				// place the table before the value
