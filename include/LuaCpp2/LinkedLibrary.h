@@ -119,6 +119,11 @@ namespace Lua {
 			return lua_isfunction(L, idx);
 		}
 
+		virtual int isinteger(State* L, int idx)
+		{
+			return lua_isinteger(L, idx);
+		}
+
 		virtual int islightuserdata(State* L, int idx)
 		{
 			return lua_islightuserdata(L, idx);

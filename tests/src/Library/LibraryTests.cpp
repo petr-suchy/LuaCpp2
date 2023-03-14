@@ -169,7 +169,7 @@ BOOST_AUTO_TEST_CASE(testInteger)
 
 	Lua::Library::inst().pushinteger(L, 12345);
 
-	BOOST_TEST(Lua::Library::inst().isnumber(L, -1));
+	BOOST_TEST(Lua::Library::inst().isinteger(L, -1));
 	BOOST_TEST(Lua::Library::inst().tointeger(L, -1) == 12345);
 
 	Lua::Library::inst().close(L);

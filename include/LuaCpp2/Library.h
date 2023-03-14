@@ -87,6 +87,9 @@ namespace Lua {
 		// and 0 otherwise.
 		virtual int isfunction(State* L, int idx) = 0;
 
+		// Returns 1 if the value at the given acceptable index is a integer, and 0 otherwise.
+		virtual int isinteger(State* L, int idx) = 0;
+
 		// Returns 1 if the value at the given acceptable index is a light userdata,
 		// and 0 otherwise.
 		virtual int islightuserdata(State* L, int idx) = 0;
