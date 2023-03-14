@@ -375,7 +375,7 @@ namespace Lua {
 
 		void pushGlobal(const char* name)
 		{
-			lua_getglobal(getL(), name);
+			Library::inst().getglobal(getL(), name);
 		}
 
 		void moveTopElementTo(int index, int repeat = 1)
@@ -421,7 +421,7 @@ namespace Lua {
 
 		void pushGlobal(const std::string& name)
 		{
-			lua_getglobal(getL(), name.c_str());
+			Library::inst().getglobal(getL(), name.c_str());
 		}
 
 		void setGlobal(const std::string& name)
