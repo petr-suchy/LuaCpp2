@@ -121,7 +121,7 @@ namespace Lua {
 			}
 
 			// insert hash_code at the top of the stack
-			lua_getfield(
+			Library::inst().getfield(
 				state.getL(),
 				State::StackTop,
 				"hash_code"

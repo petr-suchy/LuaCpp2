@@ -41,7 +41,7 @@ namespace Lua {
 		}
 
 		// insert __tostring metamethod at the top of the stack
-		lua_getfield(
+		Library::inst().getfield(
 			state.getL(),
 			State::StackTop,
 			"__tostring"

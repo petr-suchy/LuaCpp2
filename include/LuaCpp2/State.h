@@ -213,7 +213,7 @@ namespace Lua {
 
 				// get a value from the metatable field with the given key name
 
-				lua_getfield(
+				Library::inst().getfield(
 					getL(),
 					StackTop,
 					currKey.c_str()
@@ -227,7 +227,7 @@ namespace Lua {
 
 				// get a value from the field with the given key name
 
-				lua_getfield(
+				Library::inst().getfield(
 					getL(),
 					StackTop,
 					currKey.c_str()
