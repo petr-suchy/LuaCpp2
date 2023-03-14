@@ -159,6 +159,14 @@ namespace Lua {
 		// or returns 0 if the value has no metatable.
 		virtual int getmetatable(State* L, int idx) = 0;
 
+		/* Global variables */
+
+		// Pops a value from the stack and sets it as the new value of global name.
+		virtual void setglobal(State* L, const char* name) = 0;
+
+		// Pushes onto the stack the value of the global name.
+		virtual void getglobal(State* L, const char* name) = 0;
+
 	};
 
 }

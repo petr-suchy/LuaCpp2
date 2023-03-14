@@ -252,4 +252,27 @@ BOOST_AUTO_TEST_CASE(testMetatable)
 	Lua::Library::inst().close(L);
 }
 
+BOOST_AUTO_TEST_CASE(testGlobal)
+{
+	Lua::Library::State* L = Lua::Library::inst().newstate();
+
+	Lua::Library::inst().pushinteger(L, 123);
+	Lua::Library::inst().setglobal(L, "num");
+	BOOST_TEST(Lua::Library::inst().gettop(L) == 0);
+
+	Lua::Library::inst().pushstring(L, "Hi!");
+	Lua::Library::inst().setglobal(L, "str");
+	BOOST_TEST(Lua::Library::inst().gettop(L) == 0);
+
+	Lua::Library::inst().getglobal(L, "num");
+	BOOST_TEST(Lua::Library::inst().isinteger(L, -1));
+	BOOST_TEST(Lua::Library::inst().tointeger(L, -1) == 123);
+
+	Lua::Library::inst().getglobal(L, "str");
+	BOOST_TEST(Lua::Library::inst().isstring(L, -1));
+	BOOST_TEST(Lua::Library::inst().tostring(L, -1) == "Hi!");
+
+	Lua::Library::inst().close(L);
+}
+
 BOOST_AUTO_TEST_SUITE_END()

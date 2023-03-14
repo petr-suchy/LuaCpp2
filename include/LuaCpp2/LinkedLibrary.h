@@ -223,6 +223,18 @@ namespace Lua {
 			return lua_getmetatable(L, idx);
 		}
 
+		/* Global variables */
+
+		virtual void setglobal(State* L, const char* name)
+		{
+			lua_setglobal(L, name);
+		}
+
+		virtual void getglobal(State* L, const char* name)
+		{
+			lua_getglobal(L, name);
+		}
+
     };
 
 }
