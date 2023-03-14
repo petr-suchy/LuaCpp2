@@ -72,7 +72,7 @@ namespace Lua {
 	public:
 
 		StatePointer() :
-			_L(luaL_newstate())
+			_L(Lua::Library::inst().newstate())
 		{}
 
 		virtual ~StatePointer()
