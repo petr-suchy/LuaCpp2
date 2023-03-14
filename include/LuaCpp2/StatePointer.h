@@ -78,7 +78,7 @@ namespace Lua {
 		virtual ~StatePointer()
 		{
 			if (_L) {
-				lua_close(_L);
+				Lua::Library::inst().close(_L);
 			}
 		}
 
