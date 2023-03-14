@@ -394,7 +394,7 @@ namespace Lua {
 
 		void setGlobal(const char* name)
 		{
-			lua_setglobal(getL(), name);
+			Library::inst().setglobal(getL(), name);
 		}
 
 		int getType(int index)
@@ -426,7 +426,7 @@ namespace Lua {
 
 		void setGlobal(const std::string& name)
 		{
-			lua_setglobal(getL(), name.c_str());
+			Library::inst().setglobal(getL(), name.c_str());
 		}
 
 		void pop(int num = 1)
