@@ -388,7 +388,7 @@ namespace Lua {
 		void removeElementAt(int index, int num = 1)
 		{
 			for (int i = 0; i < num; i++) {
-				lua_remove(getL(), index + i);
+				Library::inst().remove(getL(), index + i);
 			}
 		}
 
