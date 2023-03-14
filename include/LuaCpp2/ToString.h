@@ -8,7 +8,7 @@ namespace Lua {
 	String ToString(State& state, int index)
 	{
 		int origStackTop = state.getStackTop() - 1;
-		int type = lua_type(state.getL(), index);
+		int type = Library::inst().type(state.getL(), index);
 
 		if (type == LUA_TSTRING || type == LUA_TNUMBER) {
 
@@ -47,7 +47,7 @@ namespace Lua {
 			"__tostring"
 		);
 
-		bool hasToString = lua_type(state.getL(), State::StackTop) == LUA_TFUNCTION;
+		bool hasToString = Library::inst().type(state.getL(), State::StackTop) == LUA_TFUNCTION;
 
 		if (!hasToString) {
 			state.setStackTop(origStackTop);
@@ -66,7 +66,7 @@ namespace Lua {
 			throw;
 		}
 
-		int resultType = lua_type(state.getL(), State::StackTop);
+		int resultType = Library::inst().type(state.getL(), State::StackTop);
 
 		if (resultType != LUA_TSTRING && resultType != LUA_TNUMBER) {
 			state.setStackTop(origStackTop);

@@ -141,7 +141,7 @@ namespace Lua {
 				);
 			}
 
-			int type = lua_type(getL(), top);
+			int type = Library::inst().type(getL(), top);
 
 			if (type != expectedType) {
 				pop();
@@ -399,7 +399,7 @@ namespace Lua {
 
 		int getType(int index)
 		{
-			return lua_type(getL(), index);
+			return Library::inst().type(getL(), index);
 		}
 
 		void raiseError(const std::string& errorMessage)
