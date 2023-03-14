@@ -81,7 +81,7 @@ namespace Lua {
 		// gets a boolean value from the stack
 		bool getBoolean()
 		{
-			int val = lua_toboolean(
+			int val = Library::inst().toboolean(
 				state().getL(),
 				state().getStackTop()
 			);
