@@ -404,7 +404,7 @@ namespace Lua {
 
 		void raiseError(const std::string& errorMessage)
 		{
-			lua_pushlstring(
+			Library::inst().pushlstring(
 				getL(),
 				errorMessage.c_str(),
 				errorMessage.length()
