@@ -77,7 +77,7 @@ namespace Lua {
 			return num;
 		}
 
-		lua_Number getNumber() const
+		Library::Number getNumber() const
 		{
 			// create a temporary copy of the value at the top of the stack
 			_state.pushElementFrom(_index);
@@ -85,7 +85,7 @@ namespace Lua {
 			// get the temporary value as a number
 			ReadableStackSlot slot(_state);
 			slot.prepare();
-			lua_Number num = slot.getNumber();
+			Library::Number num = slot.getNumber();
 			slot.finish();
 
 			return num;

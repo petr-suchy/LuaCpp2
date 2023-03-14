@@ -90,7 +90,7 @@ namespace Lua {
 		}
 
 		// gets a numeric value from the stack
-		lua_Number getNumber()
+		Library::Number getNumber()
 		{
 			return Library::inst().tonumber(
 				state().getL(),

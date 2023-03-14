@@ -9,7 +9,7 @@ namespace Lua {
 	class WritableNumber : public WritableValue {
 	public:
 
-		typedef std::numeric_limits<lua_Number> EngineLimits;
+		typedef std::numeric_limits<Library::Number> EngineLimits;
 
 		WritableNumber(T num) :
 			_num(num)
@@ -20,7 +20,7 @@ namespace Lua {
 			WritableStackSlot slot(state);
 
 			slot.prepare();
-			slot.insertNumber((lua_Number) _num);
+			slot.insertNumber((Library::Number) _num);
 			slot.finish();
 		}
 

@@ -53,7 +53,7 @@ namespace Lua {
 			slot.finish();
 		}
 
-		void insertNumber(lua_Number num)
+		void insertNumber(Library::Number num)
 		{
 			WritableStackSlot slot(_state);
 

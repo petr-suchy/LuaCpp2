@@ -48,7 +48,7 @@ namespace Lua {
 			);
 		}
 
-		void insertNumber(lua_Number num)
+		void insertNumber(Library::Number num)
 		{
 			_build.push_back(
 				[num] (Destination& dest)
