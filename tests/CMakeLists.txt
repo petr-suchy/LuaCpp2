@@ -20,6 +20,7 @@ add_executable(LuaCpp2Tests)
 target_sources(LuaCpp2Tests
     PRIVATE
         src/Main.cpp
+        src/Library/LibraryTests.cpp
         src/State/ClosureTests.cpp
         src/State/FunctionTests.cpp
         src/State/ChunkTests.cpp
