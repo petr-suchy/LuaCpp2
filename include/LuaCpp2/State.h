@@ -365,7 +365,7 @@ namespace Lua {
 
 		int getStackTop()
 		{
-			return lua_gettop(getL());
+			return Library::inst().gettop(getL());
 		}
 
 		void setStackTop(int index)
