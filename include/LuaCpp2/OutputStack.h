@@ -44,7 +44,7 @@ namespace Lua {
 			slot.finish();
 		}
 
-		void insertInteger(lua_Integer num)
+		void insertInteger(Library::Integer num)
 		{
 			WritableStackSlot slot(_state);
 

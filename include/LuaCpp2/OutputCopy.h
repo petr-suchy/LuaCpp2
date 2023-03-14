@@ -38,7 +38,7 @@ namespace Lua {
 			);
 		}
 
-		void insertInteger(lua_Integer num)
+		void insertInteger(Library::Integer num)
 		{
 			_build.push_back(
 				[num] (Destination& dest)

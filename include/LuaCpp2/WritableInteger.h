@@ -9,7 +9,7 @@ namespace Lua {
 	class WritableInteger : public WritableValue {
 	public:
 
-		typedef std::numeric_limits<lua_Integer> EngineLimits;
+		typedef std::numeric_limits<Library::Integer> EngineLimits;
 
 		WritableInteger(T num) :
 			_num(num)
@@ -20,7 +20,7 @@ namespace Lua {
 			WritableStackSlot slot(state);
 			
 			slot.prepare();
-			slot.insertInteger((lua_Integer) _num);
+			slot.insertInteger((Library::Integer) _num);
 			slot.finish();
 		}
 
@@ -34,7 +34,7 @@ namespace Lua {
 	class UnsignedWritableInteger : public WritableValue {
 	public:
 
-		typedef std::numeric_limits<lua_Integer> EngineLimits;
+		typedef std::numeric_limits<Library::Integer> EngineLimits;
 
 		UnsignedWritableInteger(T num) :
 			_num(num)
@@ -51,7 +51,7 @@ namespace Lua {
 			WritableStackSlot slot(state);
 
 			slot.prepare();
-			slot.insertInteger((lua_Integer) _num);
+			slot.insertInteger((Library::Integer) _num);
 			slot.finish();
 		}
 

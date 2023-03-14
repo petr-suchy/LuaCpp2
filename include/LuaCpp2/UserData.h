@@ -40,7 +40,7 @@ namespace Lua {
 
 			auto dataPtr = slot.getUserData<Type>();
 
-			lua_Integer hashCode = getHashCode(state);
+			Library::Integer hashCode = getHashCode(state);
 
 			if (hashCode != typeid(WrappedType).hash_code()) {
 				throw std::logic_error(
@@ -109,7 +109,7 @@ namespace Lua {
 		}
 
 		// gets the hash code of userdata type
-		lua_Integer getHashCode(State& state)
+		Library::Integer getHashCode(State& state)
 		{
 			// insert a metatable at the top of the stack
 			bool hasMetatable = Library::inst().getmetatable(state.getL(), State::StackTop) != 0;
@@ -128,7 +128,7 @@ namespace Lua {
 			);
 
 			// get the hash code
-			lua_Integer hashCode = Library::inst().tointeger(
+			Library::Integer hashCode = Library::inst().tointeger(
 				state.getL(),
 				State::StackTop
 			);

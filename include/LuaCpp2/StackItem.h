@@ -63,7 +63,7 @@ namespace Lua {
 			return boolVal;
 		}
 
-		lua_Integer getInteger() const
+		Library::Integer getInteger() const
 		{
 			// create a temporary copy of the value at the top of the stack
 			_state.pushElementFrom(_index);
@@ -71,7 +71,7 @@ namespace Lua {
 			// get the temporary value as an integer
 			ReadableStackSlot slot(_state);
 			slot.prepare();
-			lua_Integer num = slot.getInteger();
+			Library::Integer num = slot.getInteger();
 			slot.finish();
 
 			return num;

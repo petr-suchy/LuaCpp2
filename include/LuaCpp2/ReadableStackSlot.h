@@ -99,7 +99,7 @@ namespace Lua {
 		}
 
 		// gets a integer value from the stack
-		lua_Integer getInteger()
+		Library::Integer getInteger()
 		{
 			return Library::inst().tointeger(
 				state().getL(),
