@@ -41,7 +41,7 @@ namespace Lua {
 
 		bool isString() const
 		{
-			return lua_isstring(_state.getL(), _index) != 0;
+			return Library::inst().isstring(_state.getL(), _index) != 0;
 		}
 
 		bool isTable() const
