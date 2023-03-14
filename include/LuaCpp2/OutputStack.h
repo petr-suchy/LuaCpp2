@@ -82,7 +82,7 @@ namespace Lua {
 
 		void setTable()
 		{
-			lua_settable(_state.getL(), -3);
+			Library::inst().settable(_state.getL(), -3);
 		}
 
 	private:
