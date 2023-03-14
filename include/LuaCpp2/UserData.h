@@ -112,7 +112,7 @@ namespace Lua {
 		lua_Integer getHashCode(State& state)
 		{
 			// insert a metatable at the top of the stack
-			bool hasMetatable = lua_getmetatable(state.getL(), State::StackTop) != 0;
+			bool hasMetatable = Library::inst().getmetatable(state.getL(), State::StackTop) != 0;
 
 			if (!hasMetatable) {
 				throw std::logic_error(

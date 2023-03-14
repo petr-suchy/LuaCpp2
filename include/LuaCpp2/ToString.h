@@ -31,7 +31,7 @@ namespace Lua {
 		}
 
 		// insert a metatable at the top of the stack
-		bool hasMetatable = lua_getmetatable(state.getL(), State::StackTop) != 0;
+		bool hasMetatable = Library::inst().getmetatable(state.getL(), State::StackTop) != 0;
 
 		if (!hasMetatable) {
 			state.setStackTop(origStackTop);
