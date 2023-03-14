@@ -277,7 +277,7 @@ namespace Lua {
 				moveTopElementTo(StackTop - 1);
 
 				// set the value as a metatable field with the given key name
-				lua_setfield(
+				Library::inst().setfield(
 					getL(),
 					StackTop - 1,
 					currKey.c_str()
@@ -296,7 +296,7 @@ namespace Lua {
 			else {
 
 				// set the value as a table field with the given key name
-				lua_setfield(
+				Library::inst().setfield(
 					getL(),
 					StackTop - 1,
 					currKey.c_str()
