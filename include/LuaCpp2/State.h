@@ -285,7 +285,7 @@ namespace Lua {
 
 				if (!hasMetatable) {
 					// set the new table as a value metatable
-					lua_setmetatable(getL(), State::StackTop - 1);
+					Library::inst().setmetatable(getL(), State::StackTop - 1);
 				}
 				else {
 					// pop the value metatable from the stack
