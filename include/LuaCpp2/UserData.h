@@ -128,7 +128,7 @@ namespace Lua {
 			);
 
 			// get the hash code
-			lua_Integer hashCode = lua_tointeger(
+			lua_Integer hashCode = Library::inst().tointeger(
 				state.getL(),
 				State::StackTop
 			);

@@ -101,7 +101,7 @@ namespace Lua {
 		// gets a integer value from the stack
 		lua_Integer getInteger()
 		{
-			return lua_tointeger(
+			return Library::inst().tointeger(
 				state().getL(),
 				state().getStackTop()
 			);
