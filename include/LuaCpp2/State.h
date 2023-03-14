@@ -416,7 +416,7 @@ namespace Lua {
 		void pushElementFrom(int index)
 		{
 			growStack();
-			lua_pushvalue(getL(), index);
+			Library::inst().pushvalue(getL(), index);
 		}
 
 		void pushGlobal(const std::string& name)
