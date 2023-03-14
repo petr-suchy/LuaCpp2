@@ -11,7 +11,7 @@ namespace Lua {
 			_buff("")
 		{}
 
-		static const char* cb(lua_State *L, void* data, size_t* size)
+		static const char* cb(Library::State*L, void* data, size_t* size)
 		{
 			StreamReader* reader = reinterpret_cast<StreamReader*>(data);
 

@@ -15,7 +15,7 @@ namespace Lua {
 		{}
 
 		static int cb(
-			lua_State *L,
+			Library::State*L,
 			const void* toWrite,
 			size_t len,
 			void* obj

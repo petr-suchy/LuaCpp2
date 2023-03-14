@@ -35,7 +35,7 @@ namespace Lua {
 			State(std::make_shared<NullStatePointer>())
 		{}
 
-		State(lua_State* L) :
+		State(Library::State* L) :
 			State(std::make_shared<AuxStatePointer>(L))
 		{}
 
@@ -49,7 +49,7 @@ namespace Lua {
 			return _ptr;
 		}
 
-		lua_State* getL()
+		Library::State* getL()
 		{
 			return _ptr->getL();
 		}

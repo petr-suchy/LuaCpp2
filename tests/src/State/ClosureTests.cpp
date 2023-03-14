@@ -13,7 +13,7 @@ BOOST_AUTO_TEST_SUITE(State__Closure)
 
 static bool __hasBeenCalled;
 
-static int closureFunc(lua_State* L)
+static int closureFunc(Lua::Library::State* L)
 {
 	Lua::State state(L);
 

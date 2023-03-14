@@ -51,7 +51,7 @@ namespace Lua {
 		> FunctionPointer;
 
 		// calls the host function
-		static int callFunc(lua_State* L)
+		static int callFunc(Library::State* L)
 		{
 			State state(L);
 			int numOfOutputArgs = 0;

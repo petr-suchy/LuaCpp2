@@ -230,7 +230,7 @@ namespace Lua {
 	class AuxiliaryContext : public Context {
 	public:
 
-		AuxiliaryContext(lua_State* L) :
+		AuxiliaryContext(Library::State* L) :
 			_state(L),
 			_top(_state.getStackTop())
 		{}

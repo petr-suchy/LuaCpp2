@@ -139,7 +139,7 @@ namespace Lua {
 			return hashCode;
 		}
 
-		static int gc(lua_State *L)
+		static int gc(Library::State *L)
 		{
 			Type** userDataPtr2Ptr = reinterpret_cast<Type**>(
 				lua_touserdata(L, 1)

@@ -16,7 +16,7 @@ namespace Lua {
 	public:
 
 		virtual bool isOpen() = 0;
-		virtual lua_State* getL() = 0;
+		virtual Library::State* getL() = 0;
 
 	};
 
@@ -28,7 +28,7 @@ namespace Lua {
 			return false;
 		}
 
-		virtual lua_State* getL()
+		virtual Library::State* getL()
 		{
 			throw std::logic_error(
 				"engine state is not created"
@@ -42,7 +42,7 @@ namespace Lua {
 	class AuxStatePointer : public AbstractStatePointer {
 	public:
 
-		AuxStatePointer(lua_State* L) :
+		AuxStatePointer(Library::State* L) :
 			_L(L)
 		{}
 
@@ -51,7 +51,7 @@ namespace Lua {
 			return (_L != nullptr);
 		}
 
-		virtual lua_State* getL()
+		virtual Library::State* getL()
 		{
 			if (!_L) {
 				throw std::logic_error(
@@ -64,7 +64,7 @@ namespace Lua {
 
 	private:
 
-		lua_State* _L;
+		Library::State* _L;
 
 	};
 
@@ -87,7 +87,7 @@ namespace Lua {
 			return (_L != nullptr);
 		}
 
-		virtual lua_State* getL()
+		virtual Library::State* getL()
 		{
 			if (!_L) {
 				throw std::logic_error(
@@ -100,7 +100,7 @@ namespace Lua {
 
 	private:
 
-		lua_State* _L;
+		Library::State* _L;
 
 	};
 
