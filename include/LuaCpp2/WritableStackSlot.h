@@ -98,7 +98,7 @@ namespace Lua {
 		// inserts a integer value to the stack
 		void insertInteger(lua_Integer num)
 		{
-			lua_pushinteger(state().getL(), num);
+			Library::inst().pushinteger(state().getL(), num);
 		}
 
 		// inserts a closure to the stack
