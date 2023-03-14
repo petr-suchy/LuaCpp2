@@ -54,7 +54,7 @@ BOOST_AUTO_TEST_CASE(testOutputStack)
 	BOOST_TEST((lua_isinteger(state.getL(), 3) != 0));
 	BOOST_TEST((Lua::Library::inst().isnumber(state.getL(), 4) != 0));
 	BOOST_TEST((Lua::Library::inst().isstring(state.getL(), 5) != 0));
-	BOOST_TEST((lua_istable(state.getL(), 6) != 0));
+	BOOST_TEST((Lua::Library::inst().istable(state.getL(), 6) != 0));
 }
 
 BOOST_AUTO_TEST_CASE(testOutputStackIntegrity)
@@ -223,7 +223,7 @@ BOOST_AUTO_TEST_CASE(testTable)
 			
 	BOOST_TEST(remote.getStackTop() == 1);
 
-	BOOST_TEST((lua_istable(remote.getL(), local.getStackTop()) != 0));
+	BOOST_TEST((Lua::Library::inst().istable(remote.getL(), local.getStackTop()) != 0));
 
 	// read the remote table
 

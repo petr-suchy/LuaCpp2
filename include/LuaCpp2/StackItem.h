@@ -46,7 +46,7 @@ namespace Lua {
 
 		bool isTable() const
 		{
-			return lua_istable(_state.getL(), _index) != 0;
+			return Library::inst().istable(_state.getL(), _index) != 0;
 		}
 
 		bool getBoolean() const
