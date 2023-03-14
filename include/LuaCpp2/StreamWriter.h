@@ -26,7 +26,7 @@ namespace Lua {
 			writer->_os.write((const char*) toWrite, len);
 
 			if (writer->_os.fail()) {
-				lua_pushstring(L, "writing to output stream failed");
+				Library::inst().pushstring(L, "writing to output stream failed");
 				return LUA_ERRRUN;
 			}
 
