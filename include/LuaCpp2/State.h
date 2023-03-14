@@ -370,7 +370,7 @@ namespace Lua {
 
 		void setStackTop(int index)
 		{
-			lua_settop(getL(), index);
+			Library::inst().settop(getL(), index);
 		}
 
 		void pushGlobal(const char* name)
