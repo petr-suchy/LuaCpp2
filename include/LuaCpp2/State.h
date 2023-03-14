@@ -381,7 +381,7 @@ namespace Lua {
 		void moveTopElementTo(int index, int repeat = 1)
 		{
 			for (int i = 0; i < repeat; i++) {
-				lua_insert(getL(), index);
+				Library::inst().insert(getL(), index);
 			}
 		}
 
