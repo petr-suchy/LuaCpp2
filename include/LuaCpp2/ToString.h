@@ -14,7 +14,7 @@ namespace Lua {
 
 			size_t len = 0;
 
-			const char* cstr = lua_tolstring(
+			const char* cstr = Library::inst().tolstring(
 				state.getL(),
 				state.getStackTop(),
 				&len
@@ -80,7 +80,7 @@ namespace Lua {
 
 		size_t len = 0;
 
-		const char* cstr = lua_tolstring(
+		const char* cstr = Library::inst().tolstring(
 			state.getL(),
 			state.getStackTop(),
 			&len
