@@ -36,7 +36,7 @@ namespace Lua {
 
 		bool isNumber() const
 		{
-			return lua_isnumber(_state.getL(), _index) != 0;
+			return Library::inst().isnumber(_state.getL(), _index) != 0;
 		}
 
 		bool isString() const
