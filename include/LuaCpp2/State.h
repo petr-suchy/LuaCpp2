@@ -450,7 +450,7 @@ namespace Lua {
 				case LUA_ERRRUN:
 				case LUA_ERRSYNTAX: {
 					// the error message is at the stack top
-					std::string err(lua_tostring(getL(), StackTop));
+					std::string err(Library::inst().tostring(getL(), StackTop));
 					// pop the error message
 					pop();
 					throw std::runtime_error(err);
