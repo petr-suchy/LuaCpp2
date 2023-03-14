@@ -431,7 +431,7 @@ namespace Lua {
 
 		void pop(int num = 1)
 		{
-			lua_pop(getL(), num);
+			Library::inst().pop(getL(), num);
 		}
 
 	private:
