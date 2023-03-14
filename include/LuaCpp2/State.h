@@ -470,7 +470,7 @@ namespace Lua {
 		// ensures that there are at least LUA_MINSTACK free stack slots in the stack.
 		void growStack()
 		{
-			if (!lua_checkstack(getL(), LUA_MINSTACK)) {
+			if (!Library::inst().checkstack(getL(), LUA_MINSTACK)) {
 				throw std::runtime_error("not enought memory");
 			}
 		}
