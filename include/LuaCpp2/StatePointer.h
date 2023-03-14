@@ -8,6 +8,8 @@ extern "C" {
 #include "lauxlib.h"
 }
 
+#include "Library.h"
+
 namespace Lua {
 
 	class AbstractStatePointer {
