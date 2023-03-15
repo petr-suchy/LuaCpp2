@@ -14,6 +14,12 @@ namespace Lua {
 		// Function prototype for a registered function.
 		typedef int (*CFunction) (State* L);
 
+		// Function prototype that reads blocks while loading chunks.
+		typedef const char* (*Reader) (State* L, void* ud, size_t* sz);
+
+		// Function prototype that writes blocks while dumping chunks.
+		typedef int (*Writer) (State* L, const void* p, size_t sz, void* ud);
+
 		static Library& inst();
 
 		/* State */
@@ -189,6 +195,17 @@ namespace Lua {
 
 		// Calls a function in protected mode.
 		virtual int pcall(State* L, int nargs) = 0;
+
+		/* Load and dump chunks */
+
+		// Loads a chunk.
+		virtual int load(
+			State* L, Reader reader, void* ud,
+			const char* chunkname, const char* mode
+		) = 0;
+
+		// Dumps a function as a binary chunk.
+		virtual int dump(State* L, Writer writer, void* ud, int strip) = 0;
 
 	};
 

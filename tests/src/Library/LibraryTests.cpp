@@ -2,6 +2,7 @@
 #include "../VsTestExplorer.h"
 
 #include <LuaCpp2/Library.h>
+#include <sstream>
 
 static int testingFunction(Lua::Library::State* L)
 {
@@ -22,6 +23,33 @@ static int testingClosure(Lua::Library::State* L)
 	Lua::Library::inst().pushinteger(L, n);
 
 	return 1;
+}
+
+static const char* testingReader(Lua::Library::State* L, void* ud, size_t* sz)
+{
+	static char buff[512];
+
+	std::istringstream* iss = reinterpret_cast<
+		std::istringstream*
+	>(ud);
+
+	iss->read(buff, sizeof(buff));
+	*sz = (size_t) iss->gcount();
+
+	return buff;
+}
+
+static int testingWriter(Lua::Library::State* L, const void* p, size_t sz, void* ud)
+{
+	std::ostringstream* oss = reinterpret_cast<
+		std::ostringstream*
+	>(ud);
+
+	oss->write(
+		reinterpret_cast<const char*>(p), sz
+	);
+
+	return 0;
 }
 
 BOOST_AUTO_TEST_SUITE(Library__Library)
@@ -322,6 +350,59 @@ BOOST_AUTO_TEST_CASE(testClosure)
 	BOOST_TEST(Lua::Library::inst().gettop(L) == 1);
 	BOOST_TEST(Lua::Library::inst().tointeger(L, 1) == 123);
 
+	Lua::Library::inst().close(L);
+}
+
+BOOST_AUTO_TEST_CASE(testChunk)
+{
+	Lua::Library::State* L = Lua::Library::inst().newstate();
+	
+	// load chunk
+
+	std::istringstream iss(
+		"return function (x, y) return x + y end"
+	);
+
+	Lua::Library::inst().load(L, &testingReader, &iss, "", "bt");
+
+	BOOST_TEST(Lua::Library::inst().gettop(L) == 1);
+	BOOST_TEST(Lua::Library::inst().isfunction(L, 1));
+
+	Lua::Library::inst().pcall(L, 0);
+
+	BOOST_TEST(Lua::Library::inst().gettop(L) == 1);
+	BOOST_TEST(Lua::Library::inst().isfunction(L, 1));
+
+	// dump chunk
+
+	std::stringstream ss;
+
+	Lua::Library::inst().dump(L, &testingWriter, &ss, 0);
+	
+	BOOST_TEST(Lua::Library::inst().gettop(L) == 1);
+	BOOST_TEST((ss.str().length() > 0));
+	
+	// dump does not pop the function from the stack
+	Lua::Library::inst().pop(L, 1);
+	BOOST_TEST(Lua::Library::inst().gettop(L) == 0);
+	
+	Lua::Library::inst().load(L, &testingReader, &ss, "", "bt");
+
+	BOOST_TEST(Lua::Library::inst().gettop(L) == 1);
+	BOOST_TEST(Lua::Library::inst().isfunction(L, 1));
+	
+	// call returned function
+
+	Lua::Library::inst().pushinteger(L, 2);
+	Lua::Library::inst().pushinteger(L, 3);
+	Lua::Library::inst().pcall(L, 2);
+
+	// check result
+
+	BOOST_TEST(Lua::Library::inst().gettop(L) == 1);
+	BOOST_TEST(Lua::Library::inst().isinteger(L, 1));
+	BOOST_TEST(Lua::Library::inst().tointeger(L, 1) == 5);
+	
 	Lua::Library::inst().close(L);
 }
 

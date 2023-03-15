@@ -267,6 +267,21 @@ namespace Lua {
 			return lua_pcall(L, nargs, LUA_MULTRET, 0);
 		}
 
+		/* Load and dump chunks */
+
+		virtual int load(
+			State* L, Reader reader, void* ud,
+			const char* chunkname, const char* mode
+		)
+		{
+			return lua_load(L, reader, ud, chunkname, mode);
+		}
+
+		virtual int dump(State* L, Writer writer, void* ud, int strip)
+		{
+			return lua_dump(L, writer, ud, strip);
+		}
+
     };
 
 }
