@@ -332,11 +332,11 @@ namespace Lua {
 			bool strip = false
 		)
 		{
-			int status = lua_dump(
+			int status = Library::inst().dump(
 				getL(),
 				writerCb,
 				writer,
-				strip
+				(strip ? 1 : 0)
 			);
 
 			reportStatus(status);
