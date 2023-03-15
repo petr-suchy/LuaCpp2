@@ -72,6 +72,16 @@ namespace Lua {
 			lua_pushboolean(L, b);
 		}
 
+		virtual void pushcclosure(State* L, CFunction fn, int n)
+		{
+			lua_pushcclosure(L, fn, n);
+		}
+
+		virtual void pushcfunction(State* L, CFunction fn)
+		{
+			lua_pushcfunction(L, fn);
+		}
+
 		virtual void pushinteger(State* L, Integer n)
 		{
 			lua_pushinteger(L, n);
@@ -186,6 +196,11 @@ namespace Lua {
 			return lua_tolstring(L, idx, len);
 		}
 
+		virtual int upvalueindex(int n)
+		{
+			return lua_upvalueindex(n);
+		}
+
 		/* Tables */
 
 		virtual void createtable(State* L, int narr, int nrec)
@@ -233,6 +248,23 @@ namespace Lua {
 		virtual void getglobal(State* L, const char* name)
 		{
 			lua_getglobal(L, name);
+		}
+
+		/* Calling functions */
+
+		virtual int pcall(State* L, int nargs, int nresults, int errfunc)
+		{
+			return lua_pcall(L, nargs, nresults, errfunc);
+		}
+
+		virtual int pcall(State* L, int nargs, int nresults)
+		{
+			return lua_pcall(L, nargs, nresults, 0);
+		}
+
+		virtual int pcall(State* L, int nargs)
+		{
+			return lua_pcall(L, nargs, LUA_MULTRET, 0);
 		}
 
     };

@@ -11,6 +11,9 @@ namespace Lua {
 		typedef lua_Integer Integer;
 		typedef lua_Number Number;
 
+		// Function prototype for a registered function.
+		typedef int (*CFunction) (State* L);
+
 		static Library& inst();
 
 		/* State */
@@ -55,6 +58,12 @@ namespace Lua {
 
 		// Pushes a boolean value onto the stack.
 		virtual void pushboolean(State* L, int b) = 0;
+
+		// Pushes a closure onto the stack.
+		virtual void pushcclosure(State* L, CFunction fn, int n) = 0;
+
+		// Pushes a function onto the stack.
+		virtual void pushcfunction(State* L, CFunction fn) = 0;
 
 		// Pushes a integer value onto the stack.
 		virtual void pushinteger(State*, Integer n) = 0;
@@ -131,6 +140,9 @@ namespace Lua {
 		// Converts the value at the given acceptable index to a string.
 		virtual const char* tolstring(State* L, int idx, size_t* len) = 0;
 
+		// Returns the pseudo-index of the given upvalue.
+		virtual int upvalueindex(int n) = 0;
+
 		/* Tables */
 
 		// Creates a new empty table and pushes it onto the stack.
@@ -166,6 +178,17 @@ namespace Lua {
 
 		// Pushes onto the stack the value of the global name.
 		virtual void getglobal(State* L, const char* name) = 0;
+
+		/* Calling functions */
+
+		// Calls a function in protected mode.
+		virtual int pcall(State* L, int nargs, int nresults, int errfunc) = 0;
+
+		// Calls a function in protected mode.
+		virtual int pcall(State* L, int nargs, int nresults) = 0;
+
+		// Calls a function in protected mode.
+		virtual int pcall(State* L, int nargs) = 0;
 
 	};
 
