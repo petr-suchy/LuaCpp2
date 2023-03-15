@@ -15,7 +15,7 @@ namespace Lua {
 		{
 			Library::inst().pushvalue(
 				state.getL(),
-				lua_upvalueindex(_index)
+				Library::inst().upvalueindex(_index)
 			);
 		}
 
