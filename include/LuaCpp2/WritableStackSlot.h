@@ -104,7 +104,7 @@ namespace Lua {
 		// inserts a closure to the stack
 		void insertClosure(lua_CFunction func, int numOfUpValues)
 		{
-			lua_pushcclosure(
+			Library::inst().pushcclosure(
 				state().getL(),
 				func,
 				numOfUpValues
