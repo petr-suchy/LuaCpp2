@@ -348,7 +348,7 @@ namespace Lua {
 			int errfunc = 0
 		)
 		{
-			int status = lua_pcall(
+			int status = Library::inst().pcall(
 				getL(),
 				nargs,
 				nresults,
