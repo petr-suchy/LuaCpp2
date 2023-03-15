@@ -315,7 +315,7 @@ namespace Lua {
 			const std::string& mode = "bt"
 		)
 		{
-			int status = lua_load(
+			int status = Library::inst().load(
 				getL(),
 				readerCb,
 				reader,
