@@ -96,7 +96,7 @@ namespace Lua {
 			Library::inst().createtable(state.getL(), 0, 0);
 
 			// insert the garbage collector metamethod for userdata
-			lua_pushcfunction(state.getL(), gc);
+			Library::inst().pushcfunction(state.getL(), gc);
 			// set it as field of the table
 			Library::inst().setfield(state.getL(), State::StackTop - 1, "__gc");
 
