@@ -309,7 +309,7 @@ namespace Lua {
 		}
 
 		void loadChunk(
-			lua_Reader readerCb,
+			Lua::Library::Reader readerCb,
 			void *reader,
 			const std::string& chunkName = "",
 			const std::string& mode = "bt"
