@@ -7,7 +7,7 @@ namespace Lua {
 	class Closure {
 	public:
 
-		Closure(WritableStackSlot& slot, lua_CFunction func) :
+		Closure(WritableStackSlot& slot, Library::CFunction func) :
 			_slot(slot),
 			_func(func),
 			_top(slot.state().getStackTop()),
@@ -41,7 +41,7 @@ namespace Lua {
 	private:
 
 		WritableStackSlot& _slot;
-		lua_CFunction _func;
+		Library::CFunction _func;
 		int _top;
 		int _tableLevel;
 		bool _inserted;

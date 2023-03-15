@@ -88,7 +88,7 @@ namespace Lua {
 		// sets meta information about userdata at the top of the stack
 		void setMetaInfo(
 			State& state,
-			lua_CFunction gc,
+			Library::CFunction gc,
 			size_t hashCode
 		) const
 		{
