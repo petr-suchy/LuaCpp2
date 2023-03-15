@@ -327,7 +327,7 @@ namespace Lua {
 		}
 
 		void dumpChunk(
-			lua_Writer writerCb,
+			Lua::Library::Writer writerCb,
 			void* writer,
 			bool strip = false
 		)
