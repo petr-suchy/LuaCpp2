@@ -20,7 +20,7 @@ namespace Lua {
 		{
 			if (auto statePtr = _weakStatePtr.lock()) {
 				// release both the function and the reference
-				luaL_unref(statePtr->getL(), LUA_REGISTRYINDEX, _ref);
+				Lua::Library::inst().unref(statePtr->getL(), _ref);
 			}
 		}
 
