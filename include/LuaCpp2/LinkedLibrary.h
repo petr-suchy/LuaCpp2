@@ -196,6 +196,11 @@ namespace Lua {
 			return lua_tolstring(L, idx, len);
 		}
 
+		virtual void* touserdata(State* L, int idx)
+		{
+			return lua_touserdata(L, idx);
+		}
+
 		virtual int upvalueindex(int n)
 		{
 			return lua_upvalueindex(n);
@@ -285,6 +290,13 @@ namespace Lua {
 		virtual int dump(State* L, Writer writer, void* ud, int strip)
 		{
 			return lua_dump(L, writer, ud, strip);
+		}
+
+		/* Userdata */
+
+		virtual void* newuserdata(State* L, size_t size)
+		{
+			return lua_newuserdata(L, size);
 		}
 
     };

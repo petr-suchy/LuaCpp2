@@ -146,6 +146,9 @@ namespace Lua {
 		// Converts the value at the given acceptable index to a string.
 		virtual const char* tolstring(State* L, int idx, size_t* len) = 0;
 
+		// Returns a pointer to the userdata at the given acceptable index.
+		virtual void* touserdata(State* L, int idx) = 0;
+
 		// Returns the pseudo-index of the given upvalue.
 		virtual int upvalueindex(int n) = 0;
 
@@ -210,6 +213,12 @@ namespace Lua {
 
 		// Dumps a function as a binary chunk.
 		virtual int dump(State* L, Writer writer, void* ud, int strip) = 0;
+
+		/* Userdata */
+
+		// Allocates a new block of memory with the given size, pushes onto the stack
+		// a new full userdata with the block address, and returns this address.
+		virtual void* newuserdata(State* L, size_t size) = 0;
 
 	};
 

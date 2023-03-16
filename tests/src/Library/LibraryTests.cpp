@@ -443,4 +443,20 @@ BOOST_AUTO_TEST_CASE(testChunk)
 	Lua::Library::inst().close(L);
 }
 
+BOOST_AUTO_TEST_CASE(testUserdata)
+{
+	Lua::Library::State* L = Lua::Library::inst().newstate();
+
+	void* p1 = Lua::Library::inst().newuserdata(L, 256);
+
+	BOOST_TEST(p1);
+	BOOST_TEST(Lua::Library::inst().isuserdata(L, 1));
+
+	void* p2 = Lua::Library::inst().touserdata(L, 1);
+
+	BOOST_TEST(p1 == p2);
+
+	Lua::Library::inst().close(L);
+}
+
 BOOST_AUTO_TEST_SUITE_END()
