@@ -139,7 +139,7 @@ namespace Lua {
 		// inserts an item associated with the reference to the stack
 		void insertReference(int ref)
 		{
-			lua_rawgeti(state().getL(), LUA_REGISTRYINDEX, ref);
+			Library::inst().getref(state().getL(), ref);
 		}
 
 		// inserts a new table to the stack
