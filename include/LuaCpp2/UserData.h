@@ -142,7 +142,7 @@ namespace Lua {
 		static int gc(Library::State *L)
 		{
 			Type** userDataPtr2Ptr = reinterpret_cast<Type**>(
-				lua_touserdata(L, 1)
+				Library::inst().touserdata(L, 1)
 			);
 
 			delete *userDataPtr2Ptr;

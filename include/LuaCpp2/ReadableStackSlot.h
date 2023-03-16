@@ -118,7 +118,7 @@ namespace Lua {
 		template<typename Type>
 		Type* getUserData()
 		{
-			void* rawUserDataPtr2Ptr = lua_touserdata(
+			void* rawUserDataPtr2Ptr = Library::inst().touserdata(
 				state().getL(),
 				state().getStackTop()
 			);
