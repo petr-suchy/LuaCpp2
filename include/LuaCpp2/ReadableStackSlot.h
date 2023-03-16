@@ -132,7 +132,7 @@ namespace Lua {
 			// pops a value from the stack, stores it into
 			// the registry with a fresh integer key, and returns
 			// that key as "reference"
-			return luaL_ref(state().getL(), LUA_REGISTRYINDEX);
+			return Library::inst().ref(state().getL());
 		}
 
 		// gets a table from the stack
