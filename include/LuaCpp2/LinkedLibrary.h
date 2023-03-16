@@ -238,6 +238,11 @@ namespace Lua {
 			return lua_getmetatable(L, idx);
 		}
 
+		virtual int next(State* L, int idx)
+		{
+			return lua_next(L, idx);
+		}
+
 		/* Global variables */
 
 		virtual void setglobal(State* L, const char* name)

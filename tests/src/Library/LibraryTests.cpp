@@ -282,6 +282,43 @@ BOOST_AUTO_TEST_CASE(testTable)
 	Lua::Library::inst().close(L);
 }
 
+BOOST_AUTO_TEST_CASE(testNext)
+{
+	Lua::Library::State* L = Lua::Library::inst().newstate();
+
+	std::map<std::string, std::string> tbl1 = {
+		{"Mon", "Monday"}, {"Tue", "Tuesday"}, {"Wed", "Wednesday"},
+		{"Thu", "Thursday"}, {"Fri", "Friday"}, {"Sat", "Saturday "},
+		{"Sun", "Sunday"}
+	};
+
+	Lua::Library::inst().createtable(L, 0, 0);
+
+	for (auto& day : tbl1) {
+		Lua::Library::inst().pushstring(L, day.first.c_str());
+		Lua::Library::inst().pushstring(L, day.second.c_str());
+		Lua::Library::inst().settable(L, 1);
+	}
+
+	std::map<std::string, std::string> tbl2;
+
+	Lua::Library::inst().pushnil(L);
+
+	while (Lua::Library::inst().next(L, 1)) {
+
+		tbl2.insert({
+				Lua::Library::inst().tostring(L, -2),
+				Lua::Library::inst().tostring(L, -1)
+			});
+
+		Lua::Library::inst().pop(L, 1);
+	}
+
+	BOOST_TEST(tbl1 == tbl2);
+
+	Lua::Library::inst().close(L);
+}
+
 BOOST_AUTO_TEST_CASE(testMetatable)
 {
 	Lua::Library::State* L = Lua::Library::inst().newstate();

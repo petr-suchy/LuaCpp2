@@ -177,6 +177,10 @@ namespace Lua {
 		// or returns 0 if the value has no metatable.
 		virtual int getmetatable(State* L, int idx) = 0;
 
+		// Pops a key from the stack, and pushes a key-value pair from the table at the given index
+		// (the "next" pair after the given key).
+		virtual int next(State* L, int idx) = 0;
+
 		/* Global variables */
 
 		// Pops a value from the stack and sets it as the new value of global name.
