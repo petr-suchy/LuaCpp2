@@ -459,4 +459,47 @@ BOOST_AUTO_TEST_CASE(testUserdata)
 	Lua::Library::inst().close(L);
 }
 
+BOOST_AUTO_TEST_CASE(testReference)
+{
+	Lua::Library::State* L = Lua::Library::inst().newstate();
+
+	Lua::Library::inst().pushinteger(L, 123);
+	BOOST_TEST(Lua::Library::inst().gettop(L) == 1);
+	BOOST_TEST(Lua::Library::inst().isinteger(L, 1));
+
+	int ref = Lua::Library::inst().ref(L);
+
+	BOOST_TEST(Lua::Library::inst().gettop(L) == 0);
+	BOOST_TEST(!Lua::Library::inst().isrefnil(ref));
+
+	Lua::Library::inst().getref(L, ref);
+
+	BOOST_TEST(Lua::Library::inst().gettop(L) == 1);
+	BOOST_TEST(Lua::Library::inst().isinteger(L, 1));
+	BOOST_TEST(Lua::Library::inst().tointeger(L, 1) == 123);
+
+	Lua::Library::inst().close(L);
+}
+
+BOOST_AUTO_TEST_CASE(testNilReference)
+{
+	Lua::Library::State* L = Lua::Library::inst().newstate();
+
+	Lua::Library::inst().pushnil(L);
+	BOOST_TEST(Lua::Library::inst().gettop(L) == 1);
+	BOOST_TEST(Lua::Library::inst().isnil(L, 1));
+
+	int ref = Lua::Library::inst().ref(L);
+
+	BOOST_TEST(Lua::Library::inst().gettop(L) == 0);
+	BOOST_TEST(Lua::Library::inst().isrefnil(ref));
+
+	Lua::Library::inst().getref(L, ref);
+
+	BOOST_TEST(Lua::Library::inst().gettop(L) == 1);
+	BOOST_TEST(Lua::Library::inst().isnil(L, 1));
+
+	Lua::Library::inst().close(L);
+}
+
 BOOST_AUTO_TEST_SUITE_END()

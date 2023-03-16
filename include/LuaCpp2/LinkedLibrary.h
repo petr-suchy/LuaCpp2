@@ -299,6 +299,28 @@ namespace Lua {
 			return lua_newuserdata(L, size);
 		}
 
+		/* References */
+
+		virtual int ref(State* L)
+		{
+			return luaL_ref(L, LUA_REGISTRYINDEX);
+		}
+
+		virtual void getref(State* L, int ref)
+		{
+			lua_rawgeti(L, LUA_REGISTRYINDEX, ref);
+		}
+
+		virtual void unref(State* L, int ref)
+		{
+			luaL_unref(L, LUA_REGISTRYINDEX, ref);
+		}
+
+		virtual int isrefnil(int ref)
+		{
+			return ref == LUA_REFNIL;
+		}
+
     };
 
 }

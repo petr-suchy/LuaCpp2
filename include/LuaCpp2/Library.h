@@ -220,6 +220,21 @@ namespace Lua {
 		// a new full userdata with the block address, and returns this address.
 		virtual void* newuserdata(State* L, size_t size) = 0;
 
+		/* References */
+
+		// Creates and returns a reference to the value at the top of the stack
+		// and pops the value.
+		virtual int ref(State* L) = 0;
+
+		// Pushes the value associated with the given reference onto the stack.
+		virtual void getref(State* L, int ref) = 0;
+
+		// Releases the given reference and its associated value.
+		virtual void unref(State* L, int ref) = 0;
+
+		// Returns 1 if the given reference is nil, and 0 otherwise.
+		virtual int isrefnil(int ref) = 0;
+
 	};
 
 }
