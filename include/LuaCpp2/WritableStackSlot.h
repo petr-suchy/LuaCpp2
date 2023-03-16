@@ -125,7 +125,7 @@ namespace Lua {
 			// allocate a userdata pointer to the wrapped type pointer
 			// and insert it at the top of the stack as userdata
 			Type** userDataPtr2Ptr =  reinterpret_cast<Type**>(
-				Lua::Library::inst().newuserdata(state().getL(), sizeof(Type*))
+				Library::inst().newuserdata(state().getL(), sizeof(Type*))
 			);
 
 			if (!userDataPtr2Ptr) {
