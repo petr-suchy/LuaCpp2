@@ -4,7 +4,7 @@
 #include <LuaCpp2/Library.h>
 #include <sstream>
 
-static int testingFunction(Lua::Library::State* L)
+static int testedFunction(Lua::Library::State* L)
 {
 	Lua::Library::Integer x = Lua::Library::inst().tointeger(L, 1);
 	Lua::Library::Integer y = Lua::Library::inst().tointeger(L, 2);
@@ -23,7 +23,7 @@ static int testedFunctionWithError(Lua::Library::State* L)
 	return 0;
 }
 
-static int testingClosure(Lua::Library::State* L)
+static int testedClosure(Lua::Library::State* L)
 {
 	Lua::Library::Integer n = Lua::Library::inst().tointeger(
 		L, Lua::Library::inst().upvalueindex(1)
@@ -374,7 +374,7 @@ BOOST_AUTO_TEST_CASE(testFunction)
 {
 	Lua::Library::State* L = Lua::Library::inst().newstate();
 
-	Lua::Library::inst().pushcfunction(L, &testingFunction);
+	Lua::Library::inst().pushcfunction(L, &testedFunction);
 	Lua::Library::inst().pushinteger(L, 2);
 	Lua::Library::inst().pushinteger(L, 3);
 	Lua::Library::inst().pcall(L, 2);
@@ -411,7 +411,7 @@ BOOST_AUTO_TEST_CASE(testClosure)
 	Lua::Library::State* L = Lua::Library::inst().newstate();
 
 	Lua::Library::inst().pushinteger(L, 123);
-	Lua::Library::inst().pushcclosure(L, &testingClosure, 1);
+	Lua::Library::inst().pushcclosure(L, &testedClosure, 1);
 	Lua::Library::inst().pcall(L, 0);
 
 	BOOST_TEST(Lua::Library::inst().gettop(L) == 1);
