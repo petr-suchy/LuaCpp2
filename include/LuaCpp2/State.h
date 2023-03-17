@@ -441,29 +441,19 @@ namespace Lua {
 		int _tableLevel;
 		int _closureLevel;
 
+		// throws an exception in case of an error
 		void reportStatus(int status)
 		{
-			switch (status) {
-				case LUA_OK:
-					// success
-				break;
-				case LUA_ERRRUN:
-				case LUA_ERRSYNTAX: {
-					// the error message is at the stack top
-					std::string err(Library::inst().tostring(getL(), StackTop));
-					// pop the error message
-					pop();
-					throw std::runtime_error(err);
-				}
-				break;
-				case LUA_ERRMEM:
-					throw std::runtime_error("memory allocation error");
-				break;
-				case LUA_ERRERR:
-					throw std::runtime_error("error while running the message handler");
-				break;
-				default:
-					throw std::runtime_error("unknown error");
+			if (status) {
+
+				char err[256];
+
+				size_t len = Library::inst().toerrorstring(
+					getL(), status,
+					err, sizeof(err)
+				);
+
+				throw std::runtime_error(std::string{err, len});
 			}
 		}
 

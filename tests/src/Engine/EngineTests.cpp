@@ -316,4 +316,33 @@ BOOST_AUTO_TEST_CASE(testFunctionInsideTable)
 	BOOST_TEST(result == 30);
 }
 
+BOOST_AUTO_TEST_CASE(testErrorString)
+{
+	Lua::Engine lua(
+		[](Lua::Lua lua)
+		{
+			lua.openStdLibs();
+
+			lua.global("functionWithError").in() << Lua::MakeFunc(
+				[](Lua::Args args, Lua::Lua lua)
+				{
+					throw std::logic_error("test error string");
+				}
+			);
+
+		}
+	);
+
+	std::string errorString;
+
+	try {
+		lua.pcall("functionWithError");
+	}
+	catch (std::exception& e) {
+		errorString = e.what();
+	}
+
+	BOOST_TEST(errorString == "test error string");
+}
+
 BOOST_AUTO_TEST_SUITE_END()
