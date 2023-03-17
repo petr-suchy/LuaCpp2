@@ -40,7 +40,7 @@ namespace Lua {
 
 			int ref = slot.getReference();
 
-			if (ref == LUA_REFNIL) {
+			if (Library::inst().isrefnil(ref)) {
 				throw std::runtime_error("nil reference returned");
 			}
 
