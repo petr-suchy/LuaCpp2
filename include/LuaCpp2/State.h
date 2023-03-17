@@ -410,7 +410,7 @@ namespace Lua {
 				errorMessage.length()
 			);
 
-			lua_error(getL());
+			Library::inst().error(getL());
 		}
 
 		void pushElementFrom(int index)
