@@ -77,7 +77,7 @@ namespace Lua {
 			~Ref()
 			{
 				if (auto statePtr = _weakStatePtr.lock()) {
-					Lua::Library::inst().unref(
+					Library::inst().unref(
 						statePtr->getL(),
 						_ref
 					);

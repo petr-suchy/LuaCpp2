@@ -72,13 +72,13 @@ namespace Lua {
 	public:
 
 		StatePointer() :
-			_L(Lua::Library::inst().newstate())
+			_L(Library::inst().newstate())
 		{}
 
 		virtual ~StatePointer()
 		{
 			if (_L) {
-				Lua::Library::inst().close(_L);
+				Library::inst().close(_L);
 			}
 		}
 
