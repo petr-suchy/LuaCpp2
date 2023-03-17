@@ -235,6 +235,14 @@ namespace Lua {
 		// Returns 1 if the given reference is nil, and 0 otherwise.
 		virtual int isrefnil(int ref) = 0;
 
+		/* Errors */
+
+		// Generates an error, using the value at the top of the stack as the error object.
+		virtual int error(State* L) = 0;
+
+		// Converts an error to a string.
+		virtual size_t toerrorstring(State* L, int status, char* buff, size_t size) = 0;
+
 	};
 
 }

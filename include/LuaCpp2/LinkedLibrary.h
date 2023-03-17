@@ -3,6 +3,8 @@
 #include "Library.h"
 #include "lua.hpp"
 
+#include <cstring> // for strncpy
+
 namespace Lua {
 
     template<typename NewState>
@@ -319,6 +321,79 @@ namespace Lua {
 		virtual int isrefnil(int ref)
 		{
 			return ref == LUA_REFNIL;
+		}
+
+		/* Errors */
+
+		virtual int error(State* L)
+		{
+			return lua_error(L);
+		}
+
+		virtual size_t toerrorstring(State* L, int status, char* buff, size_t size)
+		{
+			const char* defaultErrorString = "unknown error";
+			const char* outputString = "";
+			size_t outputStringLength = 0;
+			bool popAfterCopy = false;
+
+			switch (status) {
+				case LUA_OK:
+					outputString = "success";
+					outputStringLength = strlen(outputString);
+				break;
+				case LUA_ERRRUN:
+				case LUA_ERRSYNTAX:
+					if (gettop(L) > 0) { // is an error at the stack top?
+
+						outputString = tolstring(L, -1, &outputStringLength);
+
+						if (!outputString) {
+							// set the default error string when an error
+							// cannot be converted to a string
+							outputString = defaultErrorString;
+							outputStringLength = strlen(outputString);
+						}
+
+						popAfterCopy = true;
+
+					}
+					else {
+						outputString = defaultErrorString;
+						outputStringLength = strlen(outputString);
+					}
+				break;
+				case LUA_ERRMEM:
+					outputString = "memory allocation error";
+					outputStringLength = strlen(outputString);
+				break;
+				case LUA_ERRERR:
+					outputString = "error while running the message handler";
+					outputStringLength = strlen(outputString);
+				break;
+				default:
+					outputString = defaultErrorString;
+					outputStringLength = strlen(outputString);
+				break;
+			}
+
+			if (buff && size) {
+
+				if (outputStringLength > size) {
+					outputStringLength = size;
+				}
+
+				memcpy(buff, outputString, outputStringLength);
+			}
+			else {
+				outputStringLength = 0;
+			}
+
+			if (popAfterCopy) {
+				pop(L, 1);
+			}
+
+			return outputStringLength;
 		}
 
     };

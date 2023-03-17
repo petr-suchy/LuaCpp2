@@ -14,6 +14,15 @@ static int testingFunction(Lua::Library::State* L)
 	return 1;
 }
 
+static int testedFunctionWithError(Lua::Library::State* L)
+{
+
+	Lua::Library::inst().pushstring(L, "test error string");
+	Lua::Library::inst().error(L);
+
+	return 0;
+}
+
 static int testingClosure(Lua::Library::State* L)
 {
 	Lua::Library::Integer n = Lua::Library::inst().tointeger(
@@ -372,6 +381,27 @@ BOOST_AUTO_TEST_CASE(testFunction)
 
 	BOOST_TEST(Lua::Library::inst().gettop(L) == 1);
 	BOOST_TEST(Lua::Library::inst().tointeger(L, 1) == 5);
+
+	Lua::Library::inst().close(L);
+}
+
+BOOST_AUTO_TEST_CASE(testFunctionWithError)
+{
+	Lua::Library::State* L = Lua::Library::inst().newstate();
+
+	Lua::Library::inst().pushcfunction(L, &testedFunctionWithError);
+	int status = Lua::Library::inst().pcall(L, 0);
+
+	BOOST_TEST(status != 0);
+	BOOST_TEST(Lua::Library::inst().gettop(L) == 1);
+
+	char buff[256];
+	size_t len = Lua::Library::inst().toerrorstring(L, status, buff, sizeof(buff));
+
+	BOOST_TEST(Lua::Library::inst().gettop(L) == 0);
+
+	std::string error(buff, len);
+	BOOST_TEST(error == "test error string");
 
 	Lua::Library::inst().close(L);
 }
