@@ -405,7 +405,7 @@ namespace Lua {
 
 		bool isValueAt(int index, Library::Type type)
 		{
-			return Library::inst().isvalue(getL(), index, type);
+			return Library::inst().isvalue(getL(), index, type) != 0;
 		}
 
 		void raiseError(const std::string& errorMessage)
