@@ -66,6 +66,12 @@ namespace Lua {
 			state().prepareReading(expectedType);
 		}
 
+		// prepares to read an item with a specific type from the slot
+		void prepare(Library::Type expectedType)
+		{
+			state().prepareReading(expectedType);
+		}
+
 		// finishes item reading
 		void finish()
 		{

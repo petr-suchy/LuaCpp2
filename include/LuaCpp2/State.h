@@ -152,6 +152,34 @@ namespace Lua {
 
 		}
 
+		void prepareReading(Library::Type expectedType)
+		{
+			if (getTableLevel() > 0) {
+				getValueFromField();
+			}
+
+			if (getStackTop() == 0) {
+
+				throw std::logic_error(
+					std::string{"stack is empty, expected "} + Library::inst().typetoname(expectedType)
+				);
+
+			}
+
+			if (!isValueAt(StackTop, expectedType)) {
+
+				int actualType = Library::inst().type(getL(), StackTop);
+
+				throw std::logic_error(
+					std::string{Library::inst().typetoname(expectedType)}
+						+ " expected, got "
+						+ Library::inst().typetoname(getL(), actualType) + " type"
+				);
+
+			}
+
+		}
+
 		void finishReading()
 		{
 			// there is nothing to do here
@@ -400,6 +428,11 @@ namespace Lua {
 		int getType(int index)
 		{
 			return Library::inst().type(getL(), index);
+		}
+
+		bool isValueAt(int index, Library::Type type)
+		{
+			return Library::inst().isvalue(getL(), index, type);
 		}
 
 		void raiseError(const std::string& errorMessage)
