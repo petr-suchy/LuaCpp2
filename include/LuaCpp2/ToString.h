@@ -10,7 +10,7 @@ namespace Lua {
 		int origStackTop = state.getStackTop() - 1;
 		int type = Library::inst().type(state.getL(), index);
 
-		if (type == LUA_TSTRING ||
+		if (state.isValueAt(index, Library::Type::String) ||
 			state.isValueAt(index, Library::Type::Integer) ||
 			state.isValueAt(index, Library::Type::Number)
 		) {
@@ -69,10 +69,8 @@ namespace Lua {
 			throw;
 		}
 
-		int resultType = Library::inst().type(state.getL(), State::StackTop);
-
 		if (
-			resultType != LUA_TSTRING &&
+			!state.isValueAt(State::StackTop, Library::Type::String) &&
 			!state.isValueAt(State::StackTop, Library::Type::Integer) &&
 			!state.isValueAt(State::StackTop, Library::Type::Number)
 		) {
