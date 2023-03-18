@@ -570,4 +570,35 @@ BOOST_AUTO_TEST_CASE(testEnumTypeToName)
 	BOOST_TEST(Lua::Library::inst().typetoname(Lua::Library::Type::Userdata) == "userdata");
 }
 
+BOOST_AUTO_TEST_CASE(testIsValue)
+{
+	Lua::Library::State* L = Lua::Library::inst().newstate();
+
+	Lua::Library::inst().pushboolean(L, 1);
+	Lua::Library::inst().pushcfunction(L, &testedFunction);
+
+	// push a function
+	std::istringstream iss("return 123");
+	Lua::Library::inst().load(L, &testedReader, &iss, "", "t");
+
+	Lua::Library::inst().pushinteger(L, 123);
+	Lua::Library::inst().pushnil(L);
+	Lua::Library::inst().pushnumber(L, 123.45);
+	Lua::Library::inst().pushstring(L, "Hi!");
+	Lua::Library::inst().createtable(L, 0, 0);
+	Lua::Library::inst().newuserdata(L, 4);
+
+	BOOST_TEST((Lua::Library::inst().isvalue(L, 1, Lua::Library::Type::Boolean)));
+	BOOST_TEST((Lua::Library::inst().isvalue(L, 2, Lua::Library::Type::CFunction)));
+	BOOST_TEST((Lua::Library::inst().isvalue(L, 3, Lua::Library::Type::Function)));
+	BOOST_TEST((Lua::Library::inst().isvalue(L, 4, Lua::Library::Type::Integer)));
+	BOOST_TEST((Lua::Library::inst().isvalue(L, 5, Lua::Library::Type::Nil)));
+	BOOST_TEST((Lua::Library::inst().isvalue(L, 6, Lua::Library::Type::Number)));
+	BOOST_TEST((Lua::Library::inst().isvalue(L, 7, Lua::Library::Type::String)));
+	BOOST_TEST((Lua::Library::inst().isvalue(L, 8, Lua::Library::Type::Table)));
+	BOOST_TEST((Lua::Library::inst().isvalue(L, 9, Lua::Library::Type::Userdata)));
+
+	Lua::Library::inst().close(L);
+}
+
 BOOST_AUTO_TEST_SUITE_END()

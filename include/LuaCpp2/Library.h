@@ -140,6 +140,10 @@ namespace Lua {
 		// and 0 otherwise.
 		virtual int isuserdata(State* L, int idx) = 0;
 
+		// Returns 1 if the value at the given acceptable index is of the specified type,
+		// and 0 otherwise.
+		virtual int isvalue(State* L, int idx, Type tp) = 0;
+
 		/* Querying elements */
 
 		// Converts the value at the given acceptable index to a boolean value.

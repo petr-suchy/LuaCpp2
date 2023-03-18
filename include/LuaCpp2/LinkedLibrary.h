@@ -197,6 +197,27 @@ namespace Lua {
 			return lua_isuserdata(L, idx);
 		}
 
+		virtual int isvalue(State* L, int idx, Type tp)
+		{
+			int result = 0;
+
+			switch (tp) {
+				case Type::Boolean: result = isboolean(L, idx); break;
+				case Type::CFunction: result = iscfunction(L, idx); break;
+				case Type::Function: result = isfunction(L, idx); break;
+				case Type::Integer: result = isinteger(L, idx); break;
+				case Type::LightUserdata: result = islightuserdata(L, idx); break;
+				case Type::Nil: result = isnil(L, idx); break;
+				case Type::Number: result = isnumber(L, idx); break;
+				case Type::String: result = isstring(L, idx); break;
+				case Type::Table: result = istable(L, idx); break;
+				case Type::Thread: result = isthread(L, idx); break;
+				case Type::Userdata: result = isuserdata(L, idx); break;
+			}
+
+			return result;
+		}
+
 		/* Querying elements */
 
 		virtual int toboolean(State* L, int idx)
