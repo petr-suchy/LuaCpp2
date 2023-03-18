@@ -344,20 +344,18 @@ namespace Lua {
 			reportStatus(status);
 		}
 
-		void pcall(
-			int nargs = 0,
-			int nresults = LUA_MULTRET,
-			int errfunc = 0
-		)
+		void pcall(int nargs = 0)
 		{
-			int status = Library::inst().pcall(
-				getL(),
-				nargs,
-				nresults,
-				errfunc
+			reportStatus(
+				Library::inst().pcall(getL(), nargs)
 			);
+		}
 
-			reportStatus(status);
+		void pcall(int nargs, int nresults)
+		{
+			reportStatus(
+				Library::inst().pcall(getL(), nargs, nresults)
+			);
 		}
 
 		void openStdLibs()
