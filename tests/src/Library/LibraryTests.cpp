@@ -34,7 +34,7 @@ static int testedClosure(Lua::Library::State* L)
 	return 1;
 }
 
-static const char* testingReader(Lua::Library::State* L, void* ud, size_t* sz)
+static const char* testedReader(Lua::Library::State* L, void* ud, size_t* sz)
 {
 	static char buff[512];
 
@@ -48,7 +48,7 @@ static const char* testingReader(Lua::Library::State* L, void* ud, size_t* sz)
 	return buff;
 }
 
-static int testingWriter(Lua::Library::State* L, const void* p, size_t sz, void* ud)
+static int testedWriter(Lua::Library::State* L, const void* p, size_t sz, void* ud)
 {
 	std::ostringstream* oss = reinterpret_cast<
 		std::ostringstream*
@@ -430,7 +430,7 @@ BOOST_AUTO_TEST_CASE(testChunk)
 		"return function (x, y) return x + y end"
 	);
 
-	Lua::Library::inst().load(L, &testingReader, &iss, "", "bt");
+	Lua::Library::inst().load(L, &testedReader, &iss, "", "bt");
 
 	BOOST_TEST(Lua::Library::inst().gettop(L) == 1);
 	BOOST_TEST(Lua::Library::inst().isfunction(L, 1));
@@ -444,7 +444,7 @@ BOOST_AUTO_TEST_CASE(testChunk)
 
 	std::stringstream ss;
 
-	Lua::Library::inst().dump(L, &testingWriter, &ss, 0);
+	Lua::Library::inst().dump(L, &testedWriter, &ss, 0);
 	
 	BOOST_TEST(Lua::Library::inst().gettop(L) == 1);
 	BOOST_TEST((ss.str().length() > 0));
@@ -453,7 +453,7 @@ BOOST_AUTO_TEST_CASE(testChunk)
 	Lua::Library::inst().pop(L, 1);
 	BOOST_TEST(Lua::Library::inst().gettop(L) == 0);
 	
-	Lua::Library::inst().load(L, &testingReader, &ss, "", "bt");
+	Lua::Library::inst().load(L, &testedReader, &ss, "", "bt");
 
 	BOOST_TEST(Lua::Library::inst().gettop(L) == 1);
 	BOOST_TEST(Lua::Library::inst().isfunction(L, 1));
