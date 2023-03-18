@@ -89,7 +89,7 @@ BOOST_AUTO_TEST_CASE(shouldBeInsertedToStack)
 	state << userData;
 
 	BOOST_TEST(state.getStackTop() == 1);
-	BOOST_TEST(state.getType(state.getStackTop()) == LUA_TUSERDATA);
+	BOOST_TEST(state.isValueAt(Lua::State::StackTop, Lua::Library::Type::Userdata));
 }
 
 BOOST_AUTO_TEST_CASE(shouldBeGotFromStack)

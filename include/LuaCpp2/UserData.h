@@ -36,7 +36,7 @@ namespace Lua {
 		{
 			ReadableStackSlot slot(state);
 
-			slot.prepare(LUA_TUSERDATA);
+			slot.prepare(Library::Type::Userdata);
 
 			auto dataPtr = slot.getUserData<Type>();
 

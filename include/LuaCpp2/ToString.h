@@ -28,7 +28,7 @@ namespace Lua {
 
 		if (
 			!state.isValueAt(index, Library::Type::Table) &&
-			type != LUA_TUSERDATA
+			!state.isValueAt(index, Library::Type::Userdata)
 		) {
 
 			state.setStackTop(origStackTop);

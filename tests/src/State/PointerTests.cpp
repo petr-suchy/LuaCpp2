@@ -149,7 +149,7 @@ BOOST_AUTO_TEST_CASE(shouldBeInsertedToStack)
 		BOOST_TEST(dtorCounter == 0);
 
 		BOOST_TEST(state.getStackTop() == 1);
-		BOOST_TEST(state.getType(state.getStackTop()) == LUA_TUSERDATA);
+		BOOST_TEST(state.isValueAt(Lua::State::StackTop, Lua::Library::Type::Userdata));
 	}
 
 	BOOST_TEST(dtorCounter == 1);
