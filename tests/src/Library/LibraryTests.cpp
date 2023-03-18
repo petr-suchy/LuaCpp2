@@ -601,4 +601,16 @@ BOOST_AUTO_TEST_CASE(testIsValue)
 	Lua::Library::inst().close(L);
 }
 
+BOOST_AUTO_TEST_CASE(testOpenlibs)
+{
+	Lua::Library::State* L = Lua::Library::inst().newstate();
+
+	Lua::Library::inst().openlibs(L);
+
+	Lua::Library::inst().getglobal(L, "print");
+	BOOST_TEST(Lua::Library::inst().isfunction(L, 1));
+
+	Lua::Library::inst().close(L);
+}
+
 BOOST_AUTO_TEST_SUITE_END()

@@ -35,6 +35,9 @@ namespace Lua {
 		// Destroys all objects in the given Lua state.
 		virtual void close(State* L) = 0;
 
+		// Opens all standard Lua libraries into the given state.
+		virtual void openlibs(State* L) = 0;
+
 		/* Stack */
 
 		// Returns the index of the top element in the stack.

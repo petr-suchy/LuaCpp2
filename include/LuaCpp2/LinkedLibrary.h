@@ -23,6 +23,11 @@ namespace Lua {
             lua_close(L);
         }
 
+		virtual void openlibs(State* L)
+		{
+			luaL_openlibs(L);
+		}
+
         /* Stack */
 
         virtual int gettop(State* L)
