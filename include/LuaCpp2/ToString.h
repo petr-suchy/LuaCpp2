@@ -26,11 +26,16 @@ namespace Lua {
 			return String(cstr, len);
 		}
 
-		if (type != LUA_TTABLE && type != LUA_TUSERDATA) {
+		if (
+			!state.isValueAt(index, Library::Type::Table) &&
+			type != LUA_TUSERDATA
+		) {
+
 			state.setStackTop(origStackTop);
+
 			throw std::logic_error(
 				"string expected, got " + TypeToName(type) + " type"
-			);	
+			);
 		}
 
 		// insert a metatable at the top of the stack

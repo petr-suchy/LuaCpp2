@@ -60,7 +60,7 @@ BOOST_AUTO_TEST_CASE(testNestedTable)
 	}
 
 	BOOST_TEST(state.getStackTop() == 1);
-	BOOST_TEST(state.getType(state.getStackTop()) == LUA_TTABLE);
+	BOOST_TEST(state.isValueAt(Lua::State::StackTop, Lua::Library::Type::Table));
 
 	int num2 = 0;
 	int nestedTblNum2 = 0;
@@ -70,7 +70,7 @@ BOOST_AUTO_TEST_CASE(testNestedTable)
 	{
 		Lua::ReadableStackSlot slot(state);
 
-		slot.prepare(LUA_TTABLE);
+		slot.prepare(Lua::Library::Type::Table);
 		{
 			Lua::Table tbl(slot.getTable());
 			BOOST_TEST(state.getTableLevel() == 1);
@@ -86,7 +86,7 @@ BOOST_AUTO_TEST_CASE(testNestedTable)
 			{
 				Lua::ReadableStackSlot slot2(tbl.state());
 
-				slot2.prepare(LUA_TTABLE);
+				slot2.prepare(Lua::Library::Type::Table);
 				{
 					Lua::Table tbl2(slot2.getTable());
 					BOOST_TEST(state.getTableLevel() == 2);
@@ -147,7 +147,7 @@ BOOST_AUTO_TEST_CASE(testTableFields)
 	}
 
 	BOOST_TEST(state.getStackTop() == 1);
-	BOOST_TEST(state.getType(state.getStackTop()) == LUA_TTABLE);
+	BOOST_TEST(state.isValueAt(Lua::State::StackTop, Lua::Library::Type::Table));
 
 	int num2 = 0;
 	std::string str2;
@@ -155,7 +155,7 @@ BOOST_AUTO_TEST_CASE(testTableFields)
 	{
 		Lua::ReadableStackSlot slot(state);
 
-		slot.prepare(LUA_TTABLE);
+		slot.prepare(Lua::Library::Type::Table);
 		{
 			Lua::Table tbl(slot.getTable());
 			BOOST_TEST(state.getTableLevel() == 1);

@@ -20,7 +20,7 @@ static Lua::ReadableParams operator>> ( \
 	{ \
 		Lua::ReadableStackSlot slot(args.state()); \
 \
-		slot.prepare(LUA_TTABLE); \
+		slot.prepare(Lua::Library::Type::Table); \
 		{ \
 			Lua::Table tbl(slot.getTable()); \
 			tbl.state() >> Lua::Members(#__VA_ARGS__); \

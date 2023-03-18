@@ -235,7 +235,7 @@ BOOST_AUTO_TEST_CASE(testTable)
 	{
 		Lua::ReadableStackSlot slot(remote);
 
-		slot.prepare(LUA_TTABLE);
+		slot.prepare(Lua::Library::Type::Table);
 		{
 			{
 				Lua::Table tbl(slot.getTable());
