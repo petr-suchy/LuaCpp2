@@ -127,31 +127,6 @@ namespace Lua {
 			}
 		}
 
-		void prepareReading(int expectedType)
-		{
-			if (getTableLevel() > 0) {
-				getValueFromField();
-			}
-
-			int top = getStackTop();
-
-			if (top == 0) {
-				throw std::logic_error(
-					"stack is empty, expected " + TypeToName(expectedType)
-				);
-			}
-
-			int type = Library::inst().type(getL(), top);
-
-			if (type != expectedType) {
-				pop();
-				throw std::logic_error(
-					TypeToName(expectedType) + " expected, got " + TypeToName(type) + " type"
-				);
-			}
-
-		}
-
 		void prepareReading(Library::Type expectedType)
 		{
 			if (getTableLevel() > 0) {
