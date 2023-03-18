@@ -360,7 +360,7 @@ namespace Lua {
 
 		void openStdLibs()
 		{
-			luaL_openlibs(getL());
+			Library::inst().openlibs(getL());
 		}
 
 		int getStackTop()
