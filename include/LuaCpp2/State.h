@@ -22,6 +22,7 @@ namespace Lua {
 		typedef std::deque<std::string> Keys;
 
 		static const int StackTop = -1;
+		static const int MinStack = 20;
 
 		State(SharedPtr ptr) :
 			_ptr(ptr),
@@ -462,10 +463,10 @@ namespace Lua {
 			}
 		}
 
-		// ensures that there are at least LUA_MINSTACK free stack slots in the stack.
+		// ensures that there are at least MinStack free stack slots in the stack.
 		void growStack()
 		{
-			if (!Library::inst().checkstack(getL(), LUA_MINSTACK)) {
+			if (!Library::inst().checkstack(getL(), MinStack)) {
 				throw std::runtime_error("not enought memory");
 			}
 		}
