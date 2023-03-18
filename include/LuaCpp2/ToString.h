@@ -34,7 +34,8 @@ namespace Lua {
 			state.setStackTop(origStackTop);
 
 			throw std::logic_error(
-				"string expected, got " + TypeToName(type) + " type"
+				std::string{"string expected, got "}
+					+ Library::inst().typetoname(state.getL(), type) + " type"
 			);
 		}
 
@@ -42,9 +43,12 @@ namespace Lua {
 		bool hasMetatable = Library::inst().getmetatable(state.getL(), State::StackTop) != 0;
 
 		if (!hasMetatable) {
+
 			state.setStackTop(origStackTop);
+
 			throw std::logic_error(
-				TypeToName(type) + " cannot be converted to string"
+				std::string{Library::inst().typetoname(state.getL(), type)}
+					+ " cannot be converted to string"
 			);
 		}
 
@@ -58,9 +62,12 @@ namespace Lua {
 		bool hasToString = state.isValueAt(State::StackTop, Library::Type::Function);
 
 		if (!hasToString) {
+
 			state.setStackTop(origStackTop);
+
 			throw std::logic_error(
-				TypeToName(type) + " has not __tostring metamethod"
+				std::string{Library::inst().typetoname(state.getL(), type)}
+					+ " has not __tostring metamethod"
 			);
 		}
 

@@ -10,7 +10,6 @@
 #include <type_traits>
 
 #include "StatePointer.h"
-#include "TypeToName.h"
 
 namespace Lua {
 
