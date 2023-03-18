@@ -19,7 +19,7 @@ namespace Lua {
 		{
 			ReadableStackSlot slot(state);
 
-			slot.prepare(LUA_TNUMBER);
+			slot.prepare(Library::Type::Number);
 
 			auto num = slot.getNumber();
 

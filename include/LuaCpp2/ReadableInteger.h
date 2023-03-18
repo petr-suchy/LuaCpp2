@@ -19,7 +19,7 @@ namespace Lua {
 		{
 			ReadableStackSlot slot(state);
 
-			slot.prepare(LUA_TNUMBER);
+			slot.prepare(Library::Type::Integer);
 			auto num = slot.getInteger();
 
 			if (num < (HostLimits::min)()) {
@@ -60,7 +60,7 @@ namespace Lua {
 		{
 			ReadableStackSlot slot(state);
 
-			slot.prepare(LUA_TNUMBER);
+			slot.prepare(Library::Type::Integer);
 			auto num = slot.getInteger();
 
 			if (num < 0) {

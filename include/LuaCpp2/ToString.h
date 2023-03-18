@@ -10,7 +10,10 @@ namespace Lua {
 		int origStackTop = state.getStackTop() - 1;
 		int type = Library::inst().type(state.getL(), index);
 
-		if (type == LUA_TSTRING || type == LUA_TNUMBER) {
+		if (type == LUA_TSTRING ||
+			state.isValueAt(index, Library::Type::Integer) ||
+			state.isValueAt(index, Library::Type::Number)
+		) {
 
 			size_t len = 0;
 
@@ -68,11 +71,18 @@ namespace Lua {
 
 		int resultType = Library::inst().type(state.getL(), State::StackTop);
 
-		if (resultType != LUA_TSTRING && resultType != LUA_TNUMBER) {
+		if (
+			resultType != LUA_TSTRING &&
+			!state.isValueAt(State::StackTop, Library::Type::Integer) &&
+			!state.isValueAt(State::StackTop, Library::Type::Number)
+		) {
+
 			state.setStackTop(origStackTop);
+
 			throw std::logic_error(
 				"__tostring metamethod returned no string value"
 			);
+
 		}
 
 		// remove metatable and value
