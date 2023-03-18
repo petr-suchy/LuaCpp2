@@ -11,6 +11,11 @@ namespace Lua {
 		typedef lua_Integer Integer;
 		typedef lua_Number Number;
 
+		enum class Type {
+			Boolean, CFunction, Function, Integer, LightUserdata,
+			Nil, Number, String, Table, Thread, Userdata
+		};
+
 		// Function prototype for a registered function.
 		typedef int (*CFunction) (State* L);
 
@@ -91,6 +96,12 @@ namespace Lua {
 		// Returns the type of the value in the given acceptable index,
 		// or TNONE for a non-valid index
 		virtual int type(State* L, int idx) = 0;
+
+		// Returns the name of the given type.
+		virtual const char* typetoname(State* L, int tp) = 0;
+
+		// Returns the name of the given type.
+		virtual const char* typetoname(Type tp) = 0;
 
 		// Returns 1 if the value at the given acceptable index has type boolean, and 0 otherwise.
 		virtual int isboolean(State* L, int idx) = 0;

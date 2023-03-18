@@ -532,4 +532,42 @@ BOOST_AUTO_TEST_CASE(testNilReference)
 	Lua::Library::inst().close(L);
 }
 
+BOOST_AUTO_TEST_CASE(testIntTypeToName)
+{
+	Lua::Library::State* L = Lua::Library::inst().newstate();
+
+	Lua::Library::inst().pushnil(L);
+	Lua::Library::inst().pushboolean(L, 1);
+	Lua::Library::inst().pushnumber(L, 123);
+	Lua::Library::inst().pushstring(L, "Hi!");
+	Lua::Library::inst().createtable(L, 0, 0);
+	Lua::Library::inst().pushcfunction(L, &testedFunction);
+	Lua::Library::inst().newuserdata(L, 4);
+
+	BOOST_TEST(Lua::Library::inst().typetoname(L, Lua::Library::inst().type(L, 1)) == "nil");
+	BOOST_TEST(Lua::Library::inst().typetoname(L, Lua::Library::inst().type(L, 2)) == "boolean");
+	BOOST_TEST(Lua::Library::inst().typetoname(L, Lua::Library::inst().type(L, 3)) == "number");
+	BOOST_TEST(Lua::Library::inst().typetoname(L, Lua::Library::inst().type(L, 4)) == "string");
+	BOOST_TEST(Lua::Library::inst().typetoname(L, Lua::Library::inst().type(L, 5)) == "table");
+	BOOST_TEST(Lua::Library::inst().typetoname(L, Lua::Library::inst().type(L, 6)) == "function");
+	BOOST_TEST(Lua::Library::inst().typetoname(L, Lua::Library::inst().type(L, 7)) == "userdata");
+
+	Lua::Library::inst().close(L);
+}
+
+BOOST_AUTO_TEST_CASE(testEnumTypeToName)
+{
+	BOOST_TEST(Lua::Library::inst().typetoname(Lua::Library::Type::Boolean) == "boolean");
+	BOOST_TEST(Lua::Library::inst().typetoname(Lua::Library::Type::CFunction) == "cfunction");
+	BOOST_TEST(Lua::Library::inst().typetoname(Lua::Library::Type::Function) == "function");
+	BOOST_TEST(Lua::Library::inst().typetoname(Lua::Library::Type::Integer) == "integer");
+	BOOST_TEST(Lua::Library::inst().typetoname(Lua::Library::Type::LightUserdata) == "lightuserdata");
+	BOOST_TEST(Lua::Library::inst().typetoname(Lua::Library::Type::Nil) == "nil");
+	BOOST_TEST(Lua::Library::inst().typetoname(Lua::Library::Type::Number) == "number");
+	BOOST_TEST(Lua::Library::inst().typetoname(Lua::Library::Type::String) == "string");
+	BOOST_TEST(Lua::Library::inst().typetoname(Lua::Library::Type::Table) == "table");
+	BOOST_TEST(Lua::Library::inst().typetoname(Lua::Library::Type::Thread) == "thread");
+	BOOST_TEST(Lua::Library::inst().typetoname(Lua::Library::Type::Userdata) == "userdata");
+}
+
 BOOST_AUTO_TEST_SUITE_END()

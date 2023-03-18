@@ -116,6 +116,32 @@ namespace Lua {
 			return lua_type(L, idx);
 		}
 
+		virtual const char* typetoname(State* L, int tp)
+		{
+			return lua_typename(L, tp);
+		}
+
+		virtual const char* typetoname(Type tp)
+        {
+            const char* result = "";
+
+            switch (tp) {
+                case Type::Boolean: result = "boolean"; break;
+                case Type::CFunction: result = "cfunction"; break;
+                case Type::Function: result = "function"; break;
+				case Type::Integer: result = "integer"; break;
+                case Type::LightUserdata: result = "lightuserdata"; break;
+                case Type::Nil: result = "nil"; break;
+                case Type::Number: result = "number"; break;
+                case Type::String: result = "string"; break;
+                case Type::Table: result = "table"; break;
+                case Type::Thread: result = "thread"; break;
+                case Type::Userdata: result = "userdata"; break;
+            }
+
+            return result;
+		}
+
 		virtual int isboolean(State* L, int idx)
 		{
 			return lua_isboolean(L, idx);
