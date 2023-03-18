@@ -50,7 +50,7 @@ namespace Lua {
 			"__tostring"
 		);
 
-		bool hasToString = Library::inst().type(state.getL(), State::StackTop) == LUA_TFUNCTION;
+		bool hasToString = state.isValueAt(State::StackTop, Library::Type::Function);
 
 		if (!hasToString) {
 			state.setStackTop(origStackTop);

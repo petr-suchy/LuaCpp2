@@ -20,7 +20,7 @@ namespace Lua {
 			StreamWriter<OutputStream> writer(_os);
 			ReadableStackSlot slot(state);
 
-			slot.prepare(LUA_TFUNCTION);
+			slot.prepare(Library::Type::Function);
 
 			state.dumpChunk(
 				&StreamWriter<OutputStream>::cb,

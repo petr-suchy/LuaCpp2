@@ -36,7 +36,7 @@ namespace Lua {
 		{
 			ReadableStackSlot slot(state);
 
-			slot.prepare(LUA_TFUNCTION);
+			slot.prepare(Library::Type::Function);
 
 			int ref = slot.getReference();
 

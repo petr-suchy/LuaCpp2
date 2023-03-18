@@ -25,7 +25,7 @@ BOOST_AUTO_TEST_CASE(testInsertionAndRetrieval)
 		state << Lua::WritableChunk<std::istream>(is);
 
 		BOOST_TEST(state.getStackTop() == 1);
-		BOOST_TEST(state.getType(state.getStackTop()) == LUA_TFUNCTION);
+		BOOST_TEST(state.isValueAt(Lua::State::StackTop, Lua::Library::Type::Function));
 	}
 
 	// the chunk has been left on the stack
@@ -40,7 +40,7 @@ BOOST_AUTO_TEST_CASE(testInsertionAndRetrieval)
 		state << Lua::WritableChunk<std::istream>(ss);
 
 		BOOST_TEST(state.getStackTop() == 1);
-		BOOST_TEST(state.getType(state.getStackTop()) == LUA_TFUNCTION);
+		BOOST_TEST(state.isValueAt(Lua::State::StackTop, Lua::Library::Type::Function));
 
 		state.pcall();
 		BOOST_TEST(state.getStackTop() == 1);
