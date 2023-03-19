@@ -49,7 +49,7 @@ BOOST_AUTO_TEST_CASE(testOutputStack)
 
 	BOOST_TEST(state.getStackTop() == 6);
 
-	BOOST_TEST((Lua::Library::inst().isnil(state.getL(), 1) != 0));
+	BOOST_TEST(state.isNilAt(1));
 	BOOST_TEST(state.isBooleanAt(2));
 	BOOST_TEST(state.isIntegerAt(3));
 	BOOST_TEST((Lua::Library::inst().isnumber(state.getL(), 4) != 0));
