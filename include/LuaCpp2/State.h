@@ -186,6 +186,14 @@ namespace Lua {
 			Library::inst().pushlstring(getL(), s.c_str(), s.length());
 		}
 
+		/* Testing elements */
+
+		// Returns the type of the value in the given acceptable index.
+		int getType(int index)
+		{
+			return Library::inst().type(getL(), index);
+		}
+
 		Keys& keys()
 		{
 			if (!_keysPtr) {
@@ -492,11 +500,6 @@ namespace Lua {
 		void setGlobal(const char* name)
 		{
 			Library::inst().setglobal(getL(), name);
-		}
-
-		int getType(int index)
-		{
-			return Library::inst().type(getL(), index);
 		}
 
 		bool isValueAt(int index, Library::Type type)
