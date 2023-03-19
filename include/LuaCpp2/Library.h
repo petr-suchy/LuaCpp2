@@ -1,7 +1,5 @@
 #pragma once
 
-#include "lua.h"
-
 namespace Lua {
 
 	class Library {

@@ -1,8 +1,6 @@
 #pragma once
 
-extern "C" {
-#include "lualib.h"
-}
+#include "Library.h"
 
 namespace Lua {
 

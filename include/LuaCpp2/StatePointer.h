@@ -1,14 +1,9 @@
 #pragma once
 
+#include "Library.h"
+
 #include <stdexcept>
 #include <memory>
-
-extern "C" {
-#include "lualib.h"
-#include "lauxlib.h"
-}
-
-#include "Library.h"
 
 namespace Lua {
 
