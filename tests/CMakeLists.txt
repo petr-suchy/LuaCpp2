@@ -19,6 +19,7 @@ endif()
 add_executable(LuaCpp2Tests)
 target_sources(LuaCpp2Tests
     PRIVATE
+        src/LuaLibInst.cpp
         src/Main.cpp
         src/Library/LibraryTests.cpp
         src/State/ClosureTests.cpp

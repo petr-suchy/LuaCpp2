@@ -10,6 +10,7 @@ endif()
 add_executable(LuaCpp2Example)
 target_sources(LuaCpp2Example
     PRIVATE
+        src/LuaLibInst.cpp
         src/Main.cpp
         src/Geometry.h
         src/Geometry.cpp
