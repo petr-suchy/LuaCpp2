@@ -188,8 +188,8 @@ namespace Lua {
 
 		/* Testing elements */
 
-		// Returns the type of the value in the given acceptable index.
-		int getType(int index)
+		// Returns the type of the value at the given acceptable index.
+		int getTypeAt(int index)
 		{
 			return Library::inst().type(getL(), index);
 		}
