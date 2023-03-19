@@ -40,26 +40,48 @@ namespace Lua {
 			State(std::make_shared<AuxStatePointer>(L))
 		{}
 
+		// Returns true if the state is created, and false otherwise.
 		bool isOpen()
 		{
 			return _ptr->isOpen();
 		}
 
+		// Gets a shared pointer to the state.
 		SharedPtr getSharedPtr()
 		{
 			return _ptr;
 		}
 
+		// Gets a raw pointer to the state.
 		Library::State* getL()
 		{
 			return _ptr->getL();
 		}
 
+		// Creates a new state if not already created.
 		void open()
 		{
 			if (!isOpen()) {
 				_ptr = std::make_shared<StatePointer>();
 			}
+		}
+
+		// Loads all standard libraries into the state.
+		void openStdLibs()
+		{
+			Library::inst().openlibs(getL());
+		}
+
+		/* Stack */
+
+		int getStackTop()
+		{
+			return Library::inst().gettop(getL());
+		}
+
+		void setStackTop(int index)
+		{
+			Library::inst().settop(getL(), index);
 		}
 
 		Keys& keys()
@@ -358,21 +380,6 @@ namespace Lua {
 			reportStatus(
 				Library::inst().pcall(getL(), nargs, nresults)
 			);
-		}
-
-		void openStdLibs()
-		{
-			Library::inst().openlibs(getL());
-		}
-
-		int getStackTop()
-		{
-			return Library::inst().gettop(getL());
-		}
-
-		void setStackTop(int index)
-		{
-			Library::inst().settop(getL(), index);
 		}
 
 		void pushGlobal(const char* name)
