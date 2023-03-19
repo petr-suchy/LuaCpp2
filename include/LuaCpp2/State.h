@@ -525,7 +525,7 @@ namespace Lua {
 			// the table for the value is at the top of the stack
 			// just before the value
 
-			if (!Library::inst().istable(getL(), StackTop - 1)) {
+			if (!isTableAt(StackTop - 1)) {
 				throw std::logic_error("a table expected for the table field");
 			}
 
