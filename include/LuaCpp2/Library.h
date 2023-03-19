@@ -8,7 +8,7 @@ namespace Lua {
 	public:
 
 		typedef lua_State State;
-		typedef lua_Integer Integer;
+		typedef long long Integer;
 		typedef lua_Number Number;
 
 		enum class Type {
