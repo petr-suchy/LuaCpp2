@@ -53,7 +53,7 @@ BOOST_AUTO_TEST_CASE(testOutputStack)
 	BOOST_TEST(state.isBooleanAt(2));
 	BOOST_TEST(state.isIntegerAt(3));
 	BOOST_TEST(state.isNumberAt(4));
-	BOOST_TEST((Lua::Library::inst().isstring(state.getL(), 5) != 0));
+	BOOST_TEST(state.isStringAt(5));
 	BOOST_TEST((Lua::Library::inst().istable(state.getL(), 6) != 0));
 }
 
@@ -173,7 +173,7 @@ BOOST_AUTO_TEST_CASE(testString)
 
 	BOOST_TEST(remote.getStackTop() == 1);
 
-	BOOST_TEST((Lua::Library::inst().isstring(remote.getL(), remote.getStackTop()) != 0));
+	BOOST_TEST(remote.isStringAt(Lua::State::StackTop));
 
 	std::string str2;
 	Lua::ReadableString<std::string> rs(str2);
