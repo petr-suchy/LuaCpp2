@@ -57,7 +57,7 @@ namespace Lua {
 
 			if (_isFirstIteration) {
 				// push the initialization key for the first iteration
-				Library::inst().pushnil(_state.getL());
+				_state.pushNil();
 				_isFirstIteration = false;
 			}
 			else {

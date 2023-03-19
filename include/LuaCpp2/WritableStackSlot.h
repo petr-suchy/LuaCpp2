@@ -80,7 +80,7 @@ namespace Lua {
 		// insert the nil vlaue to the stack
 		void insertNil()
 		{
-			Library::inst().pushnil(state().getL());
+			state().pushNil();
 		}
 
 		// inserts a boolean value to the stack
