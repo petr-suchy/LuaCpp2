@@ -7,7 +7,7 @@ namespace Lua {
 	class Library {
 	public:
 
-		typedef lua_State State;
+		typedef void State;
 		typedef long long Integer;
 		typedef double Number;
 
