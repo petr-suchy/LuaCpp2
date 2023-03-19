@@ -86,7 +86,7 @@ namespace Lua {
 		// inserts a boolean value to the stack
 		void insertBoolean(bool boolVal)
 		{
-			Library::inst().pushboolean(state().getL(), boolVal);
+			state().pushBoolean(boolVal);
 		}
 
 		// inserts a numeric value to the stack
