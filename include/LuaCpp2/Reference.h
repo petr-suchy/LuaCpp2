@@ -1,5 +1,7 @@
 #pragma once
 
+#include "NullRefImpl.h"
+#include "SetRefImpl.h"
 #include "ReadableValue.h"
 #include "WritableValue.h"
 #include "ReadableStackSlot.h"
@@ -7,16 +9,12 @@
 
 namespace Lua {
 
+	// Encapsulates a reference to an engine value.
 	class Reference : public ReadableValue, public WritableValue {
 	public:
 
 		Reference() :
-			_ref(
-				std::make_shared<Ref>(
-					State::SharedPtr{},
-					LUA_REFNIL
-				)
-			)
+			_impl(std::make_shared<NullRefImpl>())
 		{}
 
 		virtual void getFrom(State& state)
@@ -25,83 +23,29 @@ namespace Lua {
 
 			slot.prepare();
 
+			// get a reference to the value on the stack
 			int ref = slot.getReference();
 
 			if (Library::inst().isrefnil(ref)) {
 				throw std::runtime_error("nil reference returned");
 			}
 
-			_ref = std::make_shared<Ref>(
-				state.getSharedPtr(),
-				ref
-			);
+			// replace the internal implementation with the implementation of
+			// the set reference.
+			_impl = std::make_shared<SetRefImpl>(state, ref);
 
 			slot.finish();
 		}
 
 		virtual void insertTo(State& state) const
 		{
-			auto refStatePtr = _ref->getWeakStatePtr().lock();
-
-			if (!refStatePtr) {
-				throw std::logic_error(
-					"reference state is destroyed"
-				);
-			}
-
-			State refState(refStatePtr);
-
-			if (refState.getL() != state.getL()) {
-				throw std::logic_error(
-					"reference does not belong to this state"
-				);
-			}
-
-			WritableStackSlot slot(state);
-
-			slot.prepare();
-			slot.insertReference(_ref->get());
-			slot.finish();
+			_impl->insertTo(state);
 		}
 
 	private:
 
-		class Ref {
-		public:
-
-			Ref(State::WeakPtr weakStatePtr, int ref) :
-				_weakStatePtr(weakStatePtr),
-				_ref(ref)
-			{}
-
-			~Ref()
-			{
-				if (auto statePtr = _weakStatePtr.lock()) {
-					Library::inst().unref(
-						statePtr->getL(),
-						_ref
-					);
-				}
-			}
-
-			State::WeakPtr getWeakStatePtr()
-			{
-				return _weakStatePtr;
-			}
-
-			int get()
-			{
-				return _ref;
-			}
-
-		private:
-
-			State::WeakPtr _weakStatePtr;
-			int _ref;
-
-		};
-
-		std::shared_ptr<Ref> _ref;
+		// Shared pointer to the internal implementaion.
+		RefImpl::SharedPtr _impl;
 
 	};
 
