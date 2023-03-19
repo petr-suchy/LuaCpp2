@@ -409,7 +409,7 @@ namespace Lua {
 			if (getStackTop() == 0) {
 
 				throw std::logic_error(
-					std::string{"stack is empty, expected "} + Library::inst().typetoname(expectedType)
+					"stack is empty, expected " + typeToName(expectedType)
 				);
 
 			}
@@ -419,9 +419,8 @@ namespace Lua {
 				int actualType = getTypeAt(StackTop);
 
 				throw std::logic_error(
-					std::string{Library::inst().typetoname(expectedType)}
-						+ " expected, got "
-						+ Library::inst().typetoname(getL(), actualType) + " type"
+					typeToName(expectedType) + " expected, got "
+						+ typeToName(actualType) + " type"
 				);
 
 			}
