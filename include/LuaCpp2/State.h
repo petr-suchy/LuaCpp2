@@ -86,10 +86,20 @@ namespace Lua {
 			Library::inst().settop(getL(), index);
 		}
 
-		// Ensures that there are extra free stack slots in the stack.
+		// Ensures that there are extra free stack slots in the stack,
+		// otherwise returns false.
 		bool checkStack(int extra)
 		{
 			return Library::inst().checkstack(getL(), extra) != 0;
+		}
+
+		// Ensures that there are extra free stack slots in the stack,
+		// otherwise throws an exception.
+		void growStack(int extra)
+		{
+			if (!Library::inst().checkstack(getL(), MinStack)) {
+				throw std::runtime_error("not enought memory");
+			}
 		}
 
 		Keys& keys()
@@ -198,7 +208,7 @@ namespace Lua {
 
 		void prepareWriting()
 		{
-			growStack();
+			growStack(MinStack);
 		}
 
 		// this function must always be called after inserting a value into the stack
@@ -437,7 +447,7 @@ namespace Lua {
 
 		void pushElementFrom(int index)
 		{
-			growStack();
+			growStack(MinStack);
 			Library::inst().pushvalue(getL(), index);
 		}
 
@@ -476,14 +486,6 @@ namespace Lua {
 				);
 
 				throw std::runtime_error(std::string{err, len});
-			}
-		}
-
-		// ensures that there are at least MinStack free stack slots in the stack.
-		void growStack()
-		{
-			if (!Library::inst().checkstack(getL(), MinStack)) {
-				throw std::runtime_error("not enought memory");
 			}
 		}
 
