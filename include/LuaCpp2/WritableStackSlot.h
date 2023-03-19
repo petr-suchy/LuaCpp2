@@ -92,7 +92,7 @@ namespace Lua {
 		// inserts a numeric value to the stack
 		void insertNumber(Library::Number num)
 		{
-			Library::inst().pushnumber(state().getL(), num);
+			state().pushNumber(num);
 		}
 
 		// inserts a integer value to the stack
