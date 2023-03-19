@@ -97,8 +97,41 @@ namespace Lua {
 		// otherwise throws an exception.
 		void growStack(int extra)
 		{
-			if (!Library::inst().checkstack(getL(), MinStack)) {
+			if (!checkStack(1)) {
 				throw std::runtime_error("not enought memory");
+			}
+		}
+
+		/* Manipulation of elements */
+
+		// Pops the given number of elements from the stack.
+		void pop(int num = 1)
+		{
+			Library::inst().pop(getL(), num);
+		}
+
+		// Pushes a copy of the element at the given index onto the stack.
+		void pushElementFrom(int index)
+		{
+			growStack(1);
+			Library::inst().pushvalue(getL(), index);
+		}
+
+		// Moves the top element into the given index, shifting up the elements
+		// above this index to open space.
+		void moveTopElementTo(int index, int repeat = 1)
+		{
+			for (int i = 0; i < repeat; i++) {
+				Library::inst().insert(getL(), index);
+			}
+		}
+
+		// Removes the element at the given index, shifting down the elements
+		// above this index to fill the gap.
+		void removeElementAt(int index, int num = 1)
+		{
+			for (int i = 0; i < num; i++) {
+				Library::inst().remove(getL(), index + i);
 			}
 		}
 
@@ -405,20 +438,6 @@ namespace Lua {
 			Library::inst().getglobal(getL(), name);
 		}
 
-		void moveTopElementTo(int index, int repeat = 1)
-		{
-			for (int i = 0; i < repeat; i++) {
-				Library::inst().insert(getL(), index);
-			}
-		}
-
-		void removeElementAt(int index, int num = 1)
-		{
-			for (int i = 0; i < num; i++) {
-				Library::inst().remove(getL(), index + i);
-			}
-		}
-
 		void setGlobal(const char* name)
 		{
 			Library::inst().setglobal(getL(), name);
@@ -445,12 +464,6 @@ namespace Lua {
 			Library::inst().error(getL());
 		}
 
-		void pushElementFrom(int index)
-		{
-			growStack(MinStack);
-			Library::inst().pushvalue(getL(), index);
-		}
-
 		void pushGlobal(const std::string& name)
 		{
 			Library::inst().getglobal(getL(), name.c_str());
@@ -459,11 +472,6 @@ namespace Lua {
 		void setGlobal(const std::string& name)
 		{
 			Library::inst().setglobal(getL(), name.c_str());
-		}
-
-		void pop(int num = 1)
-		{
-			Library::inst().pop(getL(), num);
 		}
 
 	private:
