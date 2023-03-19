@@ -9,7 +9,7 @@ namespace Lua {
 
 		typedef lua_State State;
 		typedef long long Integer;
-		typedef lua_Number Number;
+		typedef double Number;
 
 		enum class Type {
 			Boolean, CFunction, Function, Integer, LightUserdata,
