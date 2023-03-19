@@ -26,7 +26,7 @@ namespace Lua {
 
 		bool isBoolean() const
 		{
-			return Library::inst().isboolean(_state.getL(), _index) != 0;
+			return _state.isBooleanAt(_index);
 		}
 
 		bool isInteger() const

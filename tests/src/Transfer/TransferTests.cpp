@@ -50,7 +50,7 @@ BOOST_AUTO_TEST_CASE(testOutputStack)
 	BOOST_TEST(state.getStackTop() == 6);
 
 	BOOST_TEST((Lua::Library::inst().isnil(state.getL(), 1) != 0));
-	BOOST_TEST((Lua::Library::inst().isboolean(state.getL(), 2) != 0));
+	BOOST_TEST(state.isBooleanAt(2));
 	BOOST_TEST((Lua::Library::inst().isinteger(state.getL(), 3) != 0));
 	BOOST_TEST((Lua::Library::inst().isnumber(state.getL(), 4) != 0));
 	BOOST_TEST((Lua::Library::inst().isstring(state.getL(), 5) != 0));
@@ -98,7 +98,7 @@ BOOST_AUTO_TEST_CASE(testBoolean)
 
 	BOOST_TEST(remote.getStackTop() == 1);
 
-	BOOST_TEST((Lua::Library::inst().isboolean(remote.getL(), remote.getStackTop()) != 0));
+	BOOST_TEST(remote.isBooleanAt(Lua::State::StackTop));
 
 	bool boolVal = false;
 	Lua::ReadableBoolean rb(boolVal);
