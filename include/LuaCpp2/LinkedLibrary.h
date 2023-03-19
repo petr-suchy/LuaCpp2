@@ -343,7 +343,9 @@ namespace Lua {
 
 		virtual int dump(State* L, Writer writer, void* ud, int strip)
 		{
-			return lua_dump(L, writer, ud, strip);
+			ForwardedWriterParam param{writer, ud};
+
+			return lua_dump(L, forwardedWriter, &param, strip);
 		}
 
 		/* Userdata */
@@ -446,6 +448,22 @@ namespace Lua {
 			}
 
 			return outputStringLength;
+		}
+
+	private:
+
+		struct ForwardedWriterParam {
+			Writer writer;
+			void* ud;
+		};
+
+		static int forwardedWriter(State* L, const void* p, size_t sz, void* ud)
+		{
+			auto param = reinterpret_cast<ForwardedWriterParam*>(ud);
+
+			int ret = param->writer(L, p, sz, param->ud);
+
+			return (ret != 0) ? LUA_ERRRUN : LUA_OK;
 		}
 
     };

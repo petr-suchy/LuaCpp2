@@ -27,10 +27,10 @@ namespace Lua {
 
 			if (writer->_os.fail()) {
 				Library::inst().pushstring(L, "writing to output stream failed");
-				return LUA_ERRRUN;
+				return 1;
 			}
 
-			return LUA_OK;
+			return 0;
 		}
 
 	private:
