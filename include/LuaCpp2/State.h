@@ -1,5 +1,7 @@
 #pragma once
 
+#include "StatePointer.h"
+
 #include <algorithm>
 #include <utility>
 #include <string>
@@ -8,8 +10,7 @@
 #include <sstream>
 #include <limits>
 #include <type_traits>
-
-#include "StatePointer.h"
+#include <memory>
 
 namespace Lua {
 

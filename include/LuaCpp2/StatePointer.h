@@ -3,7 +3,6 @@
 #include "Library.h"
 
 #include <stdexcept>
-#include <memory>
 
 namespace Lua {
 
