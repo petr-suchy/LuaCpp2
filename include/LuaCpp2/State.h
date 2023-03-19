@@ -416,7 +416,7 @@ namespace Lua {
 
 			if (!isValueAt(StackTop, expectedType)) {
 
-				int actualType = Library::inst().type(getL(), StackTop);
+				int actualType = getTypeAt(StackTop);
 
 				throw std::logic_error(
 					std::string{Library::inst().typetoname(expectedType)}

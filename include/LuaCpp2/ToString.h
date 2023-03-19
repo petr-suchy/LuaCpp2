@@ -8,7 +8,7 @@ namespace Lua {
 	String ToString(State& state, int index)
 	{
 		int origStackTop = state.getStackTop() - 1;
-		int type = Library::inst().type(state.getL(), index);
+		int type = state.getTypeAt(index);
 
 		if (state.isValueAt(index, Library::Type::String) ||
 			state.isValueAt(index, Library::Type::Integer) ||
