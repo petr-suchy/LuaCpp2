@@ -290,6 +290,50 @@ namespace Lua {
 			return Library::inst().isvalue(getL(), index, type) != 0;
 		}
 
+		/* Querying elements */
+
+		// Converts the value at the given acceptable index to a boolean value.
+		bool toBooleanAt(int index)
+		{
+			return Library::inst().toboolean(getL(), index) != 0;
+		}
+
+		// Converts the value at the given acceptable index to an integer value.
+		Library::Integer toIntegerAt(int index)
+		{
+			return Library::inst().tointeger(getL(), index);
+		}
+
+		// Converts the value at the given acceptable index to a floating-point value.
+		Library::Number toNumberAt(int index)
+		{
+			return Library::inst().tonumber(getL(), index);
+		}
+
+		// Converts the value at the given acceptable index to a string.
+		std::string toStringAt(int index)
+		{
+			size_t len = 0;
+			const char* str = Library::inst().tolstring(getL(), index, &len);
+
+			return std::string{str, len};
+		}
+
+		// Returns a pointer to the userdata at the given acceptable index.
+		template<typename T>
+		T* toUserdataAt(int index)
+		{
+			return reinterpret_cast<T*>(
+				Library::inst().touserdata(getL(), index)
+			);
+		}
+
+		// Returns the pseudo-index of the given upvalue.
+		int getUpvalueIndex(int upvalue)
+		{
+			return Library::inst().upvalueindex(upvalue);
+		}
+
 		Keys& keys()
 		{
 			if (!_keysPtr) {
