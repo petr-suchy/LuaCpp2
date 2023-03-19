@@ -152,7 +152,7 @@ namespace Lua {
 		}
 
 		// Pushes a function onto the stack.
-		void pushFunction(Library::CFunction fn)
+		void pushCFunction(Library::CFunction fn)
 		{
 			growStack(1);
 			Library::inst().pushcfunction(getL(), fn);
