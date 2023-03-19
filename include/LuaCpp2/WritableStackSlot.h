@@ -111,7 +111,7 @@ namespace Lua {
 		template<typename String>
 		void insertString(const String& str)
 		{
-			Library::inst().pushlstring(state().getL(), str.c_str(), str.length());
+			state().pushString(str);
 		}
 
 		// inserts a userdata type to the stack

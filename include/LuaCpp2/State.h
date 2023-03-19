@@ -644,12 +644,7 @@ namespace Lua {
 
 		void raiseError(const std::string& errorMessage)
 		{
-			Library::inst().pushlstring(
-				getL(),
-				errorMessage.c_str(),
-				errorMessage.length()
-			);
-
+			pushString(errorMessage);
 			Library::inst().error(getL());
 		}
 

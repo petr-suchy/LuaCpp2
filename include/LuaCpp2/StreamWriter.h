@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Library.h"
+#include "State.h"
 
 namespace Lua {
 
@@ -19,12 +19,13 @@ namespace Lua {
 			void* obj
 		)
 		{
+			State state(L);
 			auto writer = reinterpret_cast<StreamWriter*>(obj);
 
 			writer->_os.write((const char*) toWrite, len);
 
 			if (writer->_os.fail()) {
-				Library::inst().pushstring(L, "writing to output stream failed");
+				state.pushString("writing to output stream failed");
 				return 1;
 			}
 
