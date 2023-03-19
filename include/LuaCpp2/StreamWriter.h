@@ -24,7 +24,11 @@ namespace Lua {
 			writer->_os.write((const char*) toWrite, len);
 
 			if (writer->_os.fail()) {
-				Library::inst().pushstring(L, "writing to output stream failed");
+
+				if (Library::inst().checkstack(L, 1)) {
+					Library::inst().pushstring(L, "writing to output stream failed");
+				}
+
 				return 1;
 			}
 
