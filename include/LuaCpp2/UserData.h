@@ -101,7 +101,7 @@ namespace Lua {
 			Library::inst().setfield(state.getL(), State::StackTop - 1, "__gc");
 
 			// set the field with a hash code of data type
-			Library::inst().pushinteger(state.getL(), hashCode);
+			state.pushInteger(hashCode);
 			Library::inst().setfield(state.getL(), State::StackTop - 1, "hash_code");
 
 			// set the table as metatable for the userdata
