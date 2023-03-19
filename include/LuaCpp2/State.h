@@ -74,14 +74,22 @@ namespace Lua {
 
 		/* Stack */
 
+		// Returns the index of the top element in the stack.
 		int getStackTop()
 		{
 			return Library::inst().gettop(getL());
 		}
 
+		// Sets the stack top to the given index.
 		void setStackTop(int index)
 		{
 			Library::inst().settop(getL(), index);
+		}
+
+		// Ensures that there are extra free stack slots in the stack.
+		bool checkStack(int extra)
+		{
+			return Library::inst().checkstack(getL(), extra) != 0;
 		}
 
 		Keys& keys()
