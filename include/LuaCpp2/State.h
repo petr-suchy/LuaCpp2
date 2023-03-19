@@ -135,6 +135,57 @@ namespace Lua {
 			}
 		}
 
+		/* Pushing elements */
+
+		// Pushes a boolean value onto the stack.
+		void pushBoolean(int b)
+		{
+			growStack(1);
+			Library::inst().pushboolean(getL(), b);
+		}
+
+		// Pushes a closure onto the stack.
+		void pushClosure(Library::CFunction fn, int n)
+		{
+			growStack(1);
+			Library::inst().pushcclosure(getL(), fn, n);
+		}
+
+		// Pushes a function onto the stack.
+		void pushFunction(Library::CFunction fn)
+		{
+			growStack(1);
+			Library::inst().pushcfunction(getL(), fn);
+		}
+
+		// Pushes a integer value onto the stack.
+		void pushInteger(Library::Integer n)
+		{
+			growStack(1);
+			Library::inst().pushinteger(getL(), n);
+		}
+
+		// Pushes a nil value onto the stack.
+		void pushNil()
+		{
+			growStack(1);
+			Library::inst().pushnil(getL());
+		}
+
+		// Pushes a floating-point number onto the stack.
+		void pushNumber(Library::Number n)
+		{
+			growStack(1);
+			Library::inst().pushnumber(getL(), n);
+		}
+
+		// Pushes a string onto the stack.
+		void pushString(const std::string& s)
+		{
+			growStack(1);
+			Library::inst().pushlstring(getL(), s.c_str(), s.length());
+		}
+
 		Keys& keys()
 		{
 			if (!_keysPtr) {
