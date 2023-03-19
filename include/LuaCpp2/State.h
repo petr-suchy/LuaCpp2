@@ -194,6 +194,102 @@ namespace Lua {
 			return Library::inst().type(getL(), index);
 		}
 
+		// Returns the name of the given type.
+		std::string typeToName(int type)
+		{
+			return std::string{Library::inst().typetoname(getL(), type)};
+		}
+
+		// Returns the name of the given type.
+		std::string typeToName(Library::Type type)
+		{
+			return std::string{Library::inst().typetoname(type)};
+		}
+
+		// Returns true if the value at the given acceptable index has type boolean,
+		// and false otherwise.
+		bool isBooleanAt(int index)
+		{
+			return Library::inst().isboolean(getL(), index) != 0;
+		}
+
+		// Returns true if the value at the given acceptable index is a C function,
+		// and false otherwise.
+		bool isCFunctionAt(int index)
+		{
+			return Library::inst().iscfunction(getL(), index) != 0;
+		}
+
+		// Returns true if the value at the given acceptable index is a function
+		// (either C or Lua), and false otherwise.
+		bool isFunctionAt(int index)
+		{
+			return Library::inst().isfunction(getL(), index) != 0;
+		}
+
+		// Returns true if the value at the given acceptable index is a integer,
+		// and false otherwise.
+		bool isIntegerAt(int index)
+		{
+			return Library::inst().isinteger(getL(), index) != 0;
+		}
+
+		// Returns true if the value at the given acceptable index is a light userdata,
+		// and false otherwise.
+		bool isLightUserdataAt(int index)
+		{
+			return Library::inst().islightuserdata(getL(), index) != 0;
+		}
+
+		// Returns true if the value at the given acceptable index is nil,
+		// and false otherwise.
+		bool isNilAt(int index)
+		{
+			return Library::inst().isnil(getL(), index) != 0;
+		}
+
+		// Returns true if the value at the given acceptable index is a number
+		// or a string convertible to a number, and false otherwise.
+		bool isNumberAt(int index)
+		{
+			return Library::inst().isnumber(getL(), index) != 0;
+		}
+
+		// Returns true if the value at the given acceptable index is a string,
+		// and false otherwise.
+		bool isStringAt(int index)
+		{
+			return Library::inst().isstring(getL(), index) != 0;
+		}
+
+		// Returns true if the value at the given acceptable index is a table,
+		// and false otherwise.
+		bool isTableAt(int index)
+		{
+			return Library::inst().istable(getL(), index) != 0;
+		}
+
+		// Returns true if the value at the given acceptable index is a thread,
+		// and false otherwise.
+		bool isThreadAt(int index)
+		{
+			return Library::inst().isthread(getL(), index) != 0;
+		}
+
+		// Returns true if the value at the given acceptable index is a userdata
+		// (either full or light), and false otherwise.
+		bool isUserdataAt(int index)
+		{
+			return Library::inst().isuserdata(getL(), index) != 0;
+		}
+
+		// Returns true if the value at the given acceptable index is of the specified type,
+		// and false otherwise.
+		bool isValueAt(int index, Library::Type type)
+		{
+			return Library::inst().isvalue(getL(), index, type) != 0;
+		}
+
 		Keys& keys()
 		{
 			if (!_keysPtr) {
@@ -500,11 +596,6 @@ namespace Lua {
 		void setGlobal(const char* name)
 		{
 			Library::inst().setglobal(getL(), name);
-		}
-
-		bool isValueAt(int index, Library::Type type)
-		{
-			return Library::inst().isvalue(getL(), index, type) != 0;
 		}
 
 		void raiseError(const std::string& errorMessage)
