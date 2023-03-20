@@ -107,12 +107,11 @@ namespace Lua {
 		template<typename Type>
 		Type* getUserData()
 		{
-			void* rawUserDataPtr2Ptr = Library::inst().touserdata(
-				state().getL(),
-				state().getStackTop()
-			);
+			// get a pointer to a pointer of the given type that is stored as userdata
+			auto ptrToPtr = state().toUserdataAt<Type**>(State::StackTop);
 
-			return *reinterpret_cast<Type**>(rawUserDataPtr2Ptr);
+			// and return the pointer referenced by that pointer
+			return *ptrToPtr;
 		}
 
 		// gets a reference to the item on the stack
