@@ -320,10 +320,10 @@ namespace Lua {
 		}
 
 		// Returns a pointer to the userdata at the given acceptable index.
-		template<typename T>
-		T* toUserdataAt(int index)
+		template<typename Type>
+		Type toUserdataAt(int index)
 		{
-			return reinterpret_cast<T*>(
+			return reinterpret_cast<Type>(
 				Library::inst().touserdata(getL(), index)
 			);
 		}
