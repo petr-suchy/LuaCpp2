@@ -138,11 +138,14 @@ namespace Lua {
 
 		static int gc(Library::State *L)
 		{
-			Type** userDataPtr2Ptr = reinterpret_cast<Type**>(
+			// get the first argument with userdata that contains
+			// a pointer to a pointer of the given type
+			auto ptrToPtr = reinterpret_cast<Type**>(
 				Library::inst().touserdata(L, 1)
 			);
 
-			delete *userDataPtr2Ptr;
+			// and delete the pointer referenced by that pointer
+			delete *ptrToPtr;
 
 			return 0;
 		}
