@@ -128,10 +128,7 @@ namespace Lua {
 			);
 
 			// get the hash code
-			Library::Integer hashCode = Library::inst().tointeger(
-				state.getL(),
-				State::StackTop
-			);
+			Library::Integer hashCode = state.toIntegerAt(State::StackTop);
 
 			// clear the stack
 			state.pop(2);
