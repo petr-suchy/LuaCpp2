@@ -126,9 +126,9 @@ namespace Lua {
 			}
 		}
 
-		// Removes the element at the given index, shifting down the elements
+		// Removes the value at the given index, shifting down the values
 		// above this index to fill the gap.
-		void removeElementAt(int index, int num = 1)
+		void removeValueAt(int index, int num = 1)
 		{
 			for (int i = 0; i < num; i++) {
 				Library::inst().remove(getL(), index + i);
@@ -495,7 +495,7 @@ namespace Lua {
 				);
 
 				// remove the metatable
-				removeElementAt(StackTop - 1);
+				removeValueAt(StackTop - 1);
 
 			}
 			else {

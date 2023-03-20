@@ -78,7 +78,7 @@ namespace Lua {
 					[&_numOfFuncInArgs, &_numOfFuncOutArgs](State& state)
 					{
 						// remove the current input argument from the stack
-						state.removeElementAt(_numOfFuncOutArgs + 1);
+						state.removeValueAt(_numOfFuncOutArgs + 1);
 						_numOfFuncInArgs--;
 					}
 				},

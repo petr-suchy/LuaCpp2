@@ -182,7 +182,7 @@ namespace Lua {
 		virtual void _finishOutput()
 		{
 			// remove the current output argument from the stack
-			state().removeElementAt(args().in().count() + 1);
+			state().removeValueAt(args().in().count() + 1);
 		}
 
 		virtual void _prepareCalling()

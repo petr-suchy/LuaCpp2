@@ -84,7 +84,7 @@ namespace Lua {
 		}
 
 		// remove metatable and value
-		state.removeElementAt(State::StackTop - 2, 2);
+		state.removeValueAt(State::StackTop - 2, 2);
 
 		return state.toStringAt(State::StackTop);
 	}
