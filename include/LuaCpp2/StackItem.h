@@ -52,7 +52,7 @@ namespace Lua {
 		bool getBoolean() const
 		{
 			// create a temporary copy of the value at the top of the stack
-			_state.pushElementFrom(_index);
+			_state.pushValueFrom(_index);
 
 			// get the temporary value as a boolean value
 			ReadableStackSlot slot(_state);
@@ -66,7 +66,7 @@ namespace Lua {
 		Library::Integer getInteger() const
 		{
 			// create a temporary copy of the value at the top of the stack
-			_state.pushElementFrom(_index);
+			_state.pushValueFrom(_index);
 
 			// get the temporary value as an integer
 			ReadableStackSlot slot(_state);
@@ -80,7 +80,7 @@ namespace Lua {
 		Library::Number getNumber() const
 		{
 			// create a temporary copy of the value at the top of the stack
-			_state.pushElementFrom(_index);
+			_state.pushValueFrom(_index);
 
 			// get the temporary value as a number
 			ReadableStackSlot slot(_state);
@@ -94,7 +94,7 @@ namespace Lua {
 		std::string getString() const
 		{
 			// create a temporary copy of the value at the top of the stack
-			_state.pushElementFrom(_index);
+			_state.pushValueFrom(_index);
 
 			// get the temporary value as a string
 			ReadableStackSlot slot(_state);

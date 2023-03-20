@@ -110,8 +110,8 @@ namespace Lua {
 			Library::inst().pop(getL(), num);
 		}
 
-		// Pushes a copy of the element at the given index onto the stack.
-		void pushElementFrom(int index)
+		// Pushes a copy of the value at the given index onto the stack.
+		void pushValueFrom(int index)
 		{
 			growStack(1);
 			Library::inst().pushvalue(getL(), index);

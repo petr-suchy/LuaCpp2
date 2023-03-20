@@ -72,7 +72,7 @@ namespace Lua {
 						}
 						// insert the current input argument at the the top of the stack
 						// the current input argument is placed right after output arguments
-						state.pushElementFrom(_numOfFuncOutArgs + 1);
+						state.pushValueFrom(_numOfFuncOutArgs + 1);
 					},
 					// finishes reading of the input argument
 					[&_numOfFuncInArgs, &_numOfFuncOutArgs](State& state)

@@ -176,7 +176,7 @@ namespace Lua {
 		{
 			// insert the current output argument at the the top of the stack
 			// the current output argument is placed right after input arguments
-			state().pushElementFrom(args().in().count() + 1);
+			state().pushValueFrom(args().in().count() + 1);
 		}
 
 		virtual void _finishOutput()
