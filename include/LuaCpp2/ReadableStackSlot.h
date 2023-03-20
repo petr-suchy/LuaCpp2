@@ -87,10 +87,7 @@ namespace Lua {
 		// gets a numeric value from the stack
 		Library::Number getNumber()
 		{
-			return Library::inst().tonumber(
-				state().getL(),
-				state().getStackTop()
-			);
+			return state().toNumberAt(State::StackTop);
 		}
 
 		// gets a integer value from the stack
