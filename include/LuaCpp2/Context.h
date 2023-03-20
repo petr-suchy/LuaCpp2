@@ -210,7 +210,7 @@ namespace Lua {
 		void finishCalling()
 		{
 			// move a function at the top of the stack to the beginning
-			state().moveTopElementTo(1);
+			state().moveTopValueTo(1);
 
 			try {
 				// call that function

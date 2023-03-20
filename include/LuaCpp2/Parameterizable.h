@@ -108,7 +108,7 @@ namespace Lua {
 						// move the new output argument from the top of the stack
 						// to the beginning of the stack right after other output
 						// arguments
-						state.moveTopElementTo(_numOfFuncOutArgs + 1);
+						state.moveTopValueTo(_numOfFuncOutArgs + 1);
 						_numOfFuncOutArgs++;
 					}
 				}

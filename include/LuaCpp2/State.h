@@ -117,9 +117,9 @@ namespace Lua {
 			Library::inst().pushvalue(getL(), index);
 		}
 
-		// Moves the top element into the given index, shifting up the elements
+		// Moves the top value into the given index, shifting up the values
 		// above this index to open space.
-		void moveTopElementTo(int index, int repeat = 1)
+		void moveTopValueTo(int index, int repeat = 1)
 		{
 			for (int i = 0; i < repeat; i++) {
 				Library::inst().insert(getL(), index);
@@ -549,7 +549,7 @@ namespace Lua {
 				}
 
 				// place the table before the value
-				moveTopElementTo(StackTop - 1);
+				moveTopValueTo(StackTop - 1);
 
 				// set the value as a metatable field with the given key name
 				Library::inst().setfield(
