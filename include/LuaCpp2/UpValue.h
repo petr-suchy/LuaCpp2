@@ -13,10 +13,7 @@ namespace Lua {
 
 		virtual void modify(State& state) const
 		{
-			Library::inst().pushvalue(
-				state.getL(),
-				Library::inst().upvalueindex(_index)
-			);
+			state.pushElementFrom(state.upvalueIndex(_index));
 		}
 
 	private:

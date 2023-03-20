@@ -329,7 +329,7 @@ namespace Lua {
 		}
 
 		// Returns the pseudo-index of the given upvalue.
-		int getUpvalueIndex(int upvalue)
+		int upvalueIndex(int upvalue)
 		{
 			return Library::inst().upvalueindex(upvalue);
 		}
