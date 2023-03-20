@@ -14,16 +14,7 @@ namespace Lua {
 			state.isValueAt(index, Library::Type::Integer) ||
 			state.isValueAt(index, Library::Type::Number)
 		) {
-
-			size_t len = 0;
-
-			const char* cstr = Library::inst().tolstring(
-				state.getL(),
-				state.getStackTop(),
-				&len
-			);
-
-			return String(cstr, len);
+			return state.toStringAt(State::StackTop);
 		}
 
 		if (
@@ -95,15 +86,7 @@ namespace Lua {
 		// remove metatable and value
 		state.removeElementAt(State::StackTop - 2, 2);
 
-		size_t len = 0;
-
-		const char* cstr = Library::inst().tolstring(
-			state.getL(),
-			state.getStackTop(),
-			&len
-		);
-		
-		return String(cstr, len);
+		return state.toStringAt(State::StackTop);
 	}
 
 }
