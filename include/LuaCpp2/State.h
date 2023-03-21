@@ -334,6 +334,69 @@ namespace Lua {
 			return Library::inst().upvalueindex(upvalue);
 		}
 
+		/* Tables */
+
+		// Creates a new empty table and pushes it onto the stack.
+		void createTable(int narr = 0, int nrec = 0)
+		{
+			growStack(1);
+			Library::inst().createtable(getL(), narr, nrec);
+		}
+
+		// Does the equivalent to t[k] = v, where t is the value at the given valid index,
+		// v is the value at the top of the stack, and k is the value just below the top.
+		void setFieldOf(int index)
+		{
+			Library::inst().settable(getL(), index);
+		}
+
+		// Does the equivalent to t[k] = v, where t is the value at the given valid index
+		// and v is the value at the top of the stack.
+		void setFieldOf(int index, const std::string& k)
+		{
+			Library::inst().setfield(getL(), index, k.c_str());
+		}
+
+		// Pushes onto the stack the value t[k], where t is the value at the given valid index
+		// and k is the value at the top of the stack.
+		void getFieldOf(int index)
+		{
+			growStack(1);
+			Library::inst().gettable(getL(), index);
+		}
+
+		// Pushes onto the stack the value t[k], where t is the value at the given valid index.
+		void getFieldOf(int index, const std::string& k)
+		{
+			growStack(1);
+			Library::inst().getfield(getL(), index, k.c_str());
+		}
+
+		// Pops a key from the stack, and pushes a key-value pair from the table
+		// at the given index (the "next" pair after the given key).
+		bool getNextFieldOf(int index)
+		{
+			growStack(2);
+			return Library::inst().next(getL(), index) != 0;
+		}
+
+		// Pops a table from the stack and sets it as the new metatable
+		// for the value at the given acceptable index.
+		void setMetatableOf(int index)
+		{
+			Library::inst().setmetatable(getL(), index);
+		}
+
+		// Pushes onto the stack the metatable of the value at the given acceptable index,
+		// or returns false if the value has no metatable.
+		bool getMetatableOf(int index)
+		{
+			growStack(1);
+			return Library::inst().getmetatable(getL(), index) != 0;
+		}
+
+		/* Processing values */
+
 		Keys& keys()
 		{
 			if (!_keysPtr) {
