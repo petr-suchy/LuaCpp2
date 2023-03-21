@@ -611,6 +611,37 @@ namespace Lua {
 			return result;
 		}
 
+		/* References */
+
+		// Creates and returns a reference to the value at the top of the stack
+		// and pops the value.
+		int createReference()
+		{
+			return Library::inst().ref(getL());
+		}
+
+		// Pushes the value associated with the given reference onto the stack.
+		void getReference(int ref)
+		{
+			growStack(1);
+			Library::inst().getref(getL(), ref);
+		}
+
+		// Releases the given reference and its associated value.
+		void releaseReference(int ref)
+		{
+			Library::inst().unref(getL(), ref);
+		}
+
+		// Returns true if the given reference is nil, and false otherwise.
+		static bool isReferenceNil(int ref)
+		{
+			return Library::inst().isrefnil(ref) != 0;
+		}
+
+		/* Errors */
+
+		// Generates an error with the given error text.
 		void raiseError(const std::string& errorMessage)
 		{
 			pushString(errorMessage);
