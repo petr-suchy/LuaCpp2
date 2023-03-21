@@ -550,12 +550,7 @@ namespace Lua {
 				}
 
 				// get a value from the metatable field with the given key name
-
-				Library::inst().getfield(
-					getL(),
-					StackTop,
-					currKey.c_str()
-				);
+				getFieldAt(StackTop, currKey);
 
 				// remove the metatable
 				removeValueAt(StackTop - 1);
@@ -564,12 +559,7 @@ namespace Lua {
 			else {
 
 				// get a value from the field with the given key name
-
-				Library::inst().getfield(
-					getL(),
-					StackTop,
-					currKey.c_str()
-				);
+				getFieldAt(StackTop, currKey);
 
 			}
 

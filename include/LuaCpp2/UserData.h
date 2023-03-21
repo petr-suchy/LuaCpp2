@@ -121,11 +121,7 @@ namespace Lua {
 			}
 
 			// insert hash_code at the top of the stack
-			Library::inst().getfield(
-				state.getL(),
-				State::StackTop,
-				"hash_code"
-			);
+			state.getFieldAt(State::StackTop, "hash_code");
 
 			// get the hash code
 			Library::Integer hashCode = state.toIntegerAt(State::StackTop);

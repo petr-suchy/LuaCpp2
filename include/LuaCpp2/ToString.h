@@ -42,11 +42,7 @@ namespace Lua {
 		}
 
 		// insert __tostring metamethod at the top of the stack
-		Library::inst().getfield(
-			state.getL(),
-			State::StackTop,
-			"__tostring"
-		);
+		state.getFieldAt(State::StackTop, "__tostring");
 
 		bool hasToString = state.isValueAt(State::StackTop, Library::Type::Function);
 
