@@ -591,6 +591,26 @@ namespace Lua {
 			reportStatus(status);
 		}
 
+		/* Userdata */
+
+		// Allocates a new block of memory with the given size, pushes onto the stack
+		// a new full userdata with the block address, and returns this address.
+		template<typename Type>
+		Type newUserdata(size_t size)
+		{
+			growStack(1);
+
+			auto result =  reinterpret_cast<Type>(
+				Library::inst().newuserdata(getL(), size)
+			);
+
+			if (!result) {
+				throw std::runtime_error("not enough memory");
+			}
+
+			return result;
+		}
+
 		void raiseError(const std::string& errorMessage)
 		{
 			pushString(errorMessage);
