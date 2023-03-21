@@ -68,9 +68,8 @@ namespace Lua {
 
 			// remove the key from the stack, and pushes
 			// a key-value pair from the table
-			int result = Library::inst().next(_state.getL(), _tableIndex);
 
-			if (!result) {
+			if (!_state.getNextFieldAt(_tableIndex)) {
 				_atEnd = true;
 				return;
 			}
