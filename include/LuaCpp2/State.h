@@ -518,6 +518,42 @@ namespace Lua {
 			// in other cases, the value is left at the top of the stack
 		}
 
+		/* Global variables */
+
+		// Pops a value from the stack and sets it as the new value of global name.
+		void setGlobal(const std::string& name)
+		{
+			Library::inst().setglobal(getL(), name.c_str());
+		}
+
+		// Pushes onto the stack the value of the global name.
+		void getGlobal(const std::string& name)
+		{
+			growStack(1);
+			Library::inst().getglobal(getL(), name.c_str());
+		}
+
+		/* Calling functions */
+
+		// Calls a function in protected mode.
+		void pcall(int nargs = 0)
+		{
+			reportStatus(
+				Library::inst().pcall(getL(), nargs)
+			);
+		}
+
+		// Calls a function in protected mode.
+		void pcall(int nargs, int nresults)
+		{
+			reportStatus(
+				Library::inst().pcall(getL(), nargs, nresults)
+			);
+		}
+
+		/* Load and dump chunks */
+
+		// Loads a chunk.
 		void loadChunk(
 			Library::Reader readerCb,
 			void *reader,
@@ -525,6 +561,8 @@ namespace Lua {
 			const std::string& mode = "bt"
 		)
 		{
+			growStack(1);
+
 			int status = Library::inst().load(
 				getL(),
 				readerCb,
@@ -536,6 +574,7 @@ namespace Lua {
 			reportStatus(status);
 		}
 
+		// Dumps a function as a binary chunk.
 		void dumpChunk(
 			Library::Writer writerCb,
 			void* writer,
@@ -552,34 +591,10 @@ namespace Lua {
 			reportStatus(status);
 		}
 
-		void pcall(int nargs = 0)
-		{
-			reportStatus(
-				Library::inst().pcall(getL(), nargs)
-			);
-		}
-
-		void pcall(int nargs, int nresults)
-		{
-			reportStatus(
-				Library::inst().pcall(getL(), nargs, nresults)
-			);
-		}
-
 		void raiseError(const std::string& errorMessage)
 		{
 			pushString(errorMessage);
 			Library::inst().error(getL());
-		}
-
-		void getGlobal(const std::string& name)
-		{
-			Library::inst().getglobal(getL(), name.c_str());
-		}
-
-		void setGlobal(const std::string& name)
-		{
-			Library::inst().setglobal(getL(), name.c_str());
 		}
 
 	private:
