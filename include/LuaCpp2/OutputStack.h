@@ -82,7 +82,7 @@ namespace Lua {
 
 		void setTable()
 		{
-			_state.setFieldOf(State::StackTop - 2);
+			_state.setFieldAt(State::StackTop - 2);
 		}
 
 	private:

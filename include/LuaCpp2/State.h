@@ -345,28 +345,28 @@ namespace Lua {
 
 		// Does the equivalent to t[k] = v, where t is the value at the given valid index,
 		// v is the value at the top of the stack, and k is the value just below the top.
-		void setFieldOf(int index)
+		void setFieldAt(int index)
 		{
 			Library::inst().settable(getL(), index);
 		}
 
 		// Does the equivalent to t[k] = v, where t is the value at the given valid index
 		// and v is the value at the top of the stack.
-		void setFieldOf(int index, const std::string& k)
+		void setFieldAt(int index, const std::string& k)
 		{
 			Library::inst().setfield(getL(), index, k.c_str());
 		}
 
 		// Pushes onto the stack the value t[k], where t is the value at the given valid index
 		// and k is the value at the top of the stack.
-		void getFieldOf(int index)
+		void getFieldAt(int index)
 		{
 			growStack(1);
 			Library::inst().gettable(getL(), index);
 		}
 
 		// Pushes onto the stack the value t[k], where t is the value at the given valid index.
-		void getFieldOf(int index, const std::string& k)
+		void getFieldAt(int index, const std::string& k)
 		{
 			growStack(1);
 			Library::inst().getfield(getL(), index, k.c_str());
@@ -374,7 +374,7 @@ namespace Lua {
 
 		// Pops a key from the stack, and pushes a key-value pair from the table
 		// at the given index (the "next" pair after the given key).
-		bool getNextFieldOf(int index)
+		bool getNextFieldAt(int index)
 		{
 			growStack(2);
 			return Library::inst().next(getL(), index) != 0;
@@ -382,14 +382,14 @@ namespace Lua {
 
 		// Pops a table from the stack and sets it as the new metatable
 		// for the value at the given acceptable index.
-		void setMetatableOf(int index)
+		void setMetatableAt(int index)
 		{
 			Library::inst().setmetatable(getL(), index);
 		}
 
 		// Pushes onto the stack the metatable of the value at the given acceptable index,
 		// or returns false if the value has no metatable.
-		bool getMetatableOf(int index)
+		bool getMetatableAt(int index)
 		{
 			growStack(1);
 			return Library::inst().getmetatable(getL(), index) != 0;
@@ -615,7 +615,7 @@ namespace Lua {
 				moveTopValueTo(StackTop - 1);
 
 				// set the value as a metatable field with the given key name
-				setFieldOf(StackTop - 1, currKey);
+				setFieldAt(StackTop - 1, currKey);
 
 				if (!hasMetatable) {
 					// set the new table as a value metatable
@@ -630,7 +630,7 @@ namespace Lua {
 			else {
 
 				// set the value as a table field with the given key name
-				setFieldOf(StackTop - 1, currKey);
+				setFieldAt(StackTop - 1, currKey);
 
 			}
 
