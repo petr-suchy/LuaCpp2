@@ -93,7 +93,7 @@ namespace Lua {
 		) const
 		{
 			// insert new table at top of the stack
-			Library::inst().createtable(state.getL(), 0, 0);
+			state.createTable();
 
 			// insert the garbage collector metamethod for userdata
 			state.pushCFunction(gc);

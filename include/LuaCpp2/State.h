@@ -608,7 +608,7 @@ namespace Lua {
 
 				if (!hasMetatable) {
 					// insert a new table at top of the stack
-					Library::inst().createtable(getL(), 0, 0);
+					createTable();
 				}
 
 				// place the table before the value
