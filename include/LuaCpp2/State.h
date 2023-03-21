@@ -615,11 +615,7 @@ namespace Lua {
 				moveTopValueTo(StackTop - 1);
 
 				// set the value as a metatable field with the given key name
-				Library::inst().setfield(
-					getL(),
-					StackTop - 1,
-					currKey.c_str()
-				);
+				setFieldOf(StackTop - 1, currKey);
 
 				if (!hasMetatable) {
 					// set the new table as a value metatable
@@ -634,11 +630,7 @@ namespace Lua {
 			else {
 
 				// set the value as a table field with the given key name
-				Library::inst().setfield(
-					getL(),
-					StackTop - 1,
-					currKey.c_str()
-				);
+				setFieldOf(StackTop - 1, currKey);
 
 			}
 
