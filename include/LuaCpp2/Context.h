@@ -89,7 +89,7 @@ namespace Lua {
 			prepareCalling();
 			// get a global function with the given name
 			// and insert it at the top of the stack
-			state().pushGlobal(funcName);
+			state().getGlobal(funcName);
 			// call that function
 			finishCalling();
 

@@ -566,11 +566,11 @@ namespace Lua {
 			);
 		}
 
-		void pushGlobal(const char* name)
+		void getGlobal(const char* name)
 		{
 			Library::inst().getglobal(getL(), name);
 		}
-
+		
 		void setGlobal(const char* name)
 		{
 			Library::inst().setglobal(getL(), name);
@@ -582,7 +582,7 @@ namespace Lua {
 			Library::inst().error(getL());
 		}
 
-		void pushGlobal(const std::string& name)
+		void getGlobal(const std::string& name)
 		{
 			Library::inst().getglobal(getL(), name.c_str());
 		}

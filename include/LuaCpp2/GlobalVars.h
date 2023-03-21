@@ -41,7 +41,7 @@ namespace Lua {
 					[this] (Lua::State& state)
 					{
 						// TODO: check _nameList.front().size() > 0
-						state.pushGlobal(_nameList.front());
+						state.getGlobal(_nameList.front());
 						_nameList.pop_front();
 					},
 					// finishes reading
