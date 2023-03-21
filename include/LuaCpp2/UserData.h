@@ -112,9 +112,8 @@ namespace Lua {
 		Library::Integer getHashCode(State& state)
 		{
 			// insert a metatable at the top of the stack
-			bool hasMetatable = Library::inst().getmetatable(state.getL(), State::StackTop) != 0;
 
-			if (!hasMetatable) {
+			if (!state.getMetatableAt(State::StackTop)) {
 				throw std::logic_error(
 					"unknown userdata type"
 				);

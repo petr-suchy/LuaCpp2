@@ -543,9 +543,8 @@ namespace Lua {
 			if (isMetamethod) {
 
 				// insert a metatable at top of the stack
-				bool hasMetatable = Library::inst().getmetatable(getL(), StackTop) != 0;
 
-				if (!hasMetatable) {
+				if (!getMetatableAt(StackTop)) {
 					throw std::logic_error("metatable is not set");
 				}
 
@@ -594,7 +593,8 @@ namespace Lua {
 			if (isMetamethod) {
 
 				// insert a value metatable at top of the stack
-				bool hasMetatable = Library::inst().getmetatable(getL(), StackTop - 1) != 0;
+
+				bool hasMetatable = getMetatableAt(StackTop - 1);
 
 				if (!hasMetatable) {
 					// insert a new table at top of the stack
