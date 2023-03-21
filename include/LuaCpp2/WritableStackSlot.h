@@ -120,16 +120,10 @@ namespace Lua {
 		{
 			// allocate a userdata pointer to the wrapped type pointer
 			// and insert it at the top of the stack as userdata
-			Type** userDataPtr2Ptr =  reinterpret_cast<Type**>(
-				Library::inst().newuserdata(state().getL(), sizeof(Type*))
-			);
-
-			if (!userDataPtr2Ptr) {
-				throw std::runtime_error("not enough memory");
-			}
+			auto ptrToPtr = state().newUserdata<Type**>(sizeof(Type*));
 
 			// set the userdata pointer to the wrapped type pointer
-			*userDataPtr2Ptr = ptr;
+			*ptrToPtr = ptr;
 		}
 
 		// inserts an item associated with the reference to the stack
