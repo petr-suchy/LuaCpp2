@@ -518,116 +518,6 @@ namespace Lua {
 			// in other cases, the value is left at the top of the stack
 		}
 
-		// inserts a table field value at the top of the stack
-		void getValueFromField()
-		{
-			// a table should be at the top of the stack
-
-			int top = getStackTop();
-
-			if (top == 0) {
-				throw std::logic_error(
-					"stack is empty, expected a table"
-				);
-			}
-
-			// get a table field name from the key list 
-
-			if (keys().empty()) {
-				throw std::logic_error("a key expected for the table field");
-			}
-
-			std::string currKey = keys().front();
-			bool isMetamethod = currKey[0] == '_';
-
-			if (isMetamethod) {
-
-				// insert a metatable at top of the stack
-
-				if (!getMetatableAt(StackTop)) {
-					throw std::logic_error("metatable is not set");
-				}
-
-				// get a value from the metatable field with the given key name
-				getFieldAt(StackTop, currKey);
-
-				// remove the metatable
-				removeValueAt(StackTop - 1);
-
-			}
-			else {
-
-				// get a value from the field with the given key name
-				getFieldAt(StackTop, currKey);
-
-			}
-
-			// remove the used key name from the list
-			keys().pop_front();
-		}
-
-		// sets the value at the of the stack as a table field
-		void setValueAsField()
-		{
-
-			if (getStackTop() < 2) {
-				throw std::logic_error("too few arguments on the stack");
-			}
-
-			// the table for the value is at the top of the stack
-			// just before the value
-
-			if (!isTableAt(StackTop - 1)) {
-				throw std::logic_error("a table expected for the table field");
-			}
-
-			// get the table field name from the key list 
-
-			if (keys().empty()) {
-				throw std::logic_error("a key expected for the table field");
-			}
-
-			std::string currKey = keys().front();
-			bool isMetamethod = currKey[0] == '_';
-			
-			if (isMetamethod) {
-
-				// insert a value metatable at top of the stack
-
-				bool hasMetatable = getMetatableAt(StackTop - 1);
-
-				if (!hasMetatable) {
-					// insert a new table at top of the stack
-					createTable();
-				}
-
-				// place the table before the value
-				moveTopValueTo(StackTop - 1);
-
-				// set the value as a metatable field with the given key name
-				setFieldAt(StackTop - 1, currKey);
-
-				if (!hasMetatable) {
-					// set the new table as a value metatable
-					setMetatableAt(State::StackTop - 1);
-				}
-				else {
-					// pop the value metatable from the stack
-					pop();
-				}
-
-			}
-			else {
-
-				// set the value as a table field with the given key name
-				setFieldAt(StackTop - 1, currKey);
-
-			}
-
-			// remove the used key name from the list
-			keys().pop_front();
-		}
-
 		void loadChunk(
 			Library::Reader readerCb,
 			void *reader,
@@ -708,6 +598,116 @@ namespace Lua {
 		Keys* _keysPtr;
 		int _tableLevel;
 		int _closureLevel;
+
+		// inserts a table field value at the top of the stack
+		void getValueFromField()
+		{
+			// a table should be at the top of the stack
+
+			int top = getStackTop();
+
+			if (top == 0) {
+				throw std::logic_error(
+					"stack is empty, expected a table"
+				);
+			}
+
+			// get a table field name from the key list 
+
+			if (keys().empty()) {
+				throw std::logic_error("a key expected for the table field");
+			}
+
+			std::string currKey = keys().front();
+			bool isMetamethod = currKey[0] == '_';
+
+			if (isMetamethod) {
+
+				// insert a metatable at top of the stack
+
+				if (!getMetatableAt(StackTop)) {
+					throw std::logic_error("metatable is not set");
+				}
+
+				// get a value from the metatable field with the given key name
+				getFieldAt(StackTop, currKey);
+
+				// remove the metatable
+				removeValueAt(StackTop - 1);
+
+			}
+			else {
+
+				// get a value from the field with the given key name
+				getFieldAt(StackTop, currKey);
+
+			}
+
+			// remove the used key name from the list
+			keys().pop_front();
+		}
+
+		// sets the value at the of the stack as a table field
+		void setValueAsField()
+		{
+
+			if (getStackTop() < 2) {
+				throw std::logic_error("too few arguments on the stack");
+			}
+
+			// the table for the value is at the top of the stack
+			// just before the value
+
+			if (!isTableAt(StackTop - 1)) {
+				throw std::logic_error("a table expected for the table field");
+			}
+
+			// get the table field name from the key list 
+
+			if (keys().empty()) {
+				throw std::logic_error("a key expected for the table field");
+			}
+
+			std::string currKey = keys().front();
+			bool isMetamethod = currKey[0] == '_';
+
+			if (isMetamethod) {
+
+				// insert a value metatable at top of the stack
+
+				bool hasMetatable = getMetatableAt(StackTop - 1);
+
+				if (!hasMetatable) {
+					// insert a new table at top of the stack
+					createTable();
+				}
+
+				// place the table before the value
+				moveTopValueTo(StackTop - 1);
+
+				// set the value as a metatable field with the given key name
+				setFieldAt(StackTop - 1, currKey);
+
+				if (!hasMetatable) {
+					// set the new table as a value metatable
+					setMetatableAt(State::StackTop - 1);
+				}
+				else {
+					// pop the value metatable from the stack
+					pop();
+				}
+
+			}
+			else {
+
+				// set the value as a table field with the given key name
+				setFieldAt(StackTop - 1, currKey);
+
+			}
+
+			// remove the used key name from the list
+			keys().pop_front();
+		}
 
 		// throws an exception in case of an error
 		void reportStatus(int status)
