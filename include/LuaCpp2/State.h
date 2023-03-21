@@ -23,7 +23,6 @@ namespace Lua {
 		typedef std::deque<std::string> Keys;
 
 		static const int StackTop = -1;
-		static const int MinStack = 20;
 
 		State(SharedPtr ptr) :
 			_ptr(ptr),
@@ -502,7 +501,7 @@ namespace Lua {
 
 		void prepareWriting()
 		{
-			growStack(MinStack);
+			// there is nothing to do here
 		}
 
 		// this function must always be called after inserting a value into the stack
