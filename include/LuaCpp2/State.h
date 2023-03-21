@@ -566,16 +566,6 @@ namespace Lua {
 			);
 		}
 
-		void getGlobal(const char* name)
-		{
-			Library::inst().getglobal(getL(), name);
-		}
-		
-		void setGlobal(const char* name)
-		{
-			Library::inst().setglobal(getL(), name);
-		}
-
 		void raiseError(const std::string& errorMessage)
 		{
 			pushString(errorMessage);
