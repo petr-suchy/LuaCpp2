@@ -14,7 +14,7 @@ namespace Lua {
 			state.isValueAt(index, Library::Type::Integer) ||
 			state.isValueAt(index, Library::Type::Number)
 		) {
-			return state.toStringAt(State::StackTop);
+			return state.toStringAt<String>(State::StackTop);
 		}
 
 		if (
@@ -81,7 +81,7 @@ namespace Lua {
 		// remove metatable and value
 		state.removeValueAt(State::StackTop - 2, 2);
 
-		return state.toStringAt(State::StackTop);
+		return state.toStringAt<String>(State::StackTop);
 	}
 
 }

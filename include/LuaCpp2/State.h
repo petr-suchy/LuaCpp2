@@ -310,12 +310,13 @@ namespace Lua {
 		}
 
 		// Converts the value at the given acceptable index to a string.
+		template<typename String>
 		std::string toStringAt(int index)
 		{
 			size_t len = 0;
 			const char* str = Library::inst().tolstring(getL(), index, &len);
 
-			return std::string{str, len};
+			return String{str, len};
 		}
 
 		// Returns a pointer to the userdata at the given acceptable index.
