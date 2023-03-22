@@ -63,6 +63,14 @@ static int testedWriter(Lua::Library::State* L, const void* p, size_t sz, void* 
 
 BOOST_AUTO_TEST_SUITE(Library__Library)
 
+BOOST_AUTO_TEST_CASE(testVersion)
+{
+	auto ifceVer = Lua::Library::inst().getifcever();
+
+	BOOST_TEST(ifceVer.Major == Lua::Library::InterfaceVersionMajor);
+	BOOST_TEST(ifceVer.Minor == Lua::Library::InterfaceVersionMinor);
+}
+
 BOOST_AUTO_TEST_CASE(testNewState)
 {
 	Lua::Library::State* L = Lua::Library::inst().newstate();

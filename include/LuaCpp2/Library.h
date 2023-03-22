@@ -14,6 +14,12 @@ namespace Lua {
 			Nil, Number, String, Table, Thread, Userdata
 		};
 
+		struct Version {
+			int Major;
+			int Minor;
+			int Release;
+		};
+
 		// Function prototype for a registered function.
 		typedef int (*CFunction) (State* L);
 
@@ -24,6 +30,17 @@ namespace Lua {
 		typedef int (*Writer) (State* L, const void* p, size_t sz, void* ud);
 
 		static Library& inst();
+
+		/* Version */
+
+		static const int InterfaceVersionMajor = 1;
+		static const int InterfaceVersionMinor = 0;
+
+		// Gets the version of the interface.
+		virtual const Version& getifcever() = 0;
+
+		// Gets the version of the implementation.
+		virtual const Version& getimplver() = 0;
 
 		/* State */
 

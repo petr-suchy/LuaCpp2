@@ -4,12 +4,37 @@
 #include "lua.hpp"
 
 #include <cstring> // for strncpy
+#include <string>
 
 namespace Lua {
 
     template<typename NewState>
     class LinkedLibrary : public Library {
     public:
+
+		/* Version */
+
+		virtual const Version& getifcever()
+		{
+			static Version ver = {
+				InterfaceVersionMajor,
+				InterfaceVersionMinor,
+				0
+			};
+
+			return ver;
+		}
+
+		virtual const Version& getimplver()
+		{
+			static Version ver = {
+				std::stoi(LUA_VERSION_MAJOR),
+				std::stoi(LUA_VERSION_MINOR),
+				std::stoi(LUA_VERSION_RELEASE)
+			};
+
+			return ver;
+		}
 
         /* State manipulation */
 
