@@ -47,6 +47,13 @@ namespace Lua {
 		// Creates a new Lua state.
 		virtual State* newstate() = 0;
 
+		// Increments the internal reference counter of the given state
+		// and returns that state.
+		virtual State* lockstate(State* L) = 0;
+
+		// Returns the number of objects that share the given state.
+		virtual int usecount(State* L) = 0;
+
 		// Destroys all objects in the given Lua state.
 		virtual void close(State* L) = 0;
 

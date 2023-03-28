@@ -74,8 +74,29 @@ BOOST_AUTO_TEST_CASE(testVersion)
 BOOST_AUTO_TEST_CASE(testNewState)
 {
 	Lua::Library::State* L = Lua::Library::inst().newstate();
+
 	BOOST_TEST(L != nullptr);
+	BOOST_TEST(Lua::Library::inst().usecount(L) == 1);
+
 	Lua::Library::inst().close(L);
+	BOOST_TEST(Lua::Library::inst().usecount(L) == 0);
+}
+
+BOOST_AUTO_TEST_CASE(testLockState)
+{
+	Lua::Library::State* L = Lua::Library::inst().newstate();
+
+	BOOST_TEST(L != nullptr);
+	BOOST_TEST(Lua::Library::inst().usecount(L) == 1);
+
+	BOOST_TEST(Lua::Library::inst().lockstate(L) != nullptr);
+	BOOST_TEST(Lua::Library::inst().usecount(L) == 2);
+
+	Lua::Library::inst().close(L);
+	BOOST_TEST(Lua::Library::inst().usecount(L) == 1);
+
+	Lua::Library::inst().close(L);
+	BOOST_TEST(Lua::Library::inst().usecount(L) == 0);
 }
 
 BOOST_AUTO_TEST_CASE(testStackTop)

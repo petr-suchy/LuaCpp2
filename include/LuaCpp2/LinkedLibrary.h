@@ -3,10 +3,14 @@
 #include "Library.h"
 #include "lua.hpp"
 
-#include <cstring> // for strncpy
+#include <cstring> // for memcpy
 #include <string>
+#include <map>
 
 namespace Lua {
+
+	// Keeps track of open states.
+	static std::map<Library::State*, int> __openStates;
 
     template<typename NewState>
     class LinkedLibrary : public Library {
@@ -40,12 +44,67 @@ namespace Lua {
 
         virtual State* newstate()
         {
-            return NewState{}();
+			State* L = NewState{}();
+
+			if (!L) {
+				return nullptr;
+			}
+			
+			auto ret = __openStates.insert(
+				std::pair<State*, int>(L, 1)
+			);
+
+			if (!ret.second) { // the state hasn't been inserted?
+				lua_close(reinterpret_cast<lua_State*>(L));
+				return nullptr;
+			}
+			
+            return L;
         }
+
+		virtual State* lockstate(State* L)
+		{
+			if (L) {
+
+				auto it = __openStates.find(L);
+
+				if (it != __openStates.end()) {
+					it->second++;
+					return L;
+				}
+
+			}
+
+			return nullptr;
+		}
+
+		virtual int usecount(State* L)
+		{
+			if (L) {
+
+				auto it = __openStates.find(L);
+
+				if (it != __openStates.end()) {
+					return it->second;
+				}
+
+			}
+
+			return 0;
+		}
 
         virtual void close(State* L)
         {
-            lua_close(reinterpret_cast<lua_State*>(L));
+			if (L) {
+
+				auto it = __openStates.find(L);
+
+				if (it != __openStates.end() && --it->second == 0) {
+					lua_close(reinterpret_cast<lua_State*>(L));
+					__openStates.erase(it);
+				}
+
+			}
         }
 
 		virtual void openlibs(State* L)
