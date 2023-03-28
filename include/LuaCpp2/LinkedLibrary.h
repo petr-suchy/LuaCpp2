@@ -6,11 +6,13 @@
 #include <cstring> // for memcpy
 #include <string>
 #include <map>
+#include <mutex>
 
 namespace Lua {
 
 	// Keeps track of open states.
 	static std::map<Library::State*, int> __openStates;
+	static std::mutex __mutex;
 
     template<typename NewState>
     class LinkedLibrary : public Library {
@@ -49,6 +51,8 @@ namespace Lua {
 			if (!L) {
 				return nullptr;
 			}
+
+			std::lock_guard<std::mutex> lock(__mutex);
 			
 			auto ret = __openStates.insert(
 				std::pair<State*, int>(L, 1)
@@ -66,6 +70,8 @@ namespace Lua {
 		{
 			if (L) {
 
+				std::lock_guard<std::mutex> lock(__mutex);
+
 				auto it = __openStates.find(L);
 
 				if (it != __openStates.end()) {
@@ -82,6 +88,8 @@ namespace Lua {
 		{
 			if (L) {
 
+				std::lock_guard<std::mutex> lock(__mutex);
+
 				auto it = __openStates.find(L);
 
 				if (it != __openStates.end()) {
@@ -96,6 +104,8 @@ namespace Lua {
         virtual void close(State* L)
         {
 			if (L) {
+
+				std::lock_guard<std::mutex> lock(__mutex);
 
 				auto it = __openStates.find(L);
 
