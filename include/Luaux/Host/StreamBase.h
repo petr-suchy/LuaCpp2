@@ -24,8 +24,7 @@ namespace Luaux {
 				_fail = false;
 
 				try {
-					auto statePtr = _base.clear.getWeakStatePtr().lock();
-					Lua::AuxiliaryContext lua(statePtr);
+					Lua::AuxiliaryContext lua(_base.clear.getL());
 
 					lua.pcall(_base.clear);
 				}

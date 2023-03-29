@@ -7,13 +7,9 @@ namespace Lua {
 	class NullFunctionImpl : public FunctionImpl {
 	public:
 
-		virtual State::WeakPtr getWeakStatePtr()
+		virtual Library::State* getL()
 		{
-			throw std::logic_error(
-				"a null function has no weak pointer to the engine state"
-			);
-
-			return State::SharedPtr();
+			return nullptr;
 		}
 
 		virtual void insertTo(State&) const

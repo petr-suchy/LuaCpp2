@@ -1,7 +1,8 @@
 #pragma once
 
-#include "StatePointer.h"
+#include "Library.h"
 
+#include <stdexcept>
 #include <algorithm>
 #include <utility>
 #include <string>
@@ -17,51 +18,45 @@ namespace Lua {
 	class State {
 	public:
 
-		typedef std::shared_ptr<AbstractStatePointer> SharedPtr;
-		typedef std::weak_ptr<AbstractStatePointer> WeakPtr;
-
 		typedef std::deque<std::string> Keys;
 
 		static const int StackTop = -1;
 
-		State(SharedPtr ptr) :
-			_ptr(ptr),
+		State(Library::State* L = nullptr) :
+			_L(Library::inst().lockstate(L)),
 			_keysPtr(nullptr),
 			_tableLevel(0),
 			_closureLevel(0)
 		{}
 
-		State() :
-			State(std::make_shared<NullStatePointer>())
-		{}
-
-		State(Library::State* L) :
-			State(std::make_shared<AuxStatePointer>(L))
-		{}
+		~State()
+		{
+			Library::inst().close(_L);
+		}
 
 		// Returns true if the state is created, and false otherwise.
 		bool isOpen()
 		{
-			return _ptr->isOpen();
-		}
-
-		// Gets a shared pointer to the state.
-		SharedPtr getSharedPtr()
-		{
-			return _ptr;
+			return _L != nullptr;
 		}
 
 		// Gets a raw pointer to the state.
 		Library::State* getL()
 		{
-			return _ptr->getL();
+			if (!isOpen()) {
+				throw std::logic_error(
+					"invalid engine state"
+				);
+			}
+
+			return _L;
 		}
 
 		// Creates a new state if not already created.
 		void open()
 		{
 			if (!isOpen()) {
-				_ptr = std::make_shared<StatePointer>();
+				_L = Library::inst().newstate();
 			}
 		}
 
@@ -650,7 +645,7 @@ namespace Lua {
 
 	private:
 
-		SharedPtr _ptr;
+		Library::State* _L;
 		Keys* _keysPtr;
 		int _tableLevel;
 		int _closureLevel;

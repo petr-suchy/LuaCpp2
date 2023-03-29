@@ -21,8 +21,7 @@ namespace Luaux {
 
 					try {
 
-						auto statePtr = _output.write.getWeakStatePtr().lock();
-						Lua::AuxiliaryContext lua(statePtr);
+						Lua::AuxiliaryContext lua(_output.write.getL());
 
 						lua.args().in() << buff;
 						lua.pcall(_output.write);
@@ -39,8 +38,7 @@ namespace Luaux {
 				Output& flush()
 				{
 					try {
-						auto statePtr = _output.flush.getWeakStatePtr().lock();
-						Lua::AuxiliaryContext lua(statePtr);
+						Lua::AuxiliaryContext lua(_output.flush.getL());
 					}
 					catch (...) {
 						// nothing to do here

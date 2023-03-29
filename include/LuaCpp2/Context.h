@@ -231,24 +231,12 @@ namespace Lua {
 	public:
 
 		AuxiliaryContext(Library::State* L) :
-			_state(L),
-			_top(_state.getStackTop())
-		{}
-
-		AuxiliaryContext(State::SharedPtr statePtr) :
-			_state(statePtr),
-			_top(_state.getStackTop())
+			_state(L)
 		{}
 
 		AuxiliaryContext(State& state) :
-			_state(state),
-			_top(_state.getStackTop())
+			_state(state.getL())
 		{}
-
-		~AuxiliaryContext()
-		{
-			_state.setStackTop(_top);
-		}
 
 		virtual State& state()
 		{
@@ -258,7 +246,6 @@ namespace Lua {
 	private:
 
 		State _state;
-		int _top;
 
 	};
 

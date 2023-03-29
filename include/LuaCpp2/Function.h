@@ -25,10 +25,10 @@ namespace Lua {
 			_impl(std::make_shared<HostFunctionImpl>(func))
 		{}
 
-		// gets a weak pointer to the engine state
-		virtual State::WeakPtr getWeakStatePtr()
+		// gets a pointer to the engine state
+		Library::State* getL()
 		{
-			return _impl->getWeakStatePtr();
+			return _impl->getL();
 		}
 
 		// gets the function from the stack

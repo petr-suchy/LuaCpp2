@@ -8,13 +8,9 @@ namespace Lua {
 	class NullRefImpl : public RefImpl {
 	public:
 
-		virtual State::WeakPtr getWeakStatePtr()
+		virtual Library::State* getL() const
 		{
-			throw std::logic_error(
-				"a null reference has no weak pointer to the engine state"
-			);
-
-			return State::SharedPtr();
+			return nullptr;
 		}
 
 		virtual void insertTo(State&) const

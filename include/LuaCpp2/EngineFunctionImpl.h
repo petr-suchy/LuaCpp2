@@ -12,36 +12,26 @@ namespace Lua {
 		typedef int Reference;
 
 		EngineFunctionImpl(State& state, Reference ref) :
-			_weakStatePtr(state.getSharedPtr()),
+			_L(state.getL()),
 			_ref(ref)
 		{}
 
 		~EngineFunctionImpl()
 		{
-			if (auto statePtr = _weakStatePtr.lock()) {
-				// release both the function and the reference
-				Library::inst().unref(statePtr->getL(), _ref);
+			if (Library::State* L = Library::inst().lockstate(_L)) {
+				Library::inst().unref(L, _ref);
+				Library::inst().close(L);
 			}
 		}
 
-		virtual State::WeakPtr getWeakStatePtr()
+		virtual Library::State* getL()
 		{
-			return _weakStatePtr;
+			return _L;
 		}
 		
 		virtual void insertTo(State& state) const
 		{
-			auto funcStatePtr = _weakStatePtr.lock();
-
-			if (!funcStatePtr) {
-				throw std::logic_error(
-					"function state is destroyed"
-				);
-			}
-
-			State funcState(funcStatePtr);
-
-			if (funcState.getL() != state.getL()) {
+			if (_L != state.getL()) {
 				throw std::logic_error(
 					"function does not belong to this state"
 				);
@@ -56,7 +46,7 @@ namespace Lua {
 
 	private:
 
-		State::WeakPtr _weakStatePtr;
+		Library::State* _L;
 		Reference _ref;
 
 	};

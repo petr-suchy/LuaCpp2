@@ -26,8 +26,7 @@ namespace Luaux {
 
 					try {
 						
-						auto statePtr = _input.read.getWeakStatePtr().lock();
-						Lua::AuxiliaryContext lua(statePtr);
+						Lua::AuxiliaryContext lua(_input.read.getL());
 
 						lua.args().in() << count;
 						lua.pcall(_input.read);

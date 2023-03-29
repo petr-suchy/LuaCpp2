@@ -63,10 +63,7 @@ BOOST_AUTO_TEST_CASE(shouldHaveSameState)
 	state << f;
 	state >> f2;
 
-	Lua::State::SharedPtr f2StatePtr = f2.getWeakStatePtr().lock();
-
-	BOOST_TEST(f2StatePtr);
-	BOOST_TEST(state.getL() == f2StatePtr->getL());
+	BOOST_TEST(state.getL() == f2.getL());
 }
 
 BOOST_AUTO_TEST_CASE(testDestroyStateBeforeFunction)

@@ -18,14 +18,10 @@ namespace Lua {
 			_funcPtr(std::make_shared<FunctionPrototype>(func))
 		{}
 
-		// gets a weak pointer to the engine state
-		virtual State::WeakPtr getWeakStatePtr()
+		// gets a pointer to the engine state
+		virtual Library::State* getL()
 		{
-			throw std::logic_error(
-				"host function has no weak pointer to the engine state"
-			);
-
-			return State::SharedPtr();
+			return nullptr;
 		}
 
 		// inserts the host function to the stack

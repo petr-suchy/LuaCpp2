@@ -20,8 +20,7 @@ namespace Luaux {
 
 				try {
 
-					auto statePtr = _seekableInput.tellg.getWeakStatePtr().lock();
-					Lua::AuxiliaryContext lua(statePtr);
+					Lua::AuxiliaryContext lua(_seekableInput.tellg.getL());
 
 					lua.pcall(_seekableInput.tellg);
 					lua.args().out() >> pos;
@@ -40,8 +39,7 @@ namespace Luaux {
 
 				try {
 
-					auto statePtr = _seekableInput.seekg.getWeakStatePtr().lock();
-					Lua::AuxiliaryContext lua(statePtr);
+					Lua::AuxiliaryContext lua(_seekableInput.seekg.getL());
 
 					lua.args().in() << pos;
 					lua.pcall(_seekableInput.seekg);
@@ -59,8 +57,7 @@ namespace Luaux {
 
 				try {
 
-					auto statePtr = _seekableInput.seekg.getWeakStatePtr().lock();
-					Lua::AuxiliaryContext lua(statePtr);
+					Lua::AuxiliaryContext lua(_seekableInput.seekg.getL());
 
 					lua.args().in() << off << way;
 					lua.pcall(_seekableInput.seekg);

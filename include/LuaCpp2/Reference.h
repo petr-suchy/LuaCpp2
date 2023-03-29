@@ -17,6 +17,13 @@ namespace Lua {
 			_impl(std::make_shared<NullRefImpl>())
 		{}
 
+		// gets a pointer to the engine state
+		Library::State* getL()
+		{
+			return _impl->getL();
+		}
+
+		// gets the reference from the stack
 		virtual void getFrom(State& state)
 		{
 			ReadableStackSlot slot(state);
@@ -37,6 +44,7 @@ namespace Lua {
 			slot.finish();
 		}
 
+		// inserts the reference to the stack
 		virtual void insertTo(State& state) const
 		{
 			_impl->insertTo(state);
