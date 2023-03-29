@@ -105,13 +105,21 @@ namespace Lua {
         {
 			if (L) {
 
-				std::lock_guard<std::mutex> lock(__mutex);
+				bool close = false;
 
-				auto it = __openStates.find(L);
+				{
+					std::lock_guard<std::mutex> lock(__mutex);
 
-				if (it != __openStates.end() && --it->second == 0) {
+					auto it = __openStates.find(L);
+
+					if (it != __openStates.end() && --it->second == 0) {
+						__openStates.erase(it);
+						close = true;
+					}
+				}
+
+				if (close) {
 					lua_close(reinterpret_cast<lua_State*>(L));
-					__openStates.erase(it);
 				}
 
 			}
