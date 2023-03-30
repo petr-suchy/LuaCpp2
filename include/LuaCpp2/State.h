@@ -44,6 +44,23 @@ namespace Lua {
 			_closureLevel(other._closureLevel)
 		{}
 
+		// Copy assignment operator.
+		State& operator=(const State& other)
+		{
+			if (this != &other) {
+
+				Library::inst().close(_L);
+
+				_L = Library::inst().lockstate(other._L);
+				_keysPtr = other._keysPtr;
+				_tableLevel = other._tableLevel;
+				_closureLevel = other._closureLevel;
+
+			}
+
+			return *this;
+		}
+
 		// Returns true if the state is created, and false otherwise.
 		bool isOpen()
 		{
