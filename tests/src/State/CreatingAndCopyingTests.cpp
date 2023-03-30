@@ -38,4 +38,32 @@ BOOST_AUTO_TEST_CASE(testCreateState)
 	BOOST_TEST(Lua::Library::inst().usecount(L) == 0);
 }
 
+BOOST_AUTO_TEST_CASE(testCopyState)
+{
+	Lua::Library::State* L;
+
+	{
+		Lua::State state;
+
+		BOOST_TEST(!state.isOpen());
+		state.open();
+		BOOST_TEST(state.isOpen());
+
+		L = state.getL();
+		BOOST_TEST(Lua::Library::inst().usecount(L) == 1);
+
+		{
+			Lua::State state2{state};
+
+			BOOST_TEST(state2.isOpen());
+			BOOST_TEST(state2.getL() == L);
+			BOOST_TEST(Lua::Library::inst().usecount(L) == 2);
+		}
+
+		BOOST_TEST(Lua::Library::inst().usecount(L) == 1);
+	}
+
+	BOOST_TEST(Lua::Library::inst().usecount(L) == 0);
+}
+
 BOOST_AUTO_TEST_SUITE_END()

@@ -22,6 +22,7 @@ namespace Lua {
 
 		static const int StackTop = -1;
 
+		// Constructor.
 		State(Library::State* L = nullptr) :
 			_L(Library::inst().lockstate(L)),
 			_keysPtr(nullptr),
@@ -29,10 +30,19 @@ namespace Lua {
 			_closureLevel(0)
 		{}
 
+		// Destructor.
 		~State()
 		{
 			Library::inst().close(_L);
 		}
+
+		// Copy constructor.
+		State(const State& other) :
+			_L(Library::inst().lockstate(other._L)),
+			_keysPtr(other._keysPtr),
+			_tableLevel(other._tableLevel),
+			_closureLevel(other._closureLevel)
+		{}
 
 		// Returns true if the state is created, and false otherwise.
 		bool isOpen()
