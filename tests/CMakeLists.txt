@@ -22,6 +22,7 @@ target_sources(LuaCpp2Tests
         src/LuaLibInst.cpp
         src/Main.cpp
         src/Library/LibraryTests.cpp
+        src/State/CreatingAndCopyingTests.cpp
         src/State/ClosureTests.cpp
         src/State/FunctionTests.cpp
         src/State/ChunkTests.cpp
