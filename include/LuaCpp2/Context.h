@@ -169,7 +169,7 @@ namespace Lua {
 			// move a new input argument from the top of the stack
 			// to the beginning of the stack right after other
 			// input arguments
-			//state().moveTopElementTo(args().in().count() + 1);
+			state().moveTopValueTo(args().in().count() + 1);
 		}
 
 		virtual void _prepareOutput()

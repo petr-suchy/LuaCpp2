@@ -150,6 +150,12 @@ namespace Lua {
 				Context::_prepareInput();
 			}
 
+			virtual void _finishInput()
+			{
+				// arguments are left at the top of the stack and are not moved
+				// by the parent function.
+			}
+
 			virtual void _prepareCalling()
 			{
 				_prepareCallingFunc(*this);
