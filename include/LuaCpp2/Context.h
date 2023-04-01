@@ -166,23 +166,19 @@ namespace Lua {
 
 		virtual void _finishInput()
 		{
-			// move a new input argument from the top of the stack
-			// to the beginning of the stack right after other
-			// input arguments
-			state().moveTopValueTo(args().in().count() + 1);
+			// nothing to do here by dafult
 		}
 
 		virtual void _prepareOutput()
 		{
 			// insert the current output argument at the the top of the stack
-			// the current output argument is placed right after input arguments
-			state().pushValueFrom(args().in().count() + 1);
+			state().pushValueFrom(1);
 		}
 
 		virtual void _finishOutput()
 		{
 			// remove the current output argument from the stack
-			state().removeValueAt(args().in().count() + 1);
+			state().removeValueAt(1);
 		}
 
 		virtual void _prepareCalling()
@@ -199,9 +195,11 @@ namespace Lua {
 		{
 			_prepareCalling();
 
-			// adjust the top of the stack to the number of input arguments
-			// it removes unread function input arguments or unread
+			// remove unread function input arguments or unread
 			// output arguments from the previous function call
+			state().removeValueAt(1, state().getStackTop() - _numOfInputArgs);
+
+			// adjust the top of the stack to the number of input arguments
 			state().setStackTop(_numOfInputArgs);
 
 			_numOfOutputArgs = 0;

@@ -65,20 +65,19 @@ namespace Lua {
 						return _numOfFuncInArgs;
 					},
 					// prepares to read the next input argument
-					[&_numOfFuncInArgs, &_numOfFuncOutArgs](State& state)
+					[&_numOfFuncInArgs](State& state)
 					{
 						if (_numOfFuncInArgs == 0) {
 							throw std::logic_error("too few arguments");
 						}
 						// insert the current input argument at the the top of the stack
-						// the current input argument is placed right after output arguments
-						state.pushValueFrom(_numOfFuncOutArgs + 1);
+						state.pushValueFrom(1);
 					},
 					// finishes reading of the input argument
-					[&_numOfFuncInArgs, &_numOfFuncOutArgs](State& state)
+					[&_numOfFuncInArgs](State& state)
 					{
 						// remove the current input argument from the stack
-						state.removeValueAt(_numOfFuncOutArgs + 1);
+						state.removeValueAt(1);
 						_numOfFuncInArgs--;
 					}
 				},
@@ -103,12 +102,8 @@ namespace Lua {
 						}
 					},
 					// finishes writing of the output argument
-					[&_numOfFuncOutArgs, &callee] (State& state)
+					[&_numOfFuncOutArgs] (State& state)
 					{
-						// move the new output argument from the top of the stack
-						// to the beginning of the stack right after other output
-						// arguments
-						state.moveTopValueTo(_numOfFuncOutArgs + 1);
 						_numOfFuncOutArgs++;
 					}
 				}
@@ -148,12 +143,6 @@ namespace Lua {
 			{
 				_prepareInputFunc(*this);
 				Context::_prepareInput();
-			}
-
-			virtual void _finishInput()
-			{
-				// arguments are left at the top of the stack and are not moved
-				// by the parent function.
 			}
 
 			virtual void _prepareCalling()
