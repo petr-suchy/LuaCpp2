@@ -167,4 +167,55 @@ BOOST_AUTO_TEST_CASE(testArgumentsOrder)
 	BOOST_TEST(n6 == 6);
 }
 
+BOOST_AUTO_TEST_CASE(testForwardArguments)
+{
+	Lua::Engine lua(
+		[](Lua::Lua lua)
+		{
+			lua.global("forward").in() << Lua::MakeFunc(
+				[](Lua::Args args, Lua::Lua lua)
+				{
+					Lua::Function f;
+					args.in() >> f;
+
+					while (!args.in().atEnd()) {
+						lua.args().in() << args.in();
+					}
+
+					lua.pcall(f);
+
+					while (!lua.args().out().atEnd()) {
+						lua.args().out() >> args.out();
+					}
+				}
+			);
+		}
+	);
+
+	auto implode = Lua::MakeFunc(
+		[](Lua::Args args, Lua::Lua lua)
+		{
+			std::stringstream ss;
+			int n;
+
+			while (!args.in().atEnd()) {
+
+				args.in() >> n;
+				ss << n;
+
+				if (!args.in().atEnd()) {
+					ss << ", ";
+				}
+			}
+
+			args.out() << ss.str();
+		}
+	);
+
+	std::string result;
+	lua.pcall("forward", implode, 10, 20, 30, 40) >> result;
+
+	BOOST_TEST(result == "10, 20, 30, 40");
+}
+
 BOOST_AUTO_TEST_SUITE_END()
