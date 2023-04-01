@@ -37,6 +37,7 @@ target_sources(LuaCpp2Tests
         src/ValueCopy/ValueCopyTests.cpp
         src/Parameters/ParameterTests.cpp
         src/Engine/EngineTests.cpp
+        src/Engine/FunctionCallTests.cpp
         src/Luaux/EngineStreamTests.cpp
         src/Luaux/HostStreamTests.cpp
 )
