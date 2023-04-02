@@ -111,7 +111,14 @@ namespace Lua {
 
 			// call the wrapped closure function
 			_func(funcArgs, callee);
+			
+			// remove unread function input arguments or unread
+			// output arguments from the previous function call
+			state.removeValueAt(1, state.getStackTop() - _numOfFuncOutArgs);
 
+			// adjust the top of the stack to the number of output arguments
+			state.setStackTop(_numOfFuncOutArgs);
+			
 			return _numOfFuncOutArgs;
 		}
 

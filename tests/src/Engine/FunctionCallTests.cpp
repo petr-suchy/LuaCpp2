@@ -100,6 +100,37 @@ BOOST_AUTO_TEST_CASE(testUnreadInputArguments2)
 	lua.pcall("bar", 1, 2);
 }
 
+BOOST_AUTO_TEST_CASE(testUnreadInputArguments3)
+{
+	Lua::Engine lua;
+
+	lua.global("foo").in() << Lua::MakeFunc(
+		[](Lua::Args args, Lua::Lua lua)
+		{
+		}
+	);
+
+	int result = 0;
+	lua.pcall("foo", 1);
+	BOOST_TEST(lua.args().out().count() == 0);
+}
+
+BOOST_AUTO_TEST_CASE(testUnreadInputArguments4)
+{
+	Lua::Engine lua;
+
+	lua.global("foo").in() << Lua::MakeFunc(
+		[](Lua::Args args, Lua::Lua lua)
+		{
+			args.out() << 2;
+		}
+	);
+
+	int result = 0;
+	lua.pcall("foo", 1) >> result;
+	BOOST_TEST(result == 2);
+}
+
 BOOST_AUTO_TEST_CASE(testUnreadOutputArguments)
 {
 	Lua::Engine lua;
@@ -230,6 +261,53 @@ BOOST_AUTO_TEST_CASE(testUnreadOutputArguments3)
 	);
 
 	lua.pcall("cow");
+}
+
+BOOST_AUTO_TEST_CASE(testUnreadOutputArguments4)
+{
+	Lua::Engine lua;
+
+	lua.global("foo").in() << Lua::MakeFunc(
+		[](Lua::Args args, Lua::Lua lua)
+		{
+			args.out() << 1;
+		}
+	);
+
+	lua.global("bar").in() << Lua::MakeFunc(
+		[](Lua::Args args, Lua::Lua lua)
+		{
+			lua.pcall("foo");
+		}
+	);
+
+	int result = 0;
+	lua.pcall("bar");
+	BOOST_TEST(lua.args().out().count() == 0);
+}
+
+BOOST_AUTO_TEST_CASE(testUnreadOutputArguments5)
+{
+	Lua::Engine lua;
+
+	lua.global("foo").in() << Lua::MakeFunc(
+		[](Lua::Args args, Lua::Lua lua)
+		{
+			args.out() << 1;
+		}
+	);
+
+	lua.global("bar").in() << Lua::MakeFunc(
+		[](Lua::Args args, Lua::Lua lua)
+		{
+			lua.pcall("foo");
+			args.out() << 2;
+		}
+	);
+
+	int result = 0;
+	lua.pcall("bar") >> result;
+	BOOST_TEST(result == 2);
 }
 
 BOOST_AUTO_TEST_CASE(testArgumentsOrder)
