@@ -91,4 +91,51 @@ BOOST_AUTO_TEST_CASE(testSeekableStream)
     BOOST_TEST(ss.tellp() == -1);
 }
 
+BOOST_AUTO_TEST_CASE(testSeekableStream2)
+{
+    Lua::Engine lua(
+        [](Lua::Lua lua)
+        {
+            lua.global("StringStream").in() << Lua::MakeFunc(
+                [](Lua::Args args, Lua::Lua lua)
+                {
+                    auto ss = std::make_shared<std::stringstream>();
+                    args.out() << Luaux::Engine::MakeStringStream(ss);
+                }
+            );
+        }
+    );
+
+    lua.doString("ss = StringStream()");
+
+    Luaux::Engine::SeekableStreamIfce ssi;
+    lua.global("ss").out() >> ssi;
+
+    Luaux::Host::SeekableStream<char, size_t, size_t> ss(ssi);
+
+    BOOST_TEST(ss.tellg() == 0);
+    BOOST_TEST(ss.tellp() == 0);
+
+    char data[] = { 'A', '\x00', 'B', '\x00', 'C' };
+
+    ss.write(data, sizeof(data));
+
+    BOOST_TEST(ss.tellg() == 0);
+    BOOST_TEST(ss.tellp() == 5);
+
+    char buff[5];
+
+    ss.read(buff, sizeof(buff));
+
+    BOOST_TEST(ss.tellg() == 5);
+    BOOST_TEST(ss.tellp() == 5);
+    BOOST_TEST(ss.gcount() == 5);
+
+    BOOST_TEST(buff[0] == 'A');
+    BOOST_TEST(buff[1] == '\x00');
+    BOOST_TEST(buff[2] == 'B');
+    BOOST_TEST(buff[3] == '\x00');
+    BOOST_TEST(buff[4] == 'C');
+}
+
 BOOST_AUTO_TEST_SUITE_END()

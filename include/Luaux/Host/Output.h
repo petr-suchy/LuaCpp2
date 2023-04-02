@@ -23,7 +23,7 @@ namespace Luaux {
 
 						Lua::AuxiliaryContext lua(_output.write.getL());
 
-						lua.args().in() << buff;
+						lua.args().in() << std::basic_string<Char>{buff, count};
 						lua.pcall(_output.write);
 
 					}
