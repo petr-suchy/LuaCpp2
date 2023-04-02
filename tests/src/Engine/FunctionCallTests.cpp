@@ -409,7 +409,161 @@ BOOST_AUTO_TEST_CASE(testForwardArguments)
 	BOOST_TEST(n4 == 4);
 	BOOST_TEST(n5 == 5);
 	BOOST_TEST(n6 == 6);
-	
+}
+
+BOOST_AUTO_TEST_CASE(testCallFunctionVar)
+{
+	Lua::Engine lua;
+
+	Lua::Function foo = Lua::MakeFunc(
+		[](Lua::Args args, Lua::Lua lua)
+		{
+			int x, y;
+			args.in() >> x >> y;
+			args.out() << x + y;
+		}
+	);
+
+	int result;
+	lua.pcall(foo, 2, 3) >> result;
+	BOOST_TEST(result == 5);
+}
+
+BOOST_AUTO_TEST_CASE(testCallFunctionVar2)
+{
+	Lua::Engine lua;
+
+	Lua::Function foo = Lua::MakeFunc(
+		[](Lua::Args args, Lua::Lua lua)
+		{
+			int x, y;
+			args.in() >> x >> y;
+			args.out() << x + y;
+		}
+	);
+
+	Lua::Function bar = Lua::MakeFunc(
+		[](Lua::Args args, Lua::Lua lua)
+		{
+			Lua::Function foo;
+			args.in() >> foo;
+
+			lua.args().in() << args.in();
+			lua.args().in() << args.in();
+
+			lua.pcall(foo) >> args.out();
+		}
+	);
+
+	int result = 0;
+	lua.pcall(foo, 2, 3) >> result;
+	BOOST_TEST(result == 5);
+}
+
+BOOST_AUTO_TEST_CASE(testCallFunctionVar3)
+{
+	Lua::Engine lua;
+
+	lua.global("foo").in() << Lua::MakeFunc(
+		[](Lua::Args args, Lua::Lua lua)
+		{
+			Lua::Function bar;
+			args.in() >> bar;
+
+			args.out() << Lua::MakeFunc(
+				[bar](Lua::Args args, Lua::Lua lua) mutable
+				{
+					lua.args().in() << args.in();
+					lua.args().in() << args.in();
+
+					lua.pcall(bar) >> args.out();
+				}
+			);
+		}
+	);
+
+	lua.args().in() << Lua::MakeFunc(
+		[](Lua::Args args, Lua::Lua lua)
+		{
+			int x, y;
+			args.in() >> x >> y;
+			args.out() << x + y;
+		}
+	);
+
+	Lua::Function bar;
+	lua.pcall("foo") >> bar;
+
+	int result = 0;
+	lua.pcall(bar, 2, 3) >> result;
+	BOOST_TEST(result == 5);
+}
+
+BOOST_AUTO_TEST_CASE(testCallFunctionVar4)
+{
+	Lua::Engine lua;
+
+	lua.global("foo").in() << Lua::MakeFunc(
+		[](Lua::Args args, Lua::Lua lua)
+		{
+			int x, y;
+			args.in() >> x >> y;
+			args.out() << x + y;
+		}
+	);
+
+	Lua::Function foo;
+	lua.global("foo").out() >> foo;
+	BOOST_TEST(lua.state().getL() == foo.getL());
+
+	{
+		BOOST_TEST(Lua::Library::inst().usecount(lua.state().getL()) == 1);
+		Lua::AuxiliaryContext aux(foo.getL());
+		BOOST_TEST(Lua::Library::inst().usecount(lua.state().getL()) == 2);
+
+		int result = 0;
+		aux.pcall(foo, 2, 3) >> result;
+		BOOST_TEST(result == 5);
+	}
+
+	BOOST_TEST(Lua::Library::inst().usecount(lua.state().getL()) == 1);
+}
+
+BOOST_AUTO_TEST_CASE(testCallFunctionVar5)
+{
+	Lua::Function foo;
+
+	{
+		Lua::Engine lua;
+
+		lua.global("foo").in() << Lua::MakeFunc(
+			[](Lua::Args args, Lua::Lua lua)
+			{
+				int x, y;
+				args.in() >> x >> y;
+				args.out() << x + y;
+			}
+		);
+
+		BOOST_TEST(Lua::Library::inst().usecount(foo.getL()) == 0);
+		lua.global("foo").out() >> foo;
+		BOOST_TEST(Lua::Library::inst().usecount(foo.getL()) == 1);
+	}
+
+	BOOST_TEST(Lua::Library::inst().usecount(foo.getL()) == 0);
+
+	Lua::AuxiliaryContext aux(foo.getL());
+
+	std::string what;
+
+	try {
+		aux.pcall(foo);
+	}
+	catch (std::exception& e) {
+		what = e.what();
+	}
+
+	BOOST_TEST(what == "invalid engine state");
 }
 
 BOOST_AUTO_TEST_SUITE_END()
