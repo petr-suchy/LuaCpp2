@@ -14,6 +14,10 @@ namespace Lua {
     class LinkedLibrary : public Library {
     public:
 
+		LinkedLibrary() :
+			_initializer(nullptr)
+		{}
+
 		/* Version */
 
 		virtual const Version& getifcever()
@@ -601,7 +605,7 @@ namespace Lua {
 		// Mutext object.
 		std::mutex _mutex;
 		// Function that is called when a new state is created.
-		Library::Initializer _initializer = nullptr;
+		Library::Initializer _initializer;
 
 		static int forwardedWriter(State* L, const void* p, size_t sz, void* ud)
 		{
