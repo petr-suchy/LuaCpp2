@@ -48,6 +48,12 @@ static const char* testedReader(Lua::Library::State* L, void* ud, size_t* sz)
 	return buff;
 }
 
+static void testedStateInitializer(Lua::Library::State* L)
+{
+	Lua::Library::inst().pushinteger(L, 123456);
+	Lua::Library::inst().setglobal(L, "fromInitializer");
+}
+
 static int testedWriter(Lua::Library::State* L, const void* p, size_t sz, void* ud)
 {
 	std::ostringstream* oss = reinterpret_cast<
@@ -80,6 +86,19 @@ BOOST_AUTO_TEST_CASE(testNewState)
 
 	Lua::Library::inst().close(L);
 	BOOST_TEST(Lua::Library::inst().usecount(L) == 0);
+}
+
+BOOST_AUTO_TEST_CASE(testStateInitializer)
+{
+	Lua::Library::inst().setstateinit(&testedStateInitializer);
+	BOOST_TEST(Lua::Library::inst().getstateinit() == &testedStateInitializer);
+
+	Lua::Library::State* L = Lua::Library::inst().newstate();
+
+	Lua::Library::inst().getglobal(L, "fromInitializer");
+	BOOST_TEST(Lua::Library::inst().tointeger(L, 1) == 123456);
+
+	Lua::Library::inst().close(L);
 }
 
 BOOST_AUTO_TEST_CASE(testLockState)

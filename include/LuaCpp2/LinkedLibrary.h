@@ -12,7 +12,10 @@ namespace Lua {
 
 	// Keeps track of open states.
 	static std::map<Library::State*, int> __openStates;
+	// Mutext object.
 	static std::mutex __mutex;
+	// Function that is called when a new state is created.
+	static Library::Initializer __initializer = nullptr;
 
     template<typename NewState>
     class LinkedLibrary : public Library {
@@ -52,15 +55,21 @@ namespace Lua {
 				return nullptr;
 			}
 
-			std::lock_guard<std::mutex> lock(__mutex);
-			
-			auto ret = __openStates.insert(
-				std::pair<State*, int>(L, 1)
-			);
+			{
+				std::lock_guard<std::mutex> lock(__mutex);
 
-			if (!ret.second) { // the state hasn't been inserted?
-				lua_close(reinterpret_cast<lua_State*>(L));
-				return nullptr;
+				auto ret = __openStates.insert(
+					std::pair<State*, int>(L, 1)
+				);
+
+				if (!ret.second) { // the state hasn't been inserted?
+					lua_close(reinterpret_cast<lua_State*>(L));
+					return nullptr;
+				}
+			}
+
+			if (__initializer) {
+				__initializer(L);
 			}
 			
             return L;
@@ -128,6 +137,16 @@ namespace Lua {
 		virtual void openlibs(State* L)
 		{
 			luaL_openlibs(reinterpret_cast<lua_State*>(L));
+		}
+
+		virtual void setstateinit(Initializer initializer)
+		{
+			__initializer = initializer;
+		}
+
+		virtual Initializer getstateinit()
+		{
+			return __initializer;
 		}
 
         /* Stack */

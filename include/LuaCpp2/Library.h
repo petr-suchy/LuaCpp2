@@ -29,6 +29,9 @@ namespace Lua {
 		// Function prototype that writes blocks while dumping chunks.
 		typedef int (*Writer) (State* L, const void* p, size_t sz, void* ud);
 
+		// Function prototype that is called when a new state is created.
+		typedef void (*Initializer) (State* L);
+
 		static Library& inst();
 
 		/* Version */
@@ -59,6 +62,12 @@ namespace Lua {
 
 		// Opens all standard Lua libraries into the given state.
 		virtual void openlibs(State* L) = 0;
+
+		// Sets the given function to initialize new states.
+		virtual void setstateinit(Initializer initializer) = 0;
+
+		// Gets a function that is called when a new state is created.
+		virtual Initializer getstateinit() = 0;
 
 		/* Stack */
 
