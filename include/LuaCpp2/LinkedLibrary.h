@@ -10,13 +10,6 @@
 
 namespace Lua {
 
-	// Keeps track of open states.
-	static std::map<Library::State*, int> __openStates;
-	// Mutext object.
-	static std::mutex __mutex;
-	// Function that is called when a new state is created.
-	static Library::Initializer __initializer = nullptr;
-
     template<typename NewState>
     class LinkedLibrary : public Library {
     public:
@@ -56,9 +49,9 @@ namespace Lua {
 			}
 
 			{
-				std::lock_guard<std::mutex> lock(__mutex);
+				std::lock_guard<std::mutex> lock(_mutex);
 
-				auto ret = __openStates.insert(
+				auto ret = _openStates.insert(
 					std::pair<State*, int>(L, 1)
 				);
 
@@ -68,8 +61,8 @@ namespace Lua {
 				}
 			}
 
-			if (__initializer) {
-				__initializer(L);
+			if (_initializer) {
+				_initializer(L);
 			}
 			
             return L;
@@ -79,11 +72,11 @@ namespace Lua {
 		{
 			if (L) {
 
-				std::lock_guard<std::mutex> lock(__mutex);
+				std::lock_guard<std::mutex> lock(_mutex);
 
-				auto it = __openStates.find(L);
+				auto it = _openStates.find(L);
 
-				if (it != __openStates.end()) {
+				if (it != _openStates.end()) {
 					it->second++;
 					return L;
 				}
@@ -97,11 +90,11 @@ namespace Lua {
 		{
 			if (L) {
 
-				std::lock_guard<std::mutex> lock(__mutex);
+				std::lock_guard<std::mutex> lock(_mutex);
 
-				auto it = __openStates.find(L);
+				auto it = _openStates.find(L);
 
-				if (it != __openStates.end()) {
+				if (it != _openStates.end()) {
 					return it->second;
 				}
 
@@ -117,12 +110,12 @@ namespace Lua {
 				bool close = false;
 
 				{
-					std::lock_guard<std::mutex> lock(__mutex);
+					std::lock_guard<std::mutex> lock(_mutex);
 
-					auto it = __openStates.find(L);
+					auto it = _openStates.find(L);
 
-					if (it != __openStates.end() && --it->second == 0) {
-						__openStates.erase(it);
+					if (it != _openStates.end() && --it->second == 0) {
+						_openStates.erase(it);
 						close = true;
 					}
 				}
@@ -141,12 +134,12 @@ namespace Lua {
 
 		virtual void setstateinit(Initializer initializer)
 		{
-			__initializer = initializer;
+			_initializer = initializer;
 		}
 
 		virtual Initializer getstateinit()
 		{
-			return __initializer;
+			return _initializer;
 		}
 
         /* Stack */
@@ -595,6 +588,13 @@ namespace Lua {
 			Writer writer;
 			void* ud;
 		};
+
+		// Keeps track of open states.
+		std::map<Library::State*, int> _openStates;
+		// Mutext object.
+		std::mutex _mutex;
+		// Function that is called when a new state is created.
+		Library::Initializer _initializer = nullptr;
 
 		static int forwardedWriter(State* L, const void* p, size_t sz, void* ud)
 		{
