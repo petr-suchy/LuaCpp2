@@ -62,7 +62,14 @@ namespace Lua {
 			}
 
 			if (_initializer) {
-				_initializer(L);
+
+				int ret = _initializer(L);
+
+				if (!ret) {
+					lua_close(reinterpret_cast<lua_State*>(L));
+					return nullptr;
+				}
+
 			}
 			
             return L;

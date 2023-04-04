@@ -48,10 +48,12 @@ static const char* testedReader(Lua::Library::State* L, void* ud, size_t* sz)
 	return buff;
 }
 
-static void testedStateInitializer(Lua::Library::State* L)
+static int testedStateInitializer(Lua::Library::State* L)
 {
 	Lua::Library::inst().pushinteger(L, 123456);
 	Lua::Library::inst().setglobal(L, "fromInitializer");
+
+	return 1;
 }
 
 static int testedWriter(Lua::Library::State* L, const void* p, size_t sz, void* ud)

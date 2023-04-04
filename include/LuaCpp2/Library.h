@@ -30,7 +30,7 @@ namespace Lua {
 		typedef int (*Writer) (State* L, const void* p, size_t sz, void* ud);
 
 		// Function prototype that is called when a new state is created.
-		typedef void (*Initializer) (State* L);
+		typedef int (*Initializer) (State* L);
 
 		static Library& inst();
 
