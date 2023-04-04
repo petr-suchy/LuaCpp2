@@ -489,6 +489,104 @@ BOOST_AUTO_TEST_CASE(testForwardArguments)
 	BOOST_TEST(n6 == 6);
 }
 
+BOOST_AUTO_TEST_CASE(testForwardArguments2)
+{
+	Lua::Engine lua1;
+	Lua::Engine lua2;
+
+	lua1.global("foo").in() << Lua::MakeFunc(
+		[](Lua::Args args, Lua::Lua lua1)
+		{
+			int result = 0;
+			int i = 1;
+
+			while (!args.in().atEnd()) {
+				int n;
+				args.in() >> n;
+				result += n * i;
+				i *= 10;
+			}
+
+			args.out() << result;
+
+			do {
+				args.out() << result % 10;
+				result /= 10;
+			} while (result != 0);
+		}
+	);
+
+	lua2.global("bar").in() << Lua::MakeFunc(
+		[&lua1](Lua::Args args, Lua::Lua lua2)
+		{
+			while (!args.in().atEnd()) {
+				args.in() >> lua1.args().in();
+			}
+
+			lua1.pcall("foo");
+
+			while (!lua1.args().out().atEnd()) {
+				args.out() << lua1.args().out();
+			}
+		}
+	);
+
+	int result;
+	int n1, n2, n3, n4, n5, n6;
+
+	lua2.args().in() << 1;
+	lua2.pcall("bar");
+	lua2.args().out() >> result >> n1;
+	BOOST_TEST(result == 1);
+	BOOST_TEST(n1 == 1);
+
+	lua2.args().in() << 1;
+	lua2.args().in() << 2;
+	lua2.pcall("bar") >> result >> n1 >> n2;
+	BOOST_TEST(result == 21);
+	BOOST_TEST(n1 == 1);
+	BOOST_TEST(n2 == 2);
+
+	lua2.args().in() << 1;
+	lua2.args().in() << 2;
+	lua2.args().in() << 3;
+	lua2.pcall("bar") >> result >> n1 >> n2 >> n3;
+	BOOST_TEST(result == 321);
+	BOOST_TEST(n1 == 1);
+	BOOST_TEST(n2 == 2);
+	BOOST_TEST(n3 == 3);
+
+	lua2.args().in() << 1;
+	lua2.args().in() << 2;
+	lua2.args().in() << 3;
+	lua2.pcall("bar", 4) >> result >> n1 >> n2 >> n3 >> n4;
+	BOOST_TEST(result == 4321);
+	BOOST_TEST(n1 == 1);
+	BOOST_TEST(n2 == 2);
+	BOOST_TEST(n3 == 3);
+	BOOST_TEST(n4 == 4);
+
+	lua2.args().in() << 1;
+	lua2.args().in() << 2;
+	lua2.args().in() << 3;
+	lua2.pcall("bar", 4, 5) >> result >> n1 >> n2 >> n3 >> n4 >> n5;
+	BOOST_TEST(result == 54321);
+	BOOST_TEST(n1 == 1);
+	BOOST_TEST(n2 == 2);
+	BOOST_TEST(n3 == 3);
+	BOOST_TEST(n4 == 4);
+	BOOST_TEST(n5 == 5);
+
+	lua2.pcall("bar", 1, 2, 3, 4, 5, 6) >> result >> n1 >> n2 >> n3 >> n4 >> n5 >> n6;
+	BOOST_TEST(result == 654321);
+	BOOST_TEST(n1 == 1);
+	BOOST_TEST(n2 == 2);
+	BOOST_TEST(n3 == 3);
+	BOOST_TEST(n4 == 4);
+	BOOST_TEST(n5 == 5);
+	BOOST_TEST(n6 == 6);
+}
+
 BOOST_AUTO_TEST_CASE(testCallFunctionVar)
 {
 	Lua::Engine lua;

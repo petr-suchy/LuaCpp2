@@ -20,6 +20,8 @@ static Lua::ReadableParams operator>> (
 		Transfer(iargs.state(), oargs.state());
 		oargs.finishWriting();
 
+		// remove the input argument from the source stack
+		iargs.state().pop();
 		// remove the input argument
 		iargs.finishReading();
 
