@@ -152,7 +152,7 @@ namespace Lua {
 		void removeValueAt(int index, int num = 1)
 		{
 			for (int i = 0; i < num; i++) {
-				Library::inst().remove(getL(), index + i);
+				Library::inst().remove(getL(), index);
 			}
 		}
 
