@@ -226,6 +226,11 @@ namespace Lua {
 			lua_pushinteger(reinterpret_cast<lua_State*>(L), n);
 		}
 
+		virtual void pushlightuserdata(State* L, void* p)
+		{
+			lua_pushlightuserdata(reinterpret_cast<lua_State*>(L), p);
+		}
+
 		virtual void pushnil(State* L)
 		{
 			lua_pushnil(reinterpret_cast<lua_State*>(L));

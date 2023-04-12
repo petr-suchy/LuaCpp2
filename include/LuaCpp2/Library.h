@@ -111,7 +111,10 @@ namespace Lua {
 		virtual void pushcfunction(State* L, CFunction fn) = 0;
 
 		// Pushes a integer value onto the stack.
-		virtual void pushinteger(State*, Integer n) = 0;
+		virtual void pushinteger(State* L, Integer n) = 0;
+
+		// Pushes a light userdata onto the stack.
+		virtual void pushlightuserdata(State* L, void* p) = 0;
 
 		// Pushes a nil value onto the stack.
 		virtual void pushnil(State* L) = 0;
