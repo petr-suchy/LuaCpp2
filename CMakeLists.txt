@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.10)
+cmake_minimum_required(VERSION 3.14)
 
 project(LuaCpp2
     VERSION 1.0.0
@@ -67,6 +67,7 @@ if(LUACPP2_INSTALL_LIBRARY)
         "LuaCpp2ConfigVersion.cmake"
         VERSION ${PROJECT_VERSION}
         COMPATIBILITY SameMajorVersion
+        ARCH_INDEPENDENT
     )
 
     # create a config file
