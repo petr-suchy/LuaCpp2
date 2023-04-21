@@ -294,4 +294,14 @@ BOOST_AUTO_TEST_CASE(testErrorString)
 	BOOST_TEST(errorString == "test error string");
 }
 
+BOOST_AUTO_TEST_CASE(testIsGlobal)
+{
+	Lua::Engine lua;
+
+	BOOST_TEST(!lua.isGlobal("foo"));
+	lua.global("foo").in() << 123;
+	BOOST_TEST(lua.isGlobal("foo"));
+	BOOST_TEST(lua.state().getStackTop() == 0);
+}
+
 BOOST_AUTO_TEST_SUITE_END()

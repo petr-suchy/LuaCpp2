@@ -28,6 +28,15 @@ namespace Lua {
 			state().openStdLibs();
 		}
 
+		bool isGlobal(const std::string& name)
+		{
+			state().getGlobal(name);
+			bool result = !state().isNilAt(State::StackTop);
+			state().pop();
+
+			return result;
+		}
+
 		Lua::GlobalVars global(const std::string& nameList)
 		{
 			return GlobalVars(state(), nameList);
