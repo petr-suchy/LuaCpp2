@@ -15,7 +15,8 @@ namespace Lua {
     public:
 
 		LinkedLibrary() :
-			_initializer(nullptr)
+			_initializer(nullptr),
+			_deleter(nullptr)
 		{}
 
 		/* Version */
@@ -70,6 +71,11 @@ namespace Lua {
 				int ret = _initializer(L);
 
 				if (!ret) {
+
+					if (_deleter) {
+						_deleter(L);
+					}
+
 					lua_close(reinterpret_cast<lua_State*>(L));
 					return nullptr;
 				}
@@ -132,6 +138,11 @@ namespace Lua {
 				}
 
 				if (close) {
+
+					if (_deleter) {
+						_deleter(L);
+					}
+
 					lua_close(reinterpret_cast<lua_State*>(L));
 				}
 
@@ -151,6 +162,16 @@ namespace Lua {
 		virtual Initializer getstateinit()
 		{
 			return _initializer;
+		}
+
+		virtual void setstatedelete(Deleter deleter)
+		{
+			_deleter = deleter;
+		}
+
+		virtual Deleter getstatedelete()
+		{
+			return _deleter;
 		}
 
         /* Stack */
@@ -610,7 +631,9 @@ namespace Lua {
 		// Mutext object.
 		std::mutex _mutex;
 		// Function that is called when a new state is created.
-		Library::Initializer _initializer;
+		Initializer _initializer;
+		// Function that is called just before a state is deleted.
+		Deleter _deleter;
 
 		static int forwardedWriter(State* L, const void* p, size_t sz, void* ud)
 		{

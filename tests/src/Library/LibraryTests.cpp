@@ -56,6 +56,13 @@ static int testedStateInitializer(Lua::Library::State* L)
 	return 1;
 }
 
+static bool __testedDeleterHasBeenCalled = false;
+
+static void testedStateDeleter(Lua::Library::State* L)
+{
+	__testedDeleterHasBeenCalled = true;
+}
+
 static int testedWriter(Lua::Library::State* L, const void* p, size_t sz, void* ud)
 {
 	std::ostringstream* oss = reinterpret_cast<
@@ -101,6 +108,21 @@ BOOST_AUTO_TEST_CASE(testStateInitializer)
 	BOOST_TEST(Lua::Library::inst().tointeger(L, 1) == 123456);
 
 	Lua::Library::inst().close(L);
+}
+
+BOOST_AUTO_TEST_CASE(testStateDeleter)
+{
+	Lua::Library::inst().setstatedelete(&testedStateDeleter);
+	BOOST_TEST(Lua::Library::inst().getstatedelete() == &testedStateDeleter);
+
+	Lua::Library::State* L = Lua::Library::inst().newstate();
+	BOOST_TEST(L);
+
+	__testedDeleterHasBeenCalled = false;
+
+	BOOST_TEST(!__testedDeleterHasBeenCalled);
+	Lua::Library::inst().close(L);
+	BOOST_TEST(__testedDeleterHasBeenCalled);
 }
 
 BOOST_AUTO_TEST_CASE(testLockState)
