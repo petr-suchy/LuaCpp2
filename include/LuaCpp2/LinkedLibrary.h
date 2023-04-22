@@ -16,7 +16,8 @@ namespace Lua {
 
 		LinkedLibrary() :
 			_initializer(nullptr),
-			_deleter(nullptr)
+			_preCloseDeleter(nullptr),
+			_postCloseDeleter(nullptr)
 		{}
 
 		/* Version */
@@ -72,11 +73,16 @@ namespace Lua {
 
 				if (!ret) {
 
-					if (_deleter) {
-						_deleter(L);
+					if (_preCloseDeleter) {
+						_preCloseDeleter(L);
 					}
 
 					lua_close(reinterpret_cast<lua_State*>(L));
+
+					if (_postCloseDeleter) {
+						_postCloseDeleter(L);
+					}
+
 					return nullptr;
 				}
 
@@ -139,11 +145,15 @@ namespace Lua {
 
 				if (close) {
 
-					if (_deleter) {
-						_deleter(L);
+					if (_preCloseDeleter) {
+						_preCloseDeleter(L);
 					}
 
 					lua_close(reinterpret_cast<lua_State*>(L));
+
+					if (_postCloseDeleter) {
+						_postCloseDeleter(L);
+					}
 				}
 
 			}
@@ -164,14 +174,24 @@ namespace Lua {
 			return _initializer;
 		}
 
-		virtual void setstatedelete(Deleter deleter)
+		virtual void setstatepreclose(Deleter deleter)
 		{
-			_deleter = deleter;
+			_preCloseDeleter = deleter;
 		}
 
-		virtual Deleter getstatedelete()
+		virtual Deleter getstatepreclose()
 		{
-			return _deleter;
+			return _preCloseDeleter;
+		}
+
+		virtual void setstatepostclose(Deleter deleter)
+		{
+			_postCloseDeleter = deleter;
+		}
+
+		virtual Deleter getstatepostclose()
+		{
+			return _postCloseDeleter;
 		}
 
         /* Stack */
@@ -632,8 +652,10 @@ namespace Lua {
 		std::mutex _mutex;
 		// Function that is called when a new state is created.
 		Initializer _initializer;
-		// Function that is called just before a state is deleted.
-		Deleter _deleter;
+		// Function that is called just before a state is closed.
+		Deleter _preCloseDeleter;
+		// Function that is called after a state is closed.
+		Deleter _postCloseDeleter;
 
 		static int forwardedWriter(State* L, const void* p, size_t sz, void* ud)
 		{

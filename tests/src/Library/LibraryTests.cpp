@@ -110,10 +110,10 @@ BOOST_AUTO_TEST_CASE(testStateInitializer)
 	Lua::Library::inst().close(L);
 }
 
-BOOST_AUTO_TEST_CASE(testStateDeleter)
+BOOST_AUTO_TEST_CASE(testStatePreCloseDeleter)
 {
-	Lua::Library::inst().setstatedelete(&testedStateDeleter);
-	BOOST_TEST(Lua::Library::inst().getstatedelete() == &testedStateDeleter);
+	Lua::Library::inst().setstatepreclose(&testedStateDeleter);
+	BOOST_TEST(Lua::Library::inst().getstatepreclose() == &testedStateDeleter);
 
 	Lua::Library::State* L = Lua::Library::inst().newstate();
 	BOOST_TEST(L);
@@ -123,6 +123,27 @@ BOOST_AUTO_TEST_CASE(testStateDeleter)
 	BOOST_TEST(!__testedDeleterHasBeenCalled);
 	Lua::Library::inst().close(L);
 	BOOST_TEST(__testedDeleterHasBeenCalled);
+
+	Lua::Library::inst().setstatepreclose(nullptr);
+	BOOST_TEST(!Lua::Library::inst().getstatepostclose());
+}
+
+BOOST_AUTO_TEST_CASE(testStatePostCloseDeleter)
+{
+	Lua::Library::inst().setstatepostclose(&testedStateDeleter);
+	BOOST_TEST(Lua::Library::inst().getstatepostclose() == &testedStateDeleter);
+
+	Lua::Library::State* L = Lua::Library::inst().newstate();
+	BOOST_TEST(L);
+
+	__testedDeleterHasBeenCalled = false;
+
+	BOOST_TEST(!__testedDeleterHasBeenCalled);
+	Lua::Library::inst().close(L);
+	BOOST_TEST(__testedDeleterHasBeenCalled);
+
+	Lua::Library::inst().setstatepreclose(nullptr);
+	BOOST_TEST(!Lua::Library::inst().getstatepreclose());
 }
 
 BOOST_AUTO_TEST_CASE(testLockState)

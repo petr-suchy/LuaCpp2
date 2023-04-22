@@ -32,7 +32,7 @@ namespace Lua {
 		// Function prototype that is called when a new state is created.
 		typedef int (*Initializer) (State* L);
 
-		// Function prototype that is called just before a state is deleted.
+		// Function prototype that is called when a state is closed.
 		typedef void (*Deleter) (State* L);
 
 		static Library& inst();
@@ -72,11 +72,17 @@ namespace Lua {
 		// Gets the function that is called when a new state is created.
 		virtual Initializer getstateinit() = 0;
 
-		// Sets the given function to delete states.
-		virtual void setstatedelete(Deleter deleter) = 0;
+		// Sets the given function to be called just before a state is closed.
+		virtual void setstatepreclose(Deleter deleter) = 0;
 
-		// Gets the function that is called just before a state is deleted.
-		virtual Deleter getstatedelete() = 0;
+		// Gets the function that is called just before a state is closed.
+		virtual Deleter getstatepreclose() = 0;
+
+		// Sets the given function to be called after a state is closed.
+		virtual void setstatepostclose(Deleter deleter) = 0;
+
+		// Gets the function that is called after a state is closed.
+		virtual Deleter getstatepostclose() = 0;
 
 		/* Stack */
 
