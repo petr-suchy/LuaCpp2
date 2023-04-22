@@ -41,6 +41,7 @@ namespace Luaux {
 				{
 					try {
 						Lua::AuxiliaryContext lua(_output.flush.getL());
+						lua.pcall(_output.flush);
 					}
 					catch (...) {
 						// nothing to do here
